@@ -20,4 +20,7 @@ from portailva.pages.views import home as home_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^pages/', include('portailva.pages.urls')),
+
+    url(r'^$', home_view, name='homepage'),
 ]

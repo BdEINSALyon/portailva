@@ -1,0 +1,9 @@
+/* main.scss */
+@import "theme/variables";
+@import "bootstrap";
+@import "theme/bootswatch";
+
+/* Fixed top navbar */
+body {
+    padding-top: 70px;
+}
