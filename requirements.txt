@@ -1,3 +1,4 @@
 # Explicit dependencies (references in code)
 Django==1.10.2
+python-social-auth==0.2.21
 django-bootstrap-form==3.2.1

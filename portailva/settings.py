@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'bootstrapform',
+    'social.apps.django_app.default',
+
     'portailva.pages',
+    'portailva.member'
 ]
 
 MIDDLEWARE = [
@@ -50,6 +54,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'portailva.member.backends.UserModelEmailBackend'
+]
+
+LOGIN_REDIRECT_URL = '/'
 
 ROOT_URLCONF = 'portailva.urls'
 
