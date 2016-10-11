@@ -1,0 +1,2 @@
+# Explicit dependencies (references in code)
+Django==1.10.2
