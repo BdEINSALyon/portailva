@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'bootstrapform',
     'social.apps.django_app.default',
 
+    'portailva.association',
     'portailva.pages',
     'portailva.member'
 ]
@@ -76,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'portailva.association.context_processors.my_associations'
             ],
         },
     },

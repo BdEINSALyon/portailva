@@ -27,6 +27,7 @@
     "bootstrap-sass": "^3.3.7",
     "cssnano": "3.7.5",
     "del": "2.2.2",
+    "font-awesome": "4.6.3",
     "gulp": "3.9.1",
     "gulp-concat": "2.6.0",
     "gulp-imagemin": "3.0.3",

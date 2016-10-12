@@ -22,16 +22,17 @@ const postcssPlugins = [
 ];
 
 // Bootstrap SASS
-var bootstrapSass = {
-  src: 'node_modules/bootstrap-sass/'
-};
+var sassVendors = [
+  'node_modules/bootstrap-sass/assets/stylesheets',
+  'node_modules/font-awesome/scss'
+];
 
 // Sass options
 var sassOpts = {
   in: 'assets/scss/main.scss',
   out: 'dist/css/',
   sassOpts: {
-    includePaths: [bootstrapSass.src + 'assets/stylesheets'],
+    includePaths: sassVendors,
     sourceMapContents: true
   }
 };
@@ -67,7 +68,7 @@ gulp.task('js', () =>
 
 
 // Compiles the SCSS files to CSS
-gulp.task('css', ['css:sprite'], () =>
+gulp.task('css', ['css:sprite', 'css:fonts'], () =>
     gulp.src('assets/scss/main.scss')
         .pipe(sourcemaps.init())
         .pipe(sass(sassOpts.sassOpts))
@@ -86,6 +87,12 @@ gulp.task('css:sprite', () =>
             retinaSrcFilter: 'assets/images/sprite/*@2x.png',
         }))
         .pipe(gulp.dest('assets/')));
+
+// Copy fonts
+gulp.task('css:fonts', () =>
+  gulp.src(['node_modules/font-awesome/fonts/*'])
+    .pipe(gulp.dest('dist/fonts/'))
+);
 
 // Optimizes the images
 gulp.task('images', ['css:sprite'], () =>

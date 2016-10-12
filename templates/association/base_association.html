@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>
+        {{ association.name }}
+        <small>{% block page_title %}{% endblock %}</small>
+
+        <div class="btn-group pull-right" role="group" aria-label="...">
+          <div class="btn-group" role="group">
+            {% block quick_actions %}{% endblock %}
+          </div>
+        </div>
+
+      </h1>
+      <hr>
+    </div>
+  </div>
+  <div class="row">
+
+    <div class="col-md-3">
+
+      <div class="list-group table-of-contents">
+        <a class="list-group-item" href="{% url 'association-detail' association.id %}"><i class="fa fa-eye"></i> Vue générale</a>
+        <a class="list-group-item" href="#buttons"><i class="fa fa-file"></i> Fichiers</a>
+        <a class="list-group-item" href="#typography"><i class="fa fa-calendar-check-o"></i> Evénements</a>
+        <a class="list-group-item" href="#tables"><i class="fa fa-book"></i> Bot'INSA</a>
+        <a class="list-group-item" href="#forms"><i class="fa fa-money"></i> Demandes de subvention</a>
+        <a class="list-group-item" href="#forms"><i class="fa fa-users"></i> Bureaux</a>
+      </div>
+
+    </div>
+
+    <div class="col-md-9">
+
+      {% block content_association %}{% endblock %}
+
+    </div>
+
+  </div>
+
+{% endblock %}

@@ -21,8 +21,9 @@ from portailva.pages.views import home as home_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^pages/', include('portailva.pages.urls')),
-    url(r'^members/', include('portailva.member.urls')),
+    url(r'^association/', include('portailva.association.urls')),
+    url(r'^page/', include('portailva.pages.urls')),
+    url(r'^member/', include('portailva.member.urls')),
 
     url(r'^$', home_view, name='homepage'),
 ]

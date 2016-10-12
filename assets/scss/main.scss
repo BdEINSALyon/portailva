@@ -2,8 +2,13 @@
 @import "theme/variables";
 @import "bootstrap";
 @import "theme/bootswatch";
+@import "font-awesome";
 
 /* Fixed top navbar */
 body {
     padding-top: 70px;
+}
+
+i.fa {
+    padding-right: 5px;
 }
