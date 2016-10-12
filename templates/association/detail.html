@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block quick_actions %}
-<a href="#" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier les informations</a>
+<a href="{% url 'association-update' association.id %}" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier les informations</a>
 {% endblock %}
 
 {% block content_association %}

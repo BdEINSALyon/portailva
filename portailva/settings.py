@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'bootstrapform',
+    'crispy_forms',
     'social.apps.django_app.default',
 
     'portailva.association',
@@ -142,3 +143,6 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR, 'dist'),
 )
+
+# Crispy forms
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

@@ -39,3 +39,18 @@ class Association(models.Model):
 
     def __str__(self):
         return self.name
+
+    def can_access(self, user):
+        """
+        Checks if an user can access information about an association.
+        The association can be accessed if:
+        - The user belongs to association users list
+        - The user is an admin
+        :param user: the user to check the rights
+        :return: `True` if the user can access this association, `False` otherwise.
+        """
+        if user is not None and user.is_authenticated():
+            if user in self.users.all():
+                return True
+
+        return False
