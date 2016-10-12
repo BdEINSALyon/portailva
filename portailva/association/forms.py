@@ -33,5 +33,3 @@ class AssociationUpdateForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_id = 'updateForm'
-
-        self.helper.add_input(Submit('submit', 'Envoyer'))
