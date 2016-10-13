@@ -36,10 +36,15 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
+
             <li{% if request.resolver_match.url_name == 'homepage' %} class="active"{% endif %}><a href="{% url 'homepage' %}">Accueil</a></li>
+
             {% if my_associations.count == 1 %}
+
             <li><a href="{% url 'association-detail' my_associations.0.id %}">{{ my_associations.0.name }}</a></li>
+
             {% elif my_associations.count > 1 %}
+
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mes associations<span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -49,6 +54,19 @@
               </ul>
             </li>
             {% endif %}
+
+            {# Admin stuff #}
+            {% if request.user.is_active and request.user.is_staff %}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                {% if perms.association.can_admin_association %}
+                  <li><a href="{% url 'association-list' %}">Associations</a> </li>
+                {% endif %}
+              </ul>
+            </li>
+            {% endif %}
+
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
@@ -68,13 +86,27 @@
     </nav>
 
     <div class="container">
-      {% block content %}{% endblock %}
 
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>
+            {% block page_title %}{% endblock %}
+            <small>{% block page_sub_title %}{% endblock %}</small>
+
+            <div class="btn-group pull-right" role="group" aria-label="...">
+              <div class="btn-group" role="group">
+                {% block quick_actions %}{% endblock %}
+              </div>
+            </div>
+          </h1>
+          <hr>
+        </div>
+      </div>
+
+      {% block content %}{% endblock %}
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="{% static "js/script.js" %}"></script>
   </body>
 </html>

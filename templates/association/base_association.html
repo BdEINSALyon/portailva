@@ -1,23 +1,11 @@
 {% extends 'base.html' %}
 
+{% block page_title %}
+  {{ association.name }}
+{% endblock %}
+
 {% block content %}
 
-  <div class="row">
-    <div class="col-xs-12">
-      <h1>
-        {{ association.name }}
-        <small>{% block page_title %}{% endblock %}</small>
-
-        <div class="btn-group pull-right" role="group" aria-label="...">
-          <div class="btn-group" role="group">
-            {% block quick_actions %}{% endblock %}
-          </div>
-        </div>
-
-      </h1>
-      <hr>
-    </div>
-  </div>
   <div class="row">
 
     <div class="col-md-3">

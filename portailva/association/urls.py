@@ -1,9 +1,15 @@
 from django.conf.urls import url
 
-from portailva.association.views import AssociationDetailView, AssociationUpdateView
+from portailva.association.views import AssociationDetailView, AssociationUpdateView, AssociationListView, \
+    AssociationNewView, AssociationDeleteView
 
 urlpatterns = [
     # Association links
+    url('^new/$', AssociationNewView.as_view(), name='association-new'),
     url('^(?P<pk>\d+)/$', AssociationDetailView.as_view(), name='association-detail'),
-    url('^(?P<pk>\d+)/update/$', AssociationUpdateView.as_view(), name='association-update')
+    url('^(?P<pk>\d+)/update/$', AssociationUpdateView.as_view(), name='association-update'),
+
+    # Admin stuff
+    url('^$', AssociationListView.as_view(), name='association-list'),
+    url('^(?P<pk>\d+)/delete/$', AssociationDeleteView.as_view(), name='association-delete')
 ]

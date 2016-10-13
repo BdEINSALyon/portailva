@@ -25,6 +25,7 @@ class Association(models.Model):
     acronym = models.CharField("Acronyme", max_length=20, null=True, blank=True)
     description = models.TextField("Description")
 
+    is_active = models.BooleanField("Est active", default=True)
     is_validated = models.BooleanField("Est validée", default=False)
     has_place = models.BooleanField("Possède un local?", default=False)
 
@@ -40,6 +41,20 @@ class Association(models.Model):
     def __str__(self):
         return self.name
 
+    def can_admin(self, user):
+        """
+        Checks if an user can administrate an association.
+        The association can be administrated if:
+        - The user is an admin
+        :param user: the user to check the rights
+        :return: `True` if the user can access this association, `False` otherwise.
+        """
+        if user is not None and user.is_authenticated():
+            if user.is_superuser or user.has_perm('association.can_admin_association'):
+                return True
+
+        return False
+
     def can_access(self, user):
         """
         Checks if an user can access information about an association.
@@ -50,7 +65,10 @@ class Association(models.Model):
         :return: `True` if the user can access this association, `False` otherwise.
         """
         if user is not None and user.is_authenticated():
-            if user in self.users.all():
+            if user.is_superuser:
+                return True
+            elif user in self.users.all():
                 return True
 
         return False
+
