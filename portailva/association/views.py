@@ -12,7 +12,7 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
 
-from portailva.association.forms import AssociationUpdateForm, AssociationNewForm, AssociationAdminUpdateForm
+from portailva.association.forms import AssociationForm, AssociationAdminForm
 from portailva.association.models import Association
 
 
@@ -49,7 +49,7 @@ class AssociationDetailView(DetailView):
 
 class AssociationUpdateView(UpdateView):
     template_name = 'association/update.html'
-    form_class = AssociationUpdateForm
+    form_class = AssociationForm
     model = Association
     object = None
 
@@ -58,7 +58,7 @@ class AssociationUpdateView(UpdateView):
         if not self.object.can_access(request.user):
             raise PermissionDenied
         if self.object.can_admin(request.user):
-            self.form_class = AssociationAdminUpdateForm
+            self.form_class = AssociationAdminForm
         return super(AssociationUpdateView, self).dispatch(request, *args, **kwargs)
 
     @method_decorator(login_required)
@@ -93,8 +93,7 @@ class AssociationUpdateView(UpdateView):
         self.object.description = form.data.get('description')
 
         # Admin form
-        if self.form_class is AssociationAdminUpdateForm:
-            print('test')
+        if self.form_class is AssociationAdminForm:
             self.object.is_active = False if not form.data.get('is_active') else True
 
         self.object.save()
@@ -104,9 +103,9 @@ class AssociationUpdateView(UpdateView):
 
 class AssociationNewView(CreateView):
     template_name = 'association/new.html'
-    form_class = AssociationNewForm
+    form_class = AssociationAdminForm
 
-    def get_form(self, form_class=AssociationNewForm):
+    def get_form(self, form_class=AssociationAdminForm):
         return form_class(self.request.POST)
 
     def get(self, request, *args, **kwargs):
@@ -137,6 +136,7 @@ class AssociationDeleteView(DeleteView):
     template_name = 'association/delete.html'
     success_url = reverse_lazy('association-list')
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if not self.object.can_admin(request.user):
