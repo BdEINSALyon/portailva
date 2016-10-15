@@ -5,18 +5,20 @@ services:
     image: nginx:latest
     container_name: nginx-django
     ports:
-      - "8000:8000"
+      - "80:8000"
     depends_on:
       - app
     volumes:
       - ./docker/config/nginx:/etc/nginx/conf.d
       - ./dist:/app/dist
+
   app:
     build: .
     container_name: portailva
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn portailva.wsgi -b 0.0.0.0:8000"
+    command: bash -c "python manage.py migrate && gunicorn portailva.wsgi -b 0.0.0.0:8000"
     environment:
-      - DATABASE_HOST=postgresql
+      - DJANGO_SETTINGS_MODULE=portailva.settings_prod
+      - DATABASE_HOST=db
       - DATABASE_USER=postgresql
       - DATABASE_PASSWORD=postgresql
       - DATABASE_NAME=portailva
