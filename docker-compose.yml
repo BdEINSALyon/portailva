@@ -10,12 +10,12 @@ services:
       - app
     volumes:
       - ./docker/config/nginx:/etc/nginx/conf.d
-      - ./dist:/app/dist
+      - ./static:/app/static
 
   app:
     build: .
     container_name: portailva
-    command: bash -c "python manage.py migrate && gunicorn portailva.wsgi -b 0.0.0.0:8000"
+    command: bash -c "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn portailva.wsgi -b 0.0.0.0:8000"
     environment:
       - DJANGO_SETTINGS_MODULE=portailva.settings_prod
       - DATABASE_HOST=db
@@ -29,7 +29,7 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./dist:/app/dist
+      - ./static:/app/static
 
   db:
     image: postgres:latest
