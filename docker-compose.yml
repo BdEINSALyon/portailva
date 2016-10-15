@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-django
+    ports:
+      - "8000:8000"
+    depends_on:
+      - app
+    volumes:
+      - ./docker/config/nginx:/etc/nginx/conf.d
+      - ./dist:/app/dist
+  app:
+    build: .
+    container_name: portailva
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn portailva.wsgi -b 0.0.0.0:8000"
+    environment:
+      - DATABASE_HOST=postgresql
+      - DATABASE_USER=postgresql
+      - DATABASE_PASSWORD=postgresql
+      - DATABASE_NAME=portailva
+      - DATABASE_PORT=5432
+
+    depends_on:
+      - db
+    expose:
+      - "8000"
+    volumes:
+      - ./dist:/app/dist
+
+  db:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgresql
+      - POSTGRES_DB=portailva
