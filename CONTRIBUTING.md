@@ -33,13 +33,11 @@ Tous les détails sur le workflow se trouvent [sur la page dédiée](http://port
 ## Les Pull-Requests
 * Lors de l'ouverture d'une PR, essayez de respecter le template suivant :
 
-    ```markdown
     | Q                             | R
     | ----------------------------- | -------------------------------------------
-    | Correction de bugs ?          | [oui|non]
-    | Nouvelle Fonctionnalité ?     | [oui|non]
+    | Correction de bugs ?          | [oui&#124;non]
+    | Nouvelle Fonctionnalité ?     | [oui&#124;non]
     | Tickets (_issues_) concernés  | [Liste de tickets séparés par des virgules]
-    ```
 
 ## Les commits
 * Pour les commits, nous suivons le même ordre d'idée des standards Git, à savoir :
