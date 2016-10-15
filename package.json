@@ -23,9 +23,9 @@
   },
   "homepage": "https://github.com/VAINSALyon/portailva",
   "dependencies": {
-    "autoprefixer": "6.5.0",
+    "autoprefixer": "6.5.1",
     "bootstrap-sass": "^3.3.7",
-    "cssnano": "3.7.5",
+    "cssnano": "3.7.7",
     "datatables": "1.10.12",
     "del": "2.2.2",
     "font-awesome": "4.6.3",

@@ -1,3 +1,7 @@
+[![Licence GPL](http://img.shields.io/badge/license-GPL-green.svg)](http://www.gnu.org/licenses/quick-guide-gplv3.fr.html)
+[![Dependency Status](https://david-dm.org/VAINSALyon/portailva.svg)](https://david-dm.org/VAINSALyon/portailva)
+[![Requirements Status](https://requires.io/github/VAINSALyon/portailva/requirements.svg?branch=master)](https://requires.io/github/VAINSALyon/portailva/requirements/?branch=master)
+
 # PortailVA
 
 PortailVA is a web application that helps INSA Lyon's organizations 
@@ -7,8 +11,8 @@ This application can be forked to be tuned or improved.
 
 ## Deployment
 
-This app will soon be able to be deployed on Heroku or on an Heroku-like (e.g. [Dokku](https://github.com/dokku/dokku))
-Simply configure Environement variables and push !
+This app can be deployed using Docker. Just use ``docker-compose`` 
+command. :)
 
 ## Built With
 
