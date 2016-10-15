@@ -2,7 +2,7 @@
 *Workflow* et détails pratiques
 ===============================
 
-Cette page, fortement inspirée du projet [Zeste de Savoir](https://github.com/zestedesavoir/zds-site/), détaille le
+Cette page, fortement inspirée du projet `Zeste de Savoir <https://github.com/zestedesavoir/zds-site>`__, détaille le
 *workflow* utilisé lors du développement de PortailVA. La `page de contribution <https://github.com/VAINSALyon/portailva/blob/dev/CONTRIBUTING.md>`__
 devrait répondre à vos questions quant au processus de développement. Ici seront aussi décrits quelques détails sur la
 gestion des tickets sur Github (*tagging* et priorité).
