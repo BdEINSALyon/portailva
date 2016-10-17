@@ -15,7 +15,10 @@ services:
   app:
     build: .
     container_name: portailva
+
+    # As migrate and collectstatic need configuration from this file, we can't extract them to Dockerfile
     command: bash -c "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn portailva.wsgi -b 0.0.0.0:8000"
+
     environment:
       - DJANGO_SETTINGS_MODULE=portailva.settings_prod
       - DATABASE_HOST=db
