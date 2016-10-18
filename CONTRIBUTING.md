@@ -3,7 +3,7 @@
  2. Créez votre _issue_ si elle n'existe pas
      * Vérifiez que vous possédez bien la dernière version du code
      * Décrivez clairement votre problème, avec toutes les étapes pour le reproduire
- 3. **Attribuez-vous** votre _issue_. C'est important pour éviter de se marcher dessus. Si vous n'êtes pas dans l'organisation et donc que vous ne pouvez pas vous attribuer directement l'_issue_, il vous suffit d'ajouter un commentaire clair dans celle-ci (comme _"Je prends"_), et est sera marquée comme "en cours").
+ 3. **Attribuez-vous** votre _issue_. C'est important pour éviter de se marcher dessus. Si vous n'êtes pas dans l'organisation et donc que vous ne pouvez pas vous attribuer directement l'_issue_, il vous suffit d'ajouter un commentaire clair dans celle-ci (comme _"Je prends"_).
  4. _Forkez_ le dépôt
  5. Installez l'environnement. Pour cela, lisez le fichier README.md et suivez la doc.
  
