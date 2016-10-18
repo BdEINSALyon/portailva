@@ -1,19 +1,23 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, redirect
+from django.http import Http404
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
+from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
 from portailva.association.forms import AssociationForm, AssociationAdminForm
 from portailva.association.models import Association
+from portailva.file.models import AssociationFile, FileFolder
 
 
 class AssociationListView(ListView):
@@ -142,3 +146,45 @@ class AssociationDeleteView(DeleteView):
         if not self.object.can_admin(request.user):
             raise PermissionDenied
         return super(AssociationDeleteView, self).dispatch(request, *args, **kwargs)
+
+
+# File
+class AssociationFileTreeView(DetailView):
+    template_name = 'association/files.html'
+    http_method_names = ['get']
+    model = Association
+    object = None
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.can_access(request.user):
+            raise PermissionDenied
+        return super(AssociationFileTreeView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            folder_pk = int(self.kwargs.get('folder_pk'))
+            current_folder = FileFolder.objects.get(pk=folder_pk)
+            folders = FileFolder.objects.all().filter(parent_id=current_folder.id)
+            files = AssociationFile.objects.all().filter(association_id=self.object.id).filter(folder_id=folder_pk)
+        except (KeyError, ValueError, TypeError):
+            # User wants to list folders on root folder
+            folders = FileFolder.objects.all().filter(parent=None)
+            files = list()
+            current_folder = None
+        except:
+            raise Http404
+
+        return render(request, self.template_name, {
+            'association': self.object,
+            'folders': folders,
+            'files': files,
+            'current_folder': current_folder
+        })
+
+    def get_folder(self):
+        try:
+            folder_pk = int(self.kwargs.get('folder_pk'))
+        except (KeyError, ValueError, TypeError):
+            return None
+        return get_object_or_404(FileFolder, pk=folder_pk)

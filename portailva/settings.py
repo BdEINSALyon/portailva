@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',
 
     'portailva.association',
+    'portailva.file',
     'portailva.pages',
     'portailva.member'
 ]
@@ -60,6 +61,7 @@ MIDDLEWARE = [
 AUTHENTICATION_BACKENDS = [
     'portailva.member.backends.UserModelEmailBackend'
 ]
+AUTH_USER_MODEL = 'auth.User'
 
 LOGIN_REDIRECT_URL = '/'
 

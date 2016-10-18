@@ -1,0 +1,30 @@
+{% extends 'association/base_association.html' %}
+
+{% block page_sub_title %}
+  Fichiers
+{% endblock %}
+
+{% block quick_actions %}
+<a href="{% url 'association-update' association.id %}" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier les informations</a>
+{% endblock %}
+
+{% block content_association %}
+  <table class="table table-stripped table-hover">
+    {% if current_folder %}
+      {% if current_folder.parent %}
+        <tr>
+          <td><i class="fa fa-folder"></i> <a href="{% url 'association-file-tree' association.id folder.parent.id %}">..</a></td>
+        </tr>
+      {% else %}
+        <tr>
+          <td><i class="fa fa-folder"></i> <a href="{% url 'association-file-tree' association.id %}">..</a></td>
+        </tr>
+      {% endif %}
+    {% endif %}
+    {% for folder in folders %}
+      <tr>
+        <td><i class="fa fa-folder"></i> <a href="{% url 'association-file-tree' association.id folder.id %}">{{ folder.name }}</a></td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

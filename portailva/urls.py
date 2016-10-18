@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^association/', include('portailva.association.urls')),
     url(r'^page/', include('portailva.pages.urls')),
     url(r'^member/', include('portailva.member.urls')),
+    url(r'^file/', include('portailva.file.urls')),
 
     url(r'^$', home_view, name='homepage'),
 ]
