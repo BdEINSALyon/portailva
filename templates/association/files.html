@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block quick_actions %}
-<a href="{% url 'association-update' association.id %}" class="btn btn-default"><i class="fa fa-pencil"></i> Modifier les informations</a>
+  {% if current_folder.is_writable %}
+  <a href="{% url 'association-file-upload' association.id current_folder.id %}" class="btn btn-primary"><i class="fa fa-upload"></i> Uploader un document</a>
+  {% endif %}
 {% endblock %}
 
 {% block content_association %}

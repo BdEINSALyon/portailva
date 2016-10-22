@@ -1,3 +1,5 @@
+import mimetypes
+
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
@@ -15,7 +17,7 @@ from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
-from portailva.association.forms import AssociationForm, AssociationAdminForm
+from portailva.association.forms import AssociationForm, AssociationAdminForm, AssociationFileUploadForm
 from portailva.association.models import Association
 from portailva.file.models import AssociationFile, FileFolder
 
@@ -188,3 +190,67 @@ class AssociationFileTreeView(DetailView):
         except (KeyError, ValueError, TypeError):
             return None
         return get_object_or_404(FileFolder, pk=folder_pk)
+
+
+class AssociationFileUploadView(DetailView):
+    template_name = 'association/file_upload.html'
+    http_method_names = ['get', 'post']
+    form_class = AssociationFileUploadForm
+    model = Association
+    object = None
+    current_folder = None
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.can_access(request.user):
+            raise PermissionDenied
+        try:
+            folder_pk = int(self.kwargs.get('folder_pk'))
+            self.current_folder = FileFolder.objects.get(pk=folder_pk)
+            if not self.current_folder.is_writable:
+                # User can't upload file here
+                raise Http404
+        except:
+            # Folder id not provided or folder does not exist
+            raise Http404
+
+        return super(AssociationFileUploadView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {
+            'form': self.form_class(),
+            'association': self.object,
+            'current_folder': self.current_folder
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form(self.form_class)
+        if form.is_valid():
+            return self.form_valid(form)
+        return render(request, self.template_name, {'association': self.object, 'form': form})
+
+    def get_form(self, form_class=AssociationFileUploadForm):
+        return form_class(self.request.POST)
+
+    def get_folder(self):
+        try:
+            folder_pk = int(self.kwargs.get('folder_pk'))
+        except (KeyError, ValueError, TypeError):
+            return None
+        return get_object_or_404(FileFolder, pk=folder_pk)
+
+    def form_valid(self, form):
+        # We first save file
+
+        # We ensure file have correct MIME type
+
+
+        association = Association()
+        association.name = form.data.get('name')
+        association.category_id = form.data.get('category')
+        association.acronym = form.data.get('acronym')
+        association.description = form.data.get('description')
+        association.is_active = form.data.get('is_active')
+        association.save()
+
+        return redirect(reverse('association-list'))
