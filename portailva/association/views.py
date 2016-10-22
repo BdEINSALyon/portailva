@@ -131,7 +131,7 @@ class AssociationNewView(CreateView):
         association.category_id = form.data.get('category')
         association.acronym = form.data.get('acronym')
         association.description = form.data.get('description')
-        association.is_active = form.data.get('is_active')
+        association.is_active = True if form.data.get('is_active') else False
         association.save()
 
         return redirect(reverse('association-list'))
