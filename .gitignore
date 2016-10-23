@@ -102,3 +102,6 @@ db.sqlite3
 
 # Node modules
 node_modules
+
+# Uploaded files
+uploads

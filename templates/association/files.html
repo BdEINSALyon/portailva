@@ -28,5 +28,17 @@
         <td><i class="fa fa-folder"></i> <a href="{% url 'association-file-tree' association.id folder.id %}">{{ folder.name }}</a></td>
       </tr>
     {% endfor %}
+    {% for file in files %}
+      <tr>
+        <td><i class="fa fa-file"></i> <a href="#">{{ file.name }}</a></td>
+        <td class="text-right"><a href="#" data-toggle="tooltip" title="Supprimer le fichier"><i class="fa fa-times"></i></a></td>
+      </tr>
+    {% empty %}
+      {% if current_folder.is_writable %}
+      <tr>
+        <td><i>Aucun fichier dans ce répertoire</i></td>
+      </tr>
+      {% endif %}
+    {% endfor %}
   </table>
 {% endblock %}

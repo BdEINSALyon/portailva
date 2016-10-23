@@ -148,3 +148,8 @@ STATICFILES_DIRS = (
 
 # Crispy forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# Files upload
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler'
+]

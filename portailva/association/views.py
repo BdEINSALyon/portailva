@@ -1,4 +1,4 @@
-import mimetypes
+import magic
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -19,7 +19,7 @@ from django.views.generic import UpdateView
 
 from portailva.association.forms import AssociationForm, AssociationAdminForm, AssociationFileUploadForm
 from portailva.association.models import Association
-from portailva.file.models import AssociationFile, FileFolder
+from portailva.file.models import AssociationFile, FileFolder, File, FileVersion
 
 
 class AssociationListView(ListView):
@@ -227,10 +227,14 @@ class AssociationFileUploadView(DetailView):
         form = self.get_form(self.form_class)
         if form.is_valid():
             return self.form_valid(form)
-        return render(request, self.template_name, {'association': self.object, 'form': form})
+        return render(request, self.template_name, {
+            'association': self.object,
+            'form': form,
+            'current_folder': self.current_folder
+        })
 
     def get_form(self, form_class=AssociationFileUploadForm):
-        return form_class(self.request.POST)
+        return form_class(data=self.request.POST, files=self.request.FILES, folder=self.current_folder)
 
     def get_folder(self):
         try:
@@ -240,17 +244,22 @@ class AssociationFileUploadView(DetailView):
         return get_object_or_404(FileFolder, pk=folder_pk)
 
     def form_valid(self, form):
-        # We first save file
+        # We first create file
+        file = AssociationFile.objects.create(
+            name=form.data.get('name'),
+            association=self.object,
+            folder=self.current_folder
+        )
 
-        # We ensure file have correct MIME type
+        # Then file version
+        file_version = FileVersion.objects.create(
+            version=1,
+            data=self.request.FILES['data'],
+            file=file,
+            user=self.request.user
+        )
 
-
-        association = Association()
-        association.name = form.data.get('name')
-        association.category_id = form.data.get('category')
-        association.acronym = form.data.get('acronym')
-        association.description = form.data.get('description')
-        association.is_active = form.data.get('is_active')
-        association.save()
-
-        return redirect(reverse('association-list'))
+        return redirect(reverse('association-file-tree', kwargs={
+            'pk': self.object.id,
+            'folder_pk': self.current_folder.id
+        }))
