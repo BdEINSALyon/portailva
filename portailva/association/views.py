@@ -167,11 +167,11 @@ class AssociationFileTreeView(DetailView):
         try:
             folder_pk = int(self.kwargs.get('folder_pk'))
             current_folder = FileFolder.objects.get(pk=folder_pk)
-            folders = FileFolder.objects.all().filter(parent_id=current_folder.id)
-            files = AssociationFile.objects.all().filter(association_id=self.object.id).filter(folder_id=folder_pk)
+            folders = FileFolder.objects.all().filter(parent_id=current_folder.id).order_by('name')
+            files = AssociationFile.objects.all().filter(association_id=self.object.id).filter(folder_id=folder_pk).order_by('name')
         except (KeyError, ValueError, TypeError):
             # User wants to list folders on root folder
-            folders = FileFolder.objects.all().filter(parent=None)
+            folders = FileFolder.objects.all().filter(parent=None).order_by('name')
             files = list()
             current_folder = None
         except:
