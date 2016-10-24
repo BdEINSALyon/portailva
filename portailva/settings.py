@@ -153,3 +153,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler'
 ]
+MAGIC_BIN = os.environ.get("MAGIC_BIN")

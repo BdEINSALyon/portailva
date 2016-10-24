@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
 from portailva.association.views import AssociationDetailView, AssociationUpdateView, AssociationListView, \
-    AssociationNewView, AssociationDeleteView, AssociationFileTreeView, AssociationFileUploadView
+    AssociationNewView, AssociationDeleteView, AssociationFileTreeView, AssociationFileUploadView, \
+    AssociationFileDeleteView
 
 urlpatterns = [
     # Association links
@@ -10,8 +11,10 @@ urlpatterns = [
     url('^(?P<pk>\d+)/update/$', AssociationUpdateView.as_view(), name='association-update'),
 
     # File
-    url('^(?P<pk>\d+)/file(?:/(?P<folder_pk>\d+))?/$', AssociationFileTreeView.as_view(), name='association-file-tree'),
-    url('^(?P<pk>\d+)/file/(?P<folder_pk>\d+)/upload/$', AssociationFileUploadView.as_view(), name='association-file-upload'),
+    url('^(?P<association_pk>\d+)/file/tree(?:/(?P<folder_pk>\d+))?/$', AssociationFileTreeView.as_view(), name='association-file-tree'),
+    url('^(?P<association_pk>\d+)/file/tree/(?P<folder_pk>\d+)/upload/$', AssociationFileUploadView.as_view(), name='association-file-upload'),
+    url('^(?P<association_pk>\d+)/file/(?P<pk>\d+)/delete/$', AssociationFileDeleteView.as_view(),
+        name='association-file-delete'),
 
     # Admin stuff
     url('^$', AssociationListView.as_view(), name='association-list'),

@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.dispatch import receiver
 
 from portailva.association.models import Association
 
@@ -40,7 +41,7 @@ class FileFolder(models.Model):
     position = models.IntegerField("Position", blank=True)
     is_writable = models.BooleanField("Accessible en écriture ?", default=True)
 
-    parent = models.ForeignKey('self', verbose_name="Dossier parent", null=True, blank=True)
+    parent = models.ForeignKey('self', verbose_name="Dossier parent", null=True, blank=True, on_delete=models.SET_NULL)
     allowed_types = models.ManyToManyField(FileType, verbose_name="Extensions autorisées", blank=True)
 
     def __str__(self):
@@ -78,11 +79,16 @@ class FileVersion(models.Model):
     version = models.IntegerField("Numéro de version")
     data = models.FileField(upload_to='uploads/', verbose_name="Version")
 
-    file = models.ForeignKey(File, verbose_name="Fichier", related_name="versions")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Utilisateur")
+    file = models.ForeignKey(File, verbose_name="Fichier", related_name="versions", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Utilisateur", null=True, on_delete=models.SET_NULL)
 
     created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
     updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
 
     def __str__(self):
         return 'Version ' + str(self.version)
+
+
+@receiver(models.signals.pre_delete, sender=FileVersion)
+def file_version_delete(sender, instance, **kwargs):
+    instance.data.delete(False)

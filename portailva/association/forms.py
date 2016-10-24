@@ -5,6 +5,7 @@ from django import forms
 
 from portailva.association.models import Category, Association
 from portailva.file.models import FileVersion
+from portailva.settings import MAGIC_BIN
 
 
 class AssociationForm(forms.Form):
@@ -67,7 +68,7 @@ class AssociationFileUploadForm(forms.Form):
 
         # We ensure file have correct mime type
         allowed_types = self.folder.allowed_types.all()
-        mime = magic.Magic(mime=True)
+        mime = magic.Magic(mime=True, magic_file=MAGIC_BIN)
         if mime.from_file(file.temporary_file_path()) not in [type.mime_type for type in allowed_types]:
             raise forms.ValidationError("Ce type de fichier n'est pas autorisé")
 

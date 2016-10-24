@@ -31,7 +31,7 @@
     {% for file in files %}
       <tr>
         <td><i class="fa fa-file"></i> <a href="#">{{ file.name }}</a></td>
-        <td class="text-right"><a href="#" data-toggle="tooltip" title="Supprimer le fichier"><i class="fa fa-times"></i></a></td>
+        <td class="text-right"><a href="{% url 'association-file-delete' association.id file.id %}" data-toggle="tooltip" title="Supprimer le fichier"><i class="fa fa-times"></i></a></td>
       </tr>
     {% empty %}
       {% if current_folder.is_writable %}

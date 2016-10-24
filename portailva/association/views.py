@@ -53,6 +53,24 @@ class AssociationDetailView(DetailView):
         return super(AssociationDetailView, self).get(request, *args, **kwargs)
 
 
+class AssociationMixin(object):
+    association = None
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        association_pk = int(self.kwargs.get('association_pk', None))
+        self.association = get_object_or_404(Association, pk=association_pk)
+        if not self.association.can_access(self.request.user):
+            raise PermissionDenied
+
+        return super(AssociationMixin, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AssociationMixin, self).get_context_data(**kwargs)
+        context['association'] = self.association
+        return context
+
+
 class AssociationUpdateView(UpdateView):
     template_name = 'association/update.html'
     form_class = AssociationForm
@@ -151,24 +169,15 @@ class AssociationDeleteView(DeleteView):
 
 
 # File
-class AssociationFileTreeView(DetailView):
+class AssociationFileTreeView(AssociationMixin, DetailView):
     template_name = 'association/files.html'
-    http_method_names = ['get']
-    model = Association
-    object = None
-
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if not self.object.can_access(request.user):
-            raise PermissionDenied
-        return super(AssociationFileTreeView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         try:
             folder_pk = int(self.kwargs.get('folder_pk'))
             current_folder = FileFolder.objects.get(pk=folder_pk)
             folders = FileFolder.objects.all().filter(parent_id=current_folder.id).order_by('name')
-            files = AssociationFile.objects.all().filter(association_id=self.object.id).filter(folder_id=folder_pk).order_by('name')
+            files = AssociationFile.objects.all().filter(association_id=self.association.id).filter(folder_id=folder_pk).order_by('name')
         except (KeyError, ValueError, TypeError):
             # User wants to list folders on root folder
             folders = FileFolder.objects.all().filter(parent=None).order_by('name')
@@ -178,7 +187,7 @@ class AssociationFileTreeView(DetailView):
             raise Http404
 
         return render(request, self.template_name, {
-            'association': self.object,
+            'association': self.association,
             'folders': folders,
             'files': files,
             'current_folder': current_folder
@@ -192,18 +201,13 @@ class AssociationFileTreeView(DetailView):
         return get_object_or_404(FileFolder, pk=folder_pk)
 
 
-class AssociationFileUploadView(DetailView):
+class AssociationFileUploadView(AssociationMixin, CreateView):
     template_name = 'association/file_upload.html'
     http_method_names = ['get', 'post']
     form_class = AssociationFileUploadForm
-    model = Association
-    object = None
     current_folder = None
 
     def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if not self.object.can_access(request.user):
-            raise PermissionDenied
         try:
             folder_pk = int(self.kwargs.get('folder_pk'))
             self.current_folder = FileFolder.objects.get(pk=folder_pk)
@@ -219,7 +223,7 @@ class AssociationFileUploadView(DetailView):
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, {
             'form': self.form_class(),
-            'association': self.object,
+            'association': self.association,
             'current_folder': self.current_folder
         })
 
@@ -228,7 +232,7 @@ class AssociationFileUploadView(DetailView):
         if form.is_valid():
             return self.form_valid(form)
         return render(request, self.template_name, {
-            'association': self.object,
+            'association': self.association,
             'form': form,
             'current_folder': self.current_folder
         })
@@ -247,12 +251,12 @@ class AssociationFileUploadView(DetailView):
         # We first create file
         file = AssociationFile.objects.create(
             name=form.data.get('name'),
-            association=self.object,
+            association=self.association,
             folder=self.current_folder
         )
 
         # Then file version
-        file_version = FileVersion.objects.create(
+        FileVersion.objects.create(
             version=1,
             data=self.request.FILES['data'],
             file=file,
@@ -260,6 +264,19 @@ class AssociationFileUploadView(DetailView):
         )
 
         return redirect(reverse('association-file-tree', kwargs={
-            'pk': self.object.id,
+            'association_pk': self.association.id,
             'folder_pk': self.current_folder.id
         }))
+
+
+class AssociationFileDeleteView(AssociationMixin, DeleteView):
+    model = AssociationFile
+    template_name = 'association/file_delete.html'
+    success_url = None
+
+    def post(self, request, *args, **kwargs):
+        self.success_url = reverse('association-file-tree', kwargs={
+            'association_pk': self.association.id,
+            'folder_pk': self.get_object().folder_id
+        })
+        return super(AssociationFileDeleteView, self).post(request, *args, **kwargs)
