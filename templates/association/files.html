@@ -30,7 +30,7 @@
     {% endfor %}
     {% for file in files %}
       <tr>
-        <td><i class="fa fa-file"></i> <a href="#">{{ file.name }}</a></td>
+        <td><i class="fa fa-file"></i> <a href="{% url 'file-view' file.id %}">{{ file.name }}</a></td>
         <td class="text-right"><a href="{% url 'association-file-delete' association.id file.id %}" data-toggle="tooltip" title="Supprimer le fichier"><i class="fa fa-times"></i></a></td>
       </tr>
     {% empty %}

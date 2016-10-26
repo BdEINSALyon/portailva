@@ -31,6 +31,16 @@ class File(models.Model):
     def __str__(self):
         return self.name
 
+    def can_access(self, user):
+        # By default, user must be logged in
+        if user is not None and user.is_authenticated():
+            # If file is an association file, we ensure user belongs to association or is an admin
+            if isinstance(self, AssociationFile):
+                return self.association.can_access(user)
+            else:
+                return True
+        return False
+
 
 class FileFolder(models.Model):
     """
