@@ -15,14 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
 
 from portailva.pages.views import home as home_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^association/', include('portailva.association.urls')),
-    url(r'^page/', include('portailva.pages.urls')),
     url(r'^member/', include('portailva.member.urls')),
     url(r'^file/', include('portailva.file.urls')),
 

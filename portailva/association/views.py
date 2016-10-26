@@ -1,5 +1,3 @@
-import magic
-
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
@@ -9,17 +7,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views import View
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
-from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
 from portailva.association.forms import AssociationForm, AssociationAdminForm, AssociationFileUploadForm
 from portailva.association.models import Association
-from portailva.file.models import AssociationFile, FileFolder, File, FileVersion
+from portailva.file.models import AssociationFile, FileFolder, FileVersion
 
 
 class AssociationListView(ListView):
@@ -177,7 +173,10 @@ class AssociationFileTreeView(AssociationMixin, DetailView):
             folder_pk = int(self.kwargs.get('folder_pk'))
             current_folder = FileFolder.objects.get(pk=folder_pk)
             folders = FileFolder.objects.all().filter(parent_id=current_folder.id).order_by('name')
-            files = AssociationFile.objects.all().filter(association_id=self.association.id).filter(folder_id=folder_pk).order_by('name')
+            files = AssociationFile.objects.all()\
+                .filter(association_id=self.association.id)\
+                .filter(folder_id=folder_pk)\
+                .order_by('name')
         except (KeyError, ValueError, TypeError):
             # User wants to list folders on root folder
             folders = FileFolder.objects.all().filter(parent=None).order_by('name')

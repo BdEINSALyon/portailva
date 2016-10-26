@@ -4,7 +4,6 @@ from crispy_forms.helper import FormHelper
 from django import forms
 
 from portailva.association.models import Category, Association
-from portailva.file.models import FileVersion
 from portailva.settings import MAGIC_BIN
 
 

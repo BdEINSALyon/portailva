@@ -11,8 +11,10 @@ urlpatterns = [
     url('^(?P<pk>\d+)/update/$', AssociationUpdateView.as_view(), name='association-update'),
 
     # File
-    url('^(?P<association_pk>\d+)/file/tree(?:/(?P<folder_pk>\d+))?/$', AssociationFileTreeView.as_view(), name='association-file-tree'),
-    url('^(?P<association_pk>\d+)/file/tree/(?P<folder_pk>\d+)/upload/$', AssociationFileUploadView.as_view(), name='association-file-upload'),
+    url('^(?P<association_pk>\d+)/file/tree(?:/(?P<folder_pk>\d+))?/$', AssociationFileTreeView.as_view(),
+        name='association-file-tree'),
+    url('^(?P<association_pk>\d+)/file/tree/(?P<folder_pk>\d+)/upload/$', AssociationFileUploadView.as_view(),
+        name='association-file-upload'),
     url('^(?P<association_pk>\d+)/file/(?P<pk>\d+)/delete/$', AssociationFileDeleteView.as_view(),
         name='association-file-delete'),
 
