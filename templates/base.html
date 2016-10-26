@@ -63,6 +63,9 @@
                 {% if perms.association.can_admin_association %}
                   <li><a href="{% url 'association-list' %}">Associations</a> </li>
                 {% endif %}
+                {% if perms.file.can_admin_file %}
+                  <li><a href="{% url 'file-list' %}">Fichiers</a> </li>
+                {% endif %}
               </ul>
             </li>
             {% endif %}

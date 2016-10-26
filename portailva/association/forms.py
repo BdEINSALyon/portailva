@@ -1,7 +1,11 @@
+import magic
+
 from crispy_forms.helper import FormHelper
 from django import forms
 
 from portailva.association.models import Category, Association
+from portailva.file.models import FileVersion
+from portailva.settings import MAGIC_BIN
 
 
 class AssociationForm(forms.Form):
@@ -40,3 +44,32 @@ class AssociationAdminForm(AssociationForm):
         required=False,
         initial=True
     )
+
+
+class AssociationFileUploadForm(forms.Form):
+    name = forms.CharField(
+        label="Nom",
+        max_length=255
+    )
+
+    data = forms.FileField(
+        label="Fichier"
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.folder = kwargs.pop('folder', None)
+        super(AssociationFileUploadForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_id = 'associationForm'
+
+    def clean_data(self):
+        file = self.cleaned_data['data']
+
+        # We ensure file have correct mime type
+        allowed_types = self.folder.allowed_types.all()
+        mime = magic.Magic(mime=True, magic_file=MAGIC_BIN)
+        if mime.from_file(file.temporary_file_path()) not in [type.mime_type for type in allowed_types]:
+            raise forms.ValidationError("Ce type de fichier n'est pas autorisé")
+
+        return file

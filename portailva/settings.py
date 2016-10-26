@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',
 
     'portailva.association',
+    'portailva.file',
     'portailva.pages',
     'portailva.member'
 ]
@@ -60,6 +61,7 @@ MIDDLEWARE = [
 AUTHENTICATION_BACKENDS = [
     'portailva.member.backends.UserModelEmailBackend'
 ]
+AUTH_USER_MODEL = 'auth.User'
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -146,3 +148,9 @@ STATICFILES_DIRS = (
 
 # Crispy forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# Files upload
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler'
+]
+MAGIC_BIN = os.environ.get("MAGIC_BIN")

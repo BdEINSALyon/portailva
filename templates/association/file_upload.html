@@ -1,0 +1,19 @@
+{% extends 'association/base_association.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block page_sub_title %}
+  Uploader un fichier
+{% endblock %}
+
+{% block quick_actions %}
+  <a href="{% url 'association-file-tree' association.id current_folder.id %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>
+  <button form="associationForm" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
+{% endblock %}
+
+{% block content_association %}
+  <div class="alert alert-info">
+  Ce fichier sera enregistré dans le dossier <samp>{{ current_folder.name }}</samp>.
+  </div>
+  {% crispy form %}
+{% endblock %}

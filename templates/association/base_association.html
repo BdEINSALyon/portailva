@@ -12,7 +12,7 @@
 
       <div class="list-group table-of-contents">
         <a class="list-group-item" href="{% url 'association-detail' association.id %}"><i class="fa fa-eye"></i> Vue générale</a>
-        <a class="list-group-item" href="#buttons"><i class="fa fa-file"></i> Fichiers</a>
+        <a class="list-group-item" href="{% url 'association-file-tree' association.id %}"><i class="fa fa-file"></i> Fichiers</a>
         <a class="list-group-item" href="#typography"><i class="fa fa-calendar-check-o"></i> Evénements</a>
         <a class="list-group-item" href="#tables"><i class="fa fa-book"></i> Bot'INSA</a>
         <a class="list-group-item" href="#forms"><i class="fa fa-money"></i> Demandes de subvention</a>
