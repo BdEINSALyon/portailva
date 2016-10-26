@@ -73,3 +73,55 @@ class Association(models.Model):
 
         return False
 
+
+class Mandate(models.Model):
+    """
+    A Mandate is an Association period of activity. During a Mandate, some people manage the Association (like the
+    president or the treasurer).
+    """
+    begins_at = models.DateField("Début du mandat")
+    ends_at = models.DateField("Fin du mandat")
+    created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
+
+    association = models.ForeignKey(Association, verbose_name="Association", related_name="mandates",
+                                    on_delete=models.CASCADE)
+
+    class Meta(object):
+        default_permissions = ('add', 'change', 'delete', 'admin',)
+
+    def __str__(self):
+        return "Du " + str(self.begins_at) + " au " + str(self.ends_at)
+
+
+class PeopleRole(models.Model):
+    """
+    During a Mandate, each People has a specific PeopleRole.
+    """
+    name = models.CharField("Nom du poste", max_length=50)
+    position = models.IntegerField("Position", blank=True, default=1)
+
+    class Meta(object):
+        default_permissions = ('add', 'change', 'delete', 'admin',)
+
+    def __str__(self):
+        return self.name
+
+
+class People(models.Model):
+    """
+    A People designates someone who manages the Association during a Mandate.
+    """
+    first_name = models.CharField("Prénom", max_length=50)
+    last_name = models.CharField("Nom", max_length=50)
+    email = models.EmailField("Adresse email", max_length=250)
+    phone = models.CharField("Numéro de téléphone", max_length=50, null=True, blank=True)
+
+    role = models.ForeignKey(PeopleRole, verbose_name="Rôle", related_name="peoples", on_delete=models.SET_NULL,
+                             null=True)
+    mandate = models.ForeignKey(Mandate, verbose_name="Mandat", related_name="peoples", on_delete=models.CASCADE)
+
+    class Meta(object):
+        default_permissions = ('add', 'change', 'delete', 'admin',)
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name.upper()

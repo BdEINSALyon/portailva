@@ -3,7 +3,7 @@ import magic
 from crispy_forms.helper import FormHelper
 from django import forms
 
-from portailva.association.models import Category, Association
+from portailva.association.models import Category, Association, Mandate
 from portailva.settings import MAGIC_BIN
 
 
@@ -72,3 +72,54 @@ class AssociationFileUploadForm(forms.Form):
             raise forms.ValidationError("Ce type de fichier n'est pas autorisé")
 
         return file
+
+
+class MandateForm(forms.Form):
+    begins_at = forms.DateField(
+        label="Début de mandat",
+        input_formats=[
+            '%Y-%m-%d',
+            '%d/%m/%Y',
+            '%d/%m/%y'
+        ],
+        widget=forms.TextInput(
+            attrs={'type': 'date'}
+        ),
+        help_text="Format : JJ/MM/AAAA"
+    )
+
+    ends_at = forms.DateField(
+        label="Fin de mandat",
+        input_formats=[
+            '%Y-%m-%d',
+            '%d/%m/%Y',
+            '%d/%m/%y'
+        ],
+        widget=forms.TextInput(
+            attrs={'type': 'date'}
+        ),
+        help_text="Format : JJ/MM/AAAA"
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.association = kwargs.pop('association', None)
+        super(MandateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_id = 'mandateForm'
+
+    def clean(self):
+        super(MandateForm, self).clean()
+        begins_at = self.cleaned_data['begins_at']
+        ends_at = self.cleaned_data['ends_at']
+
+        # We ensure begins_at is strictly before ends_at
+        if begins_at >= ends_at:
+            raise forms.ValidationError("La date de fin ne peut ni être égale ni être antérieure à la date de début.")
+
+        # We ensure there is no other mandate during the same time as defined by the user
+        association_mandates = Mandate.objects.all().filter(association_id=self.association.id)
+        for mandate in association_mandates:
+            if begins_at <= mandate.begins_at < ends_at or begins_at < mandate.ends_at <= ends_at:
+                raise forms.ValidationError("La période définie pour ce mandat empiète sur la période d'un autre "
+                                            "mandat.")

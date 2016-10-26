@@ -13,8 +13,8 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
 
-from portailva.association.forms import AssociationForm, AssociationAdminForm, AssociationFileUploadForm
-from portailva.association.models import Association
+from portailva.association.forms import AssociationForm, AssociationAdminForm, AssociationFileUploadForm, MandateForm
+from portailva.association.models import Association, Mandate
 from portailva.file.models import AssociationFile, FileFolder, FileVersion
 
 
@@ -279,3 +279,62 @@ class AssociationFileDeleteView(AssociationMixin, DeleteView):
             'folder_pk': self.get_object().folder_id
         })
         return super(AssociationFileDeleteView, self).post(request, *args, **kwargs)
+
+
+# Mandates
+class AssociationMandateListView(AssociationMixin, ListView):
+    model = Mandate
+    template_name = 'association/mandate/list.html'
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        if not request.user.has_perm('association.can_admin_mandate'):
+            raise PermissionDenied
+        return super(AssociationMandateListView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AssociationMandateListView, self).get_context_data(**kwargs)
+        return context
+
+    def get_queryset(self):
+        return Mandate.objects.all()\
+            .prefetch_related('peoples')\
+            .prefetch_related('peoples__role')\
+            .filter(association_id=self.association.id)\
+            .order_by('-begins_at')
+
+
+class AssociationMandateNewView(AssociationMixin, CreateView):
+    model = Mandate
+    form_class = MandateForm
+    template_name = 'association/mandate/new.html'
+
+    def get_form(self, form_class=MandateForm):
+        return form_class(self.request.POST, association=self.association)
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {
+            'form': self.form_class(association=self.association),
+            'association': self.association
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form(self.form_class)
+
+        if form.is_valid():
+            return self.form_valid(form)
+        return render(request, self.template_name, {
+            'form': form,
+            'association': self.association
+        })
+
+    def form_valid(self, form):
+        Mandate.objects.create(
+            begins_at=form.data.get('begins_at'),
+            ends_at=form.data.get('ends_at'),
+            association_id=self.association.id
+        )
+
+        return redirect(reverse('association-mandate-list', kwargs={
+            'association_pk': self.association.id
+        }))
