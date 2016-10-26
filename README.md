@@ -1,7 +1,7 @@
 [![Licence GPL](http://img.shields.io/badge/license-GPL-green.svg)](http://www.gnu.org/licenses/quick-guide-gplv3.fr.html)
-[![Code Health](https://landscape.io/github/VAINSALyon/portailva/master/landscape.svg?style=flat)](https://landscape.io/github/VAINSALyon/portailva/master)
-[![Dependency Status](https://david-dm.org/VAINSALyon/portailva.svg)](https://david-dm.org/VAINSALyon/portailva)
-[![Requirements Status](https://requires.io/github/VAINSALyon/portailva/requirements.svg?branch=master)](https://requires.io/github/VAINSALyon/portailva/requirements/?branch=master)
+[![Code Health](https://landscape.io/github/VAINSALyon/portailva/dev/landscape.svg?style=flat)](https://landscape.io/github/VAINSALyon/portailva/dev)
+[![dependencies Status](https://david-dm.org/VAINSALyon/portailva/status.svg)](https://david-dm.org/VAINSALyon/portailva)
+[![Requirements Status](https://requires.io/github/VAINSALyon/portailva/requirements.svg?branch=dev)](https://requires.io/github/VAINSALyon/portailva/requirements/?branch=dev)
 
 # PortailVA
 
