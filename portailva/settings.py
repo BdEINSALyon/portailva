@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'social.apps.django_app.default',
 
+    'portailva.utils',
     'portailva.association',
     'portailva.file',
     'portailva.pages',

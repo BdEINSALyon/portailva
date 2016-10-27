@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+  Liste des lieux
+{% endblock %}
+
+{% block quick_actions %}
+  <a href="{% url 'place-new' %}" class="btn btn-success"><i class="fa fa-plus"></i> Ajouter</a>
+{% endblock %}
+
+{% block content %}
+  <table id="prettyTable" class="table table-bordered table-stripped">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Longitude</th>
+        <th>Latitude</th>
+        <th data-orderable="false">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for place in object_list %}
+        <tr>
+          <td>{{ place.name }}</td>
+          <td>{{ place.loc_x }}</td>
+          <td>{{ place.loc_y }}</td>
+          <td>
+            <a href="{% url 'place-update' place.id %}" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
+            <a href="{% url 'place-delete' place.id %}" data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
