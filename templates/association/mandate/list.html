@@ -17,6 +17,7 @@
           <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ mandate.id }}" aria-expanded="true" aria-controls="collapseOne">
             Du {{ mandate.begins_at|date:"d/m/Y" }} au {{ mandate.ends_at|date:"d/m/Y" }}
           </a>
+          {% if forloop.first %}<small>(Mandat en cours)</small>{% endif %}
         </h4>
       </div>
       <div id="collapse{{ mandate.id }}" class="panel-collapse collapse{% if forloop.first %} in{% endif %}" role="tabpanel" aria-labelledby="heading{{ mandate.id }}">
@@ -43,20 +44,26 @@
                   <i class="fa fa-phone"></i> {% if people.phone %}{{ people.phone }}{% else %}<i>Non défini</i>{% endif %}
                 </td>
                 <td>
-                  <a href="#" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
-                  <a href="#" data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
+                  <a href="{% url 'association-mandate-people-update' association.id mandate.id people.id %}" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
+                  <a href="{% url 'association-mandate-people-delete' association.id mandate.id people.id %}" data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
                 </td>
               </tr>
               {% empty %}
               <tr>
                 <td colspan="5">
-                  <i>Aucun membre renseigné pour ce bureau.<br>
-                  <a href="#">Ajouter un membre</a></i>
+                  <i>Aucun membre du bureau renseigné pour ce mandat.<br>
+                  {% if forloop.first %}<a href="{% url 'association-mandate-people-new' association.id mandate.id %}">Ajouter un membre</a></i>{% endif %}
                 </td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
+          {% if forloop.first %}
+            <a class="btn btn-primary btn-xs" href="{% url 'association-mandate-people-new' association.id mandate.id %}"><i class="fa fa-user-plus"></i> Ajouter un membre</a>
+          {% else %}
+            <div class="alert alert-warning" role="alert">Ce mandat est clos, vous ne pouvez pas modifier les informations associées.</div>
+          {% endif %}
+
         </div>
       </div>
     </div>

@@ -13,8 +13,9 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
 
-from portailva.association.forms import AssociationForm, AssociationAdminForm, AssociationFileUploadForm, MandateForm
-from portailva.association.models import Association, Mandate
+from portailva.association.forms import AssociationForm, AssociationAdminForm, AssociationFileUploadForm, MandateForm, \
+    PeopleForm
+from portailva.association.models import Association, Mandate, People
 from portailva.file.models import AssociationFile, FileFolder, FileVersion
 
 
@@ -338,3 +339,65 @@ class AssociationMandateNewView(AssociationMixin, CreateView):
         return redirect(reverse('association-mandate-list', kwargs={
             'association_pk': self.association.id
         }))
+
+
+class AssociationMandateMixin(AssociationMixin):
+    mandate = None
+    success_url = None
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        mandate = Mandate.objects.all()\
+            .filter(association_id=kwargs.get('association_pk'))\
+            .order_by('-begins_at')[:1]
+        if len(mandate) < 1:
+            raise Http404
+        if mandate[0].id != int(kwargs.get('mandate_pk', None)):
+            raise Http404
+        self.mandate = mandate[0]
+        self.success_url = reverse('association-mandate-list', kwargs={
+            'association_pk': kwargs.get('association_pk')
+        })
+        return super(AssociationMandateMixin, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AssociationMandateMixin, self).get_context_data(**kwargs)
+        context['mandate'] = self.mandate
+        return context
+
+
+class AssociationMandatePeopleNewView(AssociationMandateMixin, CreateView):
+    model = People
+    form_class = PeopleForm
+    template_name = 'association/mandate/people_new.html'
+
+    def form_valid(self, form):
+        people = form.save(commit=False)
+        people.mandate = self.mandate
+        people.save()
+        return redirect(reverse('association-mandate-list', kwargs={
+            'association_pk': self.association.id
+        }))
+
+
+class AssociationMandatePeopleMixin(AssociationMandateMixin):
+    def get_object(self, queryset=None):
+        try:
+            # We make sure mandate_pk provided in url matches with mandate linked to people
+            people = People.objects.get(id=self.kwargs.get('pk', None))
+            if people.mandate_id != self.mandate.id:
+                raise Http404
+        except People.DoesNotExist:
+            raise Http404
+        return people
+
+
+class AssociationMandatePeopleUpdateView(AssociationMandatePeopleMixin, UpdateView):
+    model = People
+    form_class = PeopleForm
+    template_name = 'association/mandate/people_edit.html'
+
+
+class AssociationMandatePeopleDeleteView(AssociationMandateMixin, DeleteView):
+    model = People
+    template_name = 'association/mandate/people_delete.html'

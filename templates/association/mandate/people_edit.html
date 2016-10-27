@@ -1,0 +1,16 @@
+{% extends 'association/base_association.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block page_sub_title %}
+  Modifier un membre
+{% endblock %}
+
+{% block quick_actions %}
+  <a href="{% url 'association-mandate-list' association.id %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>
+  <button form="peopleForm" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
+{% endblock %}
+
+{% block content_association %}
+  {% crispy form %}
+{% endblock %}

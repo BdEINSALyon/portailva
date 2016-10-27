@@ -3,7 +3,7 @@ import magic
 from crispy_forms.helper import FormHelper
 from django import forms
 
-from portailva.association.models import Category, Association, Mandate
+from portailva.association.models import Category, Association, Mandate, People
 from portailva.settings import MAGIC_BIN
 
 
@@ -123,3 +123,15 @@ class MandateForm(forms.Form):
             if begins_at <= mandate.begins_at < ends_at or begins_at < mandate.ends_at <= ends_at:
                 raise forms.ValidationError("La période définie pour ce mandat empiète sur la période d'un autre "
                                             "mandat.")
+
+
+class PeopleForm(forms.ModelForm):
+    class Meta(object):
+        model = People
+        fields = ['first_name', 'last_name', 'email', 'phone', 'role']
+
+    def __init__(self, *args, **kwargs):
+        super(PeopleForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_id = 'peopleForm'
