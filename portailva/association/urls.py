@@ -3,7 +3,8 @@ from django.conf.urls import url
 from portailva.association.views import AssociationDetailView, AssociationUpdateView, AssociationListView, \
     AssociationNewView, AssociationDeleteView, AssociationFileTreeView, AssociationFileUploadView, \
     AssociationFileDeleteView, AssociationMandateListView, AssociationMandateNewView, AssociationMandatePeopleNewView, \
-    AssociationMandatePeopleUpdateView, AssociationMandatePeopleDeleteView
+    AssociationMandatePeopleUpdateView, AssociationMandatePeopleDeleteView, AssociationDirectoryEntryDetailView, \
+    AssociationDirectoryEntryUpdateView
 
 urlpatterns = [
     # Association links
@@ -28,6 +29,12 @@ urlpatterns = [
         AssociationMandatePeopleUpdateView.as_view(), name='association-mandate-people-update'),
     url('^(?P<association_pk>\d+)/mandate/(?P<mandate_pk>\d+)/people/(?P<pk>\d+)/delete/$',
         AssociationMandatePeopleDeleteView.as_view(), name='association-mandate-people-delete'),
+
+    # Directory entry
+    url('^(?P<association_pk>\d+)/directory/$', AssociationDirectoryEntryDetailView.as_view(),
+        name='association-directory-detail'),
+    url('^(?P<association_pk>\d+)/directory/edit/$', AssociationDirectoryEntryUpdateView.as_view(),
+        name='association-directory-update'),
 
     # Admin stuff
     url('^$', AssociationListView.as_view(), name='association-list'),

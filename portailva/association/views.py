@@ -14,8 +14,8 @@ from django.views.generic import ListView
 from django.views.generic import UpdateView
 
 from portailva.association.forms import AssociationForm, AssociationAdminForm, AssociationFileUploadForm, MandateForm, \
-    PeopleForm
-from portailva.association.models import Association, Mandate, People
+    PeopleForm, DirectoryEntryForm
+from portailva.association.models import Association, Mandate, People, DirectoryEntry
 from portailva.file.models import AssociationFile, FileFolder, FileVersion
 
 
@@ -401,3 +401,40 @@ class AssociationMandatePeopleUpdateView(AssociationMandatePeopleMixin, UpdateVi
 class AssociationMandatePeopleDeleteView(AssociationMandateMixin, DeleteView):
     model = People
     template_name = 'association/mandate/people_delete.html'
+
+
+# Directory
+class AssociationDirectoryEntryMixin(AssociationMixin):
+    object = None
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super(AssociationDirectoryEntryMixin, self).dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        try:
+            return DirectoryEntry.objects.all()\
+                .filter(association_id=self.kwargs.get('association_pk'))\
+                .order_by('-id')[:1][0]
+        except IndexError:
+            return None
+
+
+class AssociationDirectoryEntryDetailView(AssociationDirectoryEntryMixin, DetailView):
+    model = DirectoryEntry
+    template_name = 'association/directory_entry/detail.html'
+
+
+class AssociationDirectoryEntryUpdateView(AssociationDirectoryEntryMixin, UpdateView):
+    model = DirectoryEntry
+    form_class = DirectoryEntryForm
+    template_name = 'association/directory_entry/update.html'
+
+    def form_valid(self, form):
+        pass
+        directory_entry = form.save(commit=False)
+        directory_entry.association = self.association
+        directory_entry.save()
+        return redirect(reverse('association-directory-detail', kwargs={
+            'association_pk': self.association.id
+        }))

@@ -1,0 +1,18 @@
+{% extends 'association/base_association.html' %}
+
+{% block page_sub_title %}
+  Bot'INSA
+{% endblock %}
+
+{% block quick_actions %}
+<a href="{% url 'association-directory-update' association.id %}" class="btn btn-default"><i class="fa fa-pencil"></i> Mettre à jour</a>
+{% endblock %}
+
+{% block content_association %}
+  {% if not object %}
+  <div class="alert alert-warning" role="alert">
+    Vous n'avez jamais rempli de page pour le Bot'INSA.
+  </div>
+  {% else %}
+  {% endif %}
+{% endblock %}

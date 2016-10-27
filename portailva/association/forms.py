@@ -3,7 +3,7 @@ import magic
 from crispy_forms.helper import FormHelper
 from django import forms
 
-from portailva.association.models import Category, Association, Mandate, People
+from portailva.association.models import Category, Association, Mandate, People, DirectoryEntry
 from portailva.settings import MAGIC_BIN
 
 
@@ -135,3 +135,16 @@ class PeopleForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_id = 'peopleForm'
+
+
+class DirectoryEntryForm(forms.ModelForm):
+    class Meta(object):
+        model = DirectoryEntry
+        fields = ['description', 'contact_address', 'phone', 'website_url', 'facebook_url', 'twitter_url', 'place',
+                  'logo']
+
+    def __init__(self, *args, **kwargs):
+        super(DirectoryEntryForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_id = 'directoryEntryForm'
