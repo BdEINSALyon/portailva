@@ -15,7 +15,7 @@ from django.views.generic import UpdateView
 
 from portailva.association.forms import AssociationForm, AssociationAdminForm, AssociationFileUploadForm, MandateForm, \
     PeopleForm, DirectoryEntryForm
-from portailva.association.models import Association, Mandate, People, DirectoryEntry
+from portailva.association.models import Association, Mandate, People, DirectoryEntry, OpeningHour
 from portailva.file.models import AssociationFile, FileFolder, FileVersion
 
 
@@ -419,6 +419,11 @@ class AssociationDirectoryEntryMixin(AssociationMixin):
         except IndexError:
             return None
 
+    def get_context_data(self, **kwargs):
+        context = super(AssociationDirectoryEntryMixin, self).get_context_data(**kwargs)
+        context['days'] = OpeningHour.DAYS_OF_WEEK
+        return context
+
 
 class AssociationDirectoryEntryDetailView(AssociationDirectoryEntryMixin, DetailView):
     model = DirectoryEntry
@@ -431,10 +436,31 @@ class AssociationDirectoryEntryUpdateView(AssociationDirectoryEntryMixin, Update
     template_name = 'association/directory_entry/update.html'
 
     def form_valid(self, form):
-        pass
-        directory_entry = form.save(commit=False)
-        directory_entry.association = self.association
-        directory_entry.save()
+        if self.object is not None and not self.object.is_online:
+            # This version is not yet online, so we can update it.
+            directory_entry = form.save(commit=False)
+            directory_entry.association = self.association
+            directory_entry.save()
+        else:
+            # Version is already online or doesn't exist, we create a new one
+            directory_entry = DirectoryEntry.objects.create(
+                description=form.data.get('description'),
+                contact_address=form.data.get('contact_address'),
+                phone=form.data.get('phone'),
+                website_url=form.data.get('website_url'),
+                facebook_url=form.data.get('facebook_url'),
+                twitter_url=form.data.get('twitter_url'),
+                association_id=self.association.id,
+                place_id=form.data.get('place')
+            )
+
+            if self.object is not None:
+                # We copy opening hours
+                for opening_hour in self.object.opening_hours.all():
+                    opening_hour.pk = None
+                    opening_hour.directory_entry_id = directory_entry.id
+                    opening_hour.save()
+
         return redirect(reverse('association-directory-detail', kwargs={
             'association_pk': self.association.id
         }))

@@ -183,6 +183,7 @@ class OpeningHour(models.Model):
 
     class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'admin',)
+        ordering = ('day', 'begins_at', )
 
     def __str__(self):
         return "[" + self.directory_entry.association.name + "] " + self.get_day_display() + " de " +\
