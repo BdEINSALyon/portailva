@@ -11,10 +11,12 @@ from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
+from django.views.generic import TemplateView
 from django.views.generic import UpdateView
+from django.views.generic.detail import SingleObjectMixin
 
 from portailva.association.forms import AssociationForm, AssociationAdminForm, AssociationFileUploadForm, MandateForm, \
-    PeopleForm, DirectoryEntryForm
+    PeopleForm, DirectoryEntryForm, OpeningHourForm
 from portailva.association.models import Association, Mandate, People, DirectoryEntry, OpeningHour
 from portailva.file.models import AssociationFile, FileFolder, FileVersion
 
@@ -24,7 +26,7 @@ class AssociationListView(ListView):
 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
-        if not request.user.has_perm('association.can_admin_association'):
+        if not request.user.has_perm('association.admin_association'):
             raise PermissionDenied
         return super(AssociationListView, self).get(request, *args, **kwargs)
 
@@ -413,9 +415,7 @@ class AssociationDirectoryEntryMixin(AssociationMixin):
 
     def get_object(self, queryset=None):
         try:
-            return DirectoryEntry.objects.all()\
-                .filter(association_id=self.kwargs.get('association_pk'))\
-                .order_by('-id')[:1][0]
+            return DirectoryEntry.objects.get_last_for_association_id(self.kwargs.get('association_pk'))
         except IndexError:
             return None
 
@@ -461,6 +461,165 @@ class AssociationDirectoryEntryUpdateView(AssociationDirectoryEntryMixin, Update
                     opening_hour.directory_entry_id = directory_entry.id
                     opening_hour.save()
 
+        return redirect(reverse('association-directory-detail', kwargs={
+            'association_pk': self.association.id
+        }))
+
+
+class AssociationDirectoryEntryOpeningHourCreateView(AssociationDirectoryEntryMixin, CreateView):
+    form_class = OpeningHourForm
+    template_name = 'association/directory_entry/opening_hour_new.html'
+
+    def form_valid(self, form):
+        directory_entry = self.get_object()
+        if directory_entry.is_online:
+            # Version is already online, we create a new one before adding opening hour
+            opening_hours = directory_entry.opening_hours.all()
+            directory_entry.pk = None
+            directory_entry.is_online = False
+            directory_entry.save()
+
+            # We copy existing opening hours
+            for opening_hour in opening_hours:
+                opening_hour.pk = None
+                opening_hour.directory_entry_id = directory_entry.id
+                opening_hour.save()
+
+        # We create opening hour
+        OpeningHour.objects.create(
+            day=form.data.get('day'),
+            begins_at=form.data.get('begins_at'),
+            ends_at=form.data.get('ends_at'),
+            directory_entry_id=directory_entry.id
+        )
+
+        return redirect(reverse('association-directory-detail', kwargs={
+            'association_pk': self.association.id
+        }))
+
+
+class OpeningHourMixin(AssociationMixin):
+    def get_object(self, queryset=None):
+        try:
+            opening_hour = OpeningHour.objects.get(pk=self.kwargs.get('pk'))
+            # We ensure association_pk provided matches association linked with opening hour
+            if opening_hour.directory_entry.association_id != int(self.kwargs.get('association_pk')):
+                raise Http404
+
+            # We ensure opening hour user wants to get belongs to last directory entry
+            if opening_hour.directory_entry_id != DirectoryEntry.objects\
+                    .get_last_for_association_id(self.kwargs.get('association_pk')).id:
+                raise Http404
+        except OpeningHour.DoesNotExist:
+            raise Http404
+        return opening_hour
+
+    def get_context_data(self, **kwargs):
+        context = super(OpeningHourMixin, self).get_context_data(**kwargs)
+        context['days'] = OpeningHour.DAYS_OF_WEEK
+        return context
+
+
+class AssociationDirectoryEntryOpeningHourUpdateView(OpeningHourMixin, UpdateView):
+    form_class = OpeningHourForm
+    template_name = 'association/directory_entry/opening_hour_update.html'
+    directory_entry = None
+
+    def form_valid(self, form):
+        directory_entry = self.object.directory_entry
+        opening_hour = form.save(commit=False)
+
+        if directory_entry.is_online:
+            # We have to create a new directory entry
+            opening_hours = directory_entry.opening_hours.all()
+            directory_entry.pk = None
+            directory_entry.is_online = False
+            directory_entry.save()
+
+            # We duplicate each opening hour, except which one we want to update
+            for row in opening_hours:
+                if row.id != opening_hour.id:
+                    row.pk = None
+                    row.directory_entry_id = directory_entry.id
+                    row.save()
+
+            # Then we process opening hour we want to update
+            opening_hour.pk = None
+            opening_hour.directory_entry_id = directory_entry.id
+
+        opening_hour.day = form.data.get('day')
+        opening_hour.begins_at = form.data.get('begins_at')
+        opening_hour.ends_at = form.data.get('ends_at')
+        opening_hour.save()
+
+        return redirect(reverse('association-directory-detail', kwargs={
+            'association_pk': self.association.id
+        }))
+
+
+class AssociationDirectoryEntryOpeningHourDeleteView(OpeningHourMixin, DeleteView):
+    form_class = OpeningHourForm
+    template_name = 'association/directory_entry/opening_hour_delete.html'
+    directory_entry = None
+
+    def post(self, request, *args, **kwargs):
+        opening_hour = self.get_object()
+        directory_entry = opening_hour.directory_entry
+
+        if directory_entry.is_online:
+            # We have to create a new directory entry
+            opening_hours = directory_entry.opening_hours.all()
+            directory_entry.pk = None
+            directory_entry.is_online = False
+            directory_entry.save()
+
+            # We duplicate each opening hour, except which one we want to delete
+            for row in opening_hours:
+                if row.id != opening_hour.id:
+                    row.pk = None
+                    row.directory_entry_id = directory_entry.id
+                    row.save()
+        else:
+            opening_hour.delete()
+
+        return redirect(reverse('association-directory-detail', kwargs={
+            'association_pk': self.association.id
+        }))
+
+
+class AssociationDirectoryEntryPublishView(AssociationMixin, TemplateView):
+    template_name = 'association/directory_entry/publish.html'
+    http_method_names = ['get', 'post']
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('association.admin_directoryentry'):
+            raise PermissionDenied
+        self.object = DirectoryEntry.objects.get_last_for_association_id(kwargs.get('association_pk'))
+        if self.object.is_online:
+            raise Http404
+        return super(AssociationDirectoryEntryPublishView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object.is_online = True
+        self.object.save()
+        return redirect(reverse('association-directory-detail', kwargs={
+            'association_pk': self.association.id
+        }))
+
+
+class AssociationDirectoryEntryDeleteView(AssociationMixin, TemplateView):
+    template_name = 'association/directory_entry/delete.html'
+    http_method_names = ['get', 'post']
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('association.admin_directoryentry'):
+            raise PermissionDenied
+        return super(AssociationDirectoryEntryDeleteView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        DirectoryEntry.objects.all().filter(association_id=self.association.id).delete()
         return redirect(reverse('association-directory-detail', kwargs={
             'association_pk': self.association.id
         }))

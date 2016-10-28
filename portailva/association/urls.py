@@ -4,7 +4,9 @@ from portailva.association.views import AssociationDetailView, AssociationUpdate
     AssociationNewView, AssociationDeleteView, AssociationFileTreeView, AssociationFileUploadView, \
     AssociationFileDeleteView, AssociationMandateListView, AssociationMandateNewView, AssociationMandatePeopleNewView, \
     AssociationMandatePeopleUpdateView, AssociationMandatePeopleDeleteView, AssociationDirectoryEntryDetailView, \
-    AssociationDirectoryEntryUpdateView
+    AssociationDirectoryEntryUpdateView, AssociationDirectoryEntryOpeningHourCreateView, \
+    AssociationDirectoryEntryOpeningHourUpdateView, AssociationDirectoryEntryOpeningHourDeleteView, \
+    AssociationDirectoryEntryPublishView, AssociationDirectoryEntryDeleteView
 
 urlpatterns = [
     # Association links
@@ -35,8 +37,19 @@ urlpatterns = [
         name='association-directory-detail'),
     url('^(?P<association_pk>\d+)/directory/edit/$', AssociationDirectoryEntryUpdateView.as_view(),
         name='association-directory-update'),
+    url('^(?P<association_pk>\d+)/directory/opening_hour/new/$', AssociationDirectoryEntryOpeningHourCreateView
+        .as_view(), name='association-directory-opening-hour-new'),
+    url('^(?P<association_pk>\d+)/directory/opening_hour/(?P<pk>\d+)/update/$',
+        AssociationDirectoryEntryOpeningHourUpdateView.as_view(), name='association-directory-opening-hour-update'),
+    url('^(?P<association_pk>\d+)/directory/opening_hour/(?P<pk>\d+)/delete/$',
+        AssociationDirectoryEntryOpeningHourDeleteView.as_view(), name='association-directory-opening-hour-delete'),
 
     # Admin stuff
     url('^$', AssociationListView.as_view(), name='association-list'),
-    url('^(?P<pk>\d+)/delete/$', AssociationDeleteView.as_view(), name='association-delete')
+    url('^(?P<pk>\d+)/delete/$', AssociationDeleteView.as_view(), name='association-delete'),
+    url('^(?P<association_pk>\d+)/directory/publish/$', AssociationDirectoryEntryPublishView.as_view(),
+        name='association-directory-publish'),
+    url('^(?P<association_pk>\d+)/directory/delete/$', AssociationDirectoryEntryDeleteView.as_view(),
+        name='association-directory-delete')
+
 ]

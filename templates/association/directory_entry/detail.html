@@ -5,7 +5,15 @@
 {% endblock %}
 
 {% block quick_actions %}
-<a href="{% url 'association-directory-update' association.id %}" class="btn btn-default"><i class="fa fa-pencil"></i> Mettre à jour</a>
+  {% if perms.association.admin_directoryentry %}
+    {% if object != None %}
+      <a href="{% url 'association-directory-delete' association.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Supprimer</a>
+      {% if not object.is_online %}
+        <a href="{% url 'association-directory-publish' association.id %}" class="btn btn-success"><i class="fa fa-check"></i> Publier</a>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+  <a href="{% url 'association-directory-update' association.id %}" class="btn btn-default"><i class="fa fa-pencil"></i> Mettre à jour</a>
 {% endblock %}
 
 {% block content_association %}
@@ -52,13 +60,13 @@
                 <td>de {{ opening_hour.begins_at|time:"H:i" }}</td>
                 <td>à {{ opening_hour.ends_at|time:"H:i" }}</td>
                 <td>
-                  <a href="#" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
-                  <a href="#" data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
+                  <a href="{% url 'association-directory-opening-hour-update' association.id opening_hour.id %}" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
+                  <a href="{% url 'association-directory-opening-hour-delete' association.id opening_hour.id %}" data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
                 </td>
               </tr>
               {% endfor %}
               <tr>
-                <td colspan="4"><a href="#">Ajouter un horaire</a></td>
+                <td colspan="4"><a href="{% url 'association-directory-opening-hour-new' association.id %}">Ajouter un horaire</a></td>
               </tr>
             </tbody>
           </table>
@@ -102,6 +110,5 @@
         <i>Non défini</i>
       {% endif %}
     </div>
-
   {% endif %}
 {% endblock %}

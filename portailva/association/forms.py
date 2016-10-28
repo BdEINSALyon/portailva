@@ -3,7 +3,7 @@ import magic
 from crispy_forms.helper import FormHelper
 from django import forms
 
-from portailva.association.models import Category, Association, Mandate, People, DirectoryEntry
+from portailva.association.models import Category, Association, Mandate, People, DirectoryEntry, OpeningHour
 from portailva.settings import MAGIC_BIN
 
 
@@ -148,3 +148,39 @@ class DirectoryEntryForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_id = 'directoryEntryForm'
+
+
+class OpeningHourForm(forms.ModelForm):
+    begins_at = forms.TimeField(
+        label="Heure d'ouverture",
+        input_formats=[
+            '%H:%M',
+            '%H:%M:%S'
+        ],
+        widget=forms.TextInput(
+            attrs={'type': 'time'}
+        ),
+        help_text="Format : HH:MM"
+    )
+
+    ends_at = forms.TimeField(
+        label="Heure de fermeture",
+        input_formats=[
+            '%H:%M',
+            '%H:%M:%S'
+        ],
+        widget=forms.TextInput(
+            attrs={'type': 'time'}
+        ),
+        help_text="Format : HH:MM"
+    )
+
+    class Meta(object):
+        model = OpeningHour
+        fields = ['day', 'begins_at', 'ends_at']
+
+    def __init__(self, *args, **kwargs):
+        super(OpeningHourForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_id = 'openingHourForm'

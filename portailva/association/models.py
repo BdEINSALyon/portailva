@@ -54,7 +54,7 @@ class Association(models.Model):
         :return: `True` if the user can access this association, `False` otherwise.
         """
         if user is not None and user.is_authenticated():
-            if user.is_superuser or user.has_perm('association.can_admin_association'):
+            if user.is_superuser or user.has_perm('association.admin_association'):
                 return True
 
         return False
@@ -69,7 +69,7 @@ class Association(models.Model):
         :return: `True` if the user can access this association, `False` otherwise.
         """
         if user is not None and user.is_authenticated():
-            if user.is_superuser:
+            if self.can_admin(user):
                 return True
             elif user in self.users.all():
                 return True
@@ -130,6 +130,13 @@ class People(models.Model):
         return self.first_name + " " + self.last_name.upper()
 
 
+class DirectoryEntryManager(models.Manager):
+    def get_last_for_association_id(self, association_id):
+        return self.get_queryset()\
+            .filter(association_id=association_id)\
+            .order_by('-id')[:1][0]
+
+
 class DirectoryEntry(models.Model):
     """
     A DirectoryEntry contains useful information about an Association.
@@ -154,6 +161,8 @@ class DirectoryEntry(models.Model):
     created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
     updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
 
+    objects = DirectoryEntryManager()
+
     class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'admin',)
 
@@ -174,7 +183,7 @@ class OpeningHour(models.Model):
         (6, 'Samedi'),
         (7, 'Dimanche'),
     )
-    day = models.IntegerField(choices=DAYS_OF_WEEK)
+    day = models.IntegerField("Jour d'ouverture", choices=DAYS_OF_WEEK)
     begins_at = models.TimeField("Heure d'ouverture")
     ends_at = models.TimeField("Heure de fermeture")
 

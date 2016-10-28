@@ -60,7 +60,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                {% if perms.association.can_admin_association %}
+                {% if perms.association.admin_association %}
                   <li><a href="{% url 'association-list' %}">Associations</a> </li>
                 {% endif %}
                 {% if perms.file.can_admin_file %}
