@@ -64,7 +64,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 AUTH_USER_MODEL = 'auth.User'
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'member-login'
+LOGIN_REDIRECT_URL = 'homepage'
+LOGOUT_REDIRECT_URL = 'homepage'
 
 ROOT_URLCONF = 'portailva.urls'
 
