@@ -15,4 +15,5 @@ Sommaire
 .. toctree::
    :maxdepth: 2
 
+   install
    workflow
