@@ -1,0 +1,31 @@
+from git import Repo
+
+from django.conf import settings
+
+
+def get_git_version():
+    """
+    Get the git version of the site.
+    """
+    try:
+        repo = Repo(settings.BASE_DIR)
+        branch = repo.active_branch
+        commit = repo.head.commit.hexsha
+        name = u'{0}/{1}'.format(branch, commit[:7])
+        return {'name': name, 'url': u'{}/tree/{}'.format(settings.PORTAILVA_APP['site']['repository']['url'], commit)}
+    except (KeyError, TypeError):
+        return {'name': '', 'url': ''}
+
+
+def git_version(request):
+    """
+    A context processor to include the git version on all pages.
+    """
+    return {'git_version': get_git_version()}
+
+
+def app_settings(request):
+    """
+    A context processor with all APP settings.
+    """
+    return {'app': settings.PORTAILVA_APP}

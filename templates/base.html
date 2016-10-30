@@ -113,6 +113,18 @@
       {% block content %}{% endblock %}
     </div>
 
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted pull-left">
+          <span class="brand">{{ app.site.name }}</span>
+          <span class="version">• Version : <a href="{{ git_version.url }}">{{ git_version.name }}</a></span>
+        </p>
+        <p class="text-muted pull-right">
+          <a href="#">A propos</a>
+        </p>
+      </div>
+    </footer>
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{% static "js/script.js" %}"></script>
   </body>

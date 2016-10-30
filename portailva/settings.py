@@ -83,7 +83,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'portailva.association.context_processors.my_associations'
+                'portailva.association.context_processors.my_associations',
+                'portailva.utils.context_processors.app_settings',
+                'portailva.utils.context_processors.git_version',
             ],
         },
     },
@@ -157,3 +159,36 @@ FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler'
 ]
 MAGIC_BIN = os.environ.get("MAGIC_BIN")
+
+
+PORTAILVA_APP = {
+    'site': {
+        'name': "PortailVA",
+        'litteral_name': "Portail VA",
+        'abbr': "pva",
+        'url': "http://127.0.0.1:8000",
+        'secure_url': "https://127.0.0.1:8000",
+        'dns': "portail.asso-insa-lyon.fr",
+        'email_contact': "contact@asso-insa-lyon.fr",
+        'email_noreply': "noreply@asso-insa-lyon.fr",
+        'contribute_link': "https://github.com/VAINSALyon/portailva/blob/dev/CONTRIBUTING.md",
+        'repository': {
+            'url': 'https://github.com/VAINSALyon/portailva',
+            'bugtracker': 'https://github.com/VAINSALyon/portailva/issues',
+            'api': 'https://api.github.com/repos/VAINSALyon/portailva'
+        },
+        'licences': {
+            'source': {
+                'code': "GPL v3",
+                'url_license': "http://www.gnu.org/licenses/gpl-3.0.html",
+                'provider_name': "Zeste de Savoir",
+                'provider_url': "http://zestedesavoir.com",
+            }
+        },
+        'hosting': {
+            'name': "OVH",
+            'address': "2 rue Kellermann - 59100 Roubaix - France"
+        },
+        'cnil': "-",
+    }
+}
