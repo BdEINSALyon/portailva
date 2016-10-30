@@ -3,7 +3,13 @@
 {% block content %}
 <!-- Main component for a primary marketing message or call to action -->
 <div class="jumbotron">
-  <h1>Hello World!</h1>
-  <p>How are you?</p>
+  <h1>Bienvenue !</h1>
+  <p>
+    {% if user.is_authenticated %}
+      Sélectionnez votre association parmi la liste ci-dessus avant de poursuivre.
+    {% else %}
+      Ce portail est réservé aux associations. Veuillez vous identifier avant de poursuivre.
+    {% endif %}
+  </p>
 </div>
 {% endblock %}
