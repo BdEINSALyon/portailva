@@ -2,6 +2,7 @@ import magic
 
 from crispy_forms.helper import FormHelper
 from django import forms
+from django.conf import settings
 
 from portailva.association.models import Category, Association, Mandate, People, DirectoryEntry, OpeningHour
 from portailva.settings import MAGIC_BIN
@@ -52,7 +53,8 @@ class AssociationFileUploadForm(forms.Form):
     )
 
     data = forms.FileField(
-        label="Fichier"
+        label="Fichier",
+        help_text="Taille maximum : " + str(settings.PORTAILVA_APP['file']['file_max_size'] // (1024 * 1024)) + "Mo"
     )
 
     def __init__(self, *args, **kwargs):
@@ -70,6 +72,10 @@ class AssociationFileUploadForm(forms.Form):
         mime = magic.Magic(mime=True, magic_file=MAGIC_BIN)
         if mime.from_file(file.temporary_file_path()) not in [type.mime_type for type in allowed_types]:
             raise forms.ValidationError("Ce type de fichier n'est pas autorisé")
+
+        if file is not None and file.size > settings.PORTAILVA_APP['file']['file_max_size']:
+            raise forms.ValidationError("Votre fichier est trop lourd, la limite autorisée est de " +
+                                        str(settings.PORTAILVA_APP['file']['file_max_size'] // (1024 * 1024)) + "Mo")
 
         return file
 

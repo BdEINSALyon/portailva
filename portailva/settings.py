@@ -173,22 +173,25 @@ PORTAILVA_APP = {
         'email_noreply': "noreply@asso-insa-lyon.fr",
         'contribute_link': "https://github.com/VAINSALyon/portailva/blob/dev/CONTRIBUTING.md",
         'repository': {
-            'url': 'https://github.com/VAINSALyon/portailva',
-            'bugtracker': 'https://github.com/VAINSALyon/portailva/issues',
-            'api': 'https://api.github.com/repos/VAINSALyon/portailva'
+            'url': "https://github.com/VAINSALyon/portailva",
+            'bugtracker': "https://github.com/VAINSALyon/portailva/issues",
+            'api': "https://api.github.com/repos/VAINSALyon/portailva"
         },
         'licences': {
             'source': {
                 'code': "GPL v3",
                 'url_license': "http://www.gnu.org/licenses/gpl-3.0.html",
                 'provider_name': "Zeste de Savoir",
-                'provider_url': "http://zestedesavoir.com",
+                'provider_url': "http://zestedesavoir.com"
             }
         },
         'hosting': {
             'name': "OVH",
             'address': "2 rue Kellermann - 59100 Roubaix - France"
         },
-        'cnil': "-",
+        'cnil': "-"
+    },
+    'file': {
+        'file_max_size': 20 * 1024 * 2014  # 20Mo
     }
 }
