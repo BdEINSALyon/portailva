@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'anymail',
     'bootstrapform',
     'crispy_forms',
     'social.apps.django_app.default',
@@ -160,6 +161,12 @@ FILE_UPLOAD_HANDLERS = [
 ]
 MAGIC_BIN = os.environ.get("MAGIC_BIN")
 
+# Mail
+ANYMAIL = {
+    'MAILGUN_API_KEY': os.environ.get('MAILGUN_API_KEY')
+}
+EMAIL_BACKEND = 'anymail.backends.mailgun.MailgunBackend'
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@asso-insa-lyon.fr')
 
 PORTAILVA_APP = {
     'site': {

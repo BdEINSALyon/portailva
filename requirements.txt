@@ -7,3 +7,5 @@ gunicorn==19.6.0
 psycopg2==2.6.2
 python-magic==0.4.12
 gitpython==2.1.0
+django-anymail==0.6
+premailer==3.0.1
