@@ -192,6 +192,6 @@ PORTAILVA_APP = {
         'cnil': "-"
     },
     'file': {
-        'file_max_size': 20 * 1024 * 1014  # 20Mo
+        'file_max_size': 20 * 1024 * 1024  # 20Mo
     }
 }
