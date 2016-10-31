@@ -9,5 +9,27 @@
 {% endblock %}
 
 {% block content_association %}
-  <i>Définir les informations à afficher.</i>
+  <b>Nom de l'association</b>
+  <div class="well well-sm">{{ object.name }}</div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <b>Catégorie d'association</b>
+      <div class="well well-sm">{{ object.category.name }}</div>
+    </div>
+    <div class="col-md-6">
+      <b>Acronyme</b>
+      <div class="well well-sm">
+        {% if object.acronym %}
+          {{ object.acronym }}
+        {% else %}
+          <i>Non défini</i>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <b>Description courte</b>
+  <div class="well well-sm">{{ object.description }}</div>
+
 {% endblock %}
