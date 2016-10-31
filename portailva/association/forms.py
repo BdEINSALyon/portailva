@@ -140,8 +140,7 @@ class PeopleForm(forms.ModelForm):
 class DirectoryEntryForm(forms.ModelForm):
     class Meta(object):
         model = DirectoryEntry
-        fields = ['description', 'contact_address', 'phone', 'website_url', 'facebook_url', 'twitter_url', 'place',
-                  'logo']
+        fields = ['description', 'contact_address', 'phone', 'website_url', 'facebook_url', 'twitter_url', 'place']
 
     def __init__(self, *args, **kwargs):
         super(DirectoryEntryForm, self).__init__(*args, **kwargs)
