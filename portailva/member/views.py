@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
@@ -25,6 +26,9 @@ class PasswordUpdateView(LoginRequiredMixin, UpdateView):
         self.request.user.set_password(form.data.get('password_new'))
         self.request.user.save()
         update_session_auth_hash(self.request, self.request.user)
+
+        messages.add_message(self.request, messages.SUCCESS, "Votre mot de passe a été changé avec succès.")
+
         return redirect(reverse('homepage'))
 
     def get_object(self, queryset=None):

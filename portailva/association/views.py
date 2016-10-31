@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
@@ -120,6 +121,8 @@ class AssociationUpdateView(UpdateView):
             self.object.is_active = False if not form.data.get('is_active') else True
 
         self.object.save()
+
+        messages.add_message(self.request, messages.SUCCESS, "Les informations ont bien été mises à jour.")
 
         return redirect(reverse('association-detail', kwargs={'pk': self.object.id}))
 
@@ -281,6 +284,9 @@ class AssociationFileDeleteView(AssociationMixin, DeleteView):
             'association_pk': self.association.id,
             'folder_pk': self.get_object().folder_id
         })
+
+        messages.add_message(self.request, messages.SUCCESS, "Le fichier a correctement été supprimé.")
+
         return super(AssociationFileDeleteView, self).post(request, *args, **kwargs)
 
 
