@@ -1,3 +1,5 @@
+import uuid
+
 from django.conf import settings
 from django.db import models
 from django.dispatch import receiver
@@ -82,12 +84,16 @@ class AssociationFile(File):
     folder = models.ForeignKey(FileFolder, verbose_name="Dossier", related_name="files", on_delete=models.CASCADE)
 
 
+def user_directory_path(instance, filename):
+    return 'uploads/' + str(uuid.uuid1())
+
+
 class FileVersion(models.Model):
     """
     A specific File Version.
     """
     version = models.IntegerField("Numéro de version")
-    data = models.FileField(upload_to='uploads/', verbose_name="Version")
+    data = models.FileField(upload_to=user_directory_path, verbose_name="Version")
 
     file = models.ForeignKey(File, verbose_name="Fichier", related_name="versions", on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Utilisateur", null=True, on_delete=models.SET_NULL)
