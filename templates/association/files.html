@@ -2,6 +2,9 @@
 
 {% block page_sub_title %}
   Fichiers
+  {% if current_folder %}
+  : {{ current_folder.name }}
+  {% endif %}
 {% endblock %}
 
 {% block quick_actions %}
@@ -15,7 +18,7 @@
     {% if current_folder %}
       {% if current_folder.parent %}
         <tr>
-          <td><i class="fa fa-folder"></i> <a href="{% url 'association-file-tree' association.id folder.parent.id %}">..</a></td>
+          <td><i class="fa fa-folder"></i> <a href="{% url 'association-file-tree' association.id current_folder.parent.id %}">..</a></td>
         </tr>
       {% else %}
         <tr>
