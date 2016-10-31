@@ -333,8 +333,8 @@ class AssociationMandateNewView(AssociationMixin, CreateView):
 
     def form_valid(self, form):
         Mandate.objects.create(
-            begins_at=form.data.get('begins_at'),
-            ends_at=form.data.get('ends_at'),
+            begins_at=form.cleaned_data.get('begins_at'),
+            ends_at=form.cleaned_data.get('ends_at'),
             association_id=self.association.id
         )
 
@@ -487,9 +487,9 @@ class AssociationDirectoryEntryOpeningHourCreateView(AssociationDirectoryEntryMi
 
         # We create opening hour
         OpeningHour.objects.create(
-            day=form.data.get('day'),
-            begins_at=form.data.get('begins_at'),
-            ends_at=form.data.get('ends_at'),
+            day=form.cleaned_data.get('day'),
+            begins_at=form.cleaned_data.get('begins_at'),
+            ends_at=form.cleaned_data.get('ends_at'),
             directory_entry_id=directory_entry.id
         )
 
@@ -547,9 +547,9 @@ class AssociationDirectoryEntryOpeningHourUpdateView(OpeningHourMixin, UpdateVie
             opening_hour.pk = None
             opening_hour.directory_entry_id = directory_entry.id
 
-        opening_hour.day = form.data.get('day')
-        opening_hour.begins_at = form.data.get('begins_at')
-        opening_hour.ends_at = form.data.get('ends_at')
+        opening_hour.day = form.cleaned_data.get('day')
+        opening_hour.begins_at = form.cleaned_data.get('begins_at')
+        opening_hour.ends_at = form.cleaned_data.get('ends_at')
         opening_hour.save()
 
         return redirect(reverse('association-directory-detail', kwargs={
