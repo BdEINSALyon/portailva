@@ -23,10 +23,10 @@ def send_mail(template_html_name=None, template_text_name=None, context=None, su
 
     # Making context
     logo_cid = attach_inline_image_file(msg, os.path.join(settings.BASE_DIR, "assets/img/logo_mail.png"))
-    context = {
+    context.update({
         'logo_cid': logo_cid,
         'app': settings.PORTAILVA_APP
-    }
+    })
 
     # HTML part
     html_content = render_to_string(template_html_name, context=context)

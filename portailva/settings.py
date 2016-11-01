@@ -172,10 +172,7 @@ PORTAILVA_APP = {
     'site': {
         'name': "PortailVA",
         'litteral_name': "Portail VA",
-        'abbr': "pva",
-        'url': "http://127.0.0.1:8000",
-        'secure_url': "https://127.0.0.1:8000",
-        'dns': "portail.asso-insa-lyon.fr",
+        'url': os.environ.get('SITE_URL', "http://127.0.0.1:8000"),
         'email_contact': "contact@asso-insa-lyon.fr",
         'email_noreply': "noreply@asso-insa-lyon.fr",
         'contribute_link': "https://github.com/VAINSALyon/portailva/blob/dev/CONTRIBUTING.md",
