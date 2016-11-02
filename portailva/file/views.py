@@ -1,22 +1,19 @@
 import magic
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.http import HttpResponse
-from django.utils.decorators import method_decorator
-from django.views.generic import DetailView
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 
 from portailva.settings import MAGIC_BIN
 from .models import File, FileVersion
 
 
-class FileListView(ListView):
+class FileListView(LoginRequiredMixin, ListView):
     template_name = 'file/list.html'
 
-    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
-        if not request.user.has_perm('file.can_admin_file'):
+        if not request.user.has_perm('file.admin_file'):
             raise PermissionDenied
         return super(FileListView, self).get(request, *args, **kwargs)
 

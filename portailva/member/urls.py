@@ -2,10 +2,10 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 
 from portailva.member.forms import ResetPasswordForm
-from portailva.member.views import PasswordUpdateView, ForgotPasswordView
+from portailva.member.views import PasswordUpdateView, ForgotPasswordView, LoginView
 
 urlpatterns = [
-    url(r'^login/$', auth_views.login, name='member-login'),
+    url(r'^login/$', LoginView.as_view(), name='member-login'),
     url(r'^logout/$', auth_views.logout, name='member-logout'),
 
     url(r'^forgot-password/$', ForgotPasswordView.as_view(), name='member-forgot-password'),

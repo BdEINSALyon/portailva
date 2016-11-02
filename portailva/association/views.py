@@ -1,20 +1,12 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
-from django.urls import reverse
-from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
-from django.views.generic import CreateView
-from django.views.generic import DeleteView
-from django.views.generic import DetailView
-from django.views.generic import ListView
-from django.views.generic import TemplateView
-from django.views.generic import UpdateView
-from django.views.generic.detail import SingleObjectMixin
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
 from portailva.association.forms import AssociationForm, AssociationAdminForm, AssociationFileUploadForm, MandateForm, \
     PeopleForm, DirectoryEntryForm, OpeningHourForm
@@ -22,14 +14,13 @@ from portailva.association.models import Association, Mandate, People, Directory
 from portailva.file.models import AssociationFile, FileFolder, FileVersion
 
 
-class AssociationListView(ListView):
+class AssociationListView(LoginRequiredMixin, ListView):
     template_name = 'association/list.html'
 
-    @method_decorator(login_required)
-    def get(self, request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if not request.user.has_perm('association.admin_association'):
             raise PermissionDenied
-        return super(AssociationListView, self).get(request, *args, **kwargs)
+        return super(AssociationListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         queryset = Association.objects.all()
@@ -40,23 +31,21 @@ class AssociationListView(ListView):
         return context
 
 
-class AssociationDetailView(DetailView):
+class AssociationDetailView(LoginRequiredMixin, DetailView):
     model = Association
     template_name = 'association/detail.html'
     object = None
 
-    @method_decorator(login_required)
-    def get(self, request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if not self.object.can_access(request.user):
             raise PermissionDenied
-        return super(AssociationDetailView, self).get(request, *args, **kwargs)
+        return super(AssociationDetailView, self).dispatch(request, *args, **kwargs)
 
 
-class AssociationMixin(object):
+class AssociationMixin(LoginRequiredMixin):
     association = None
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         association_pk = int(self.kwargs.get('association_pk', None))
         self.association = get_object_or_404(Association, pk=association_pk)
@@ -71,7 +60,7 @@ class AssociationMixin(object):
         return context
 
 
-class AssociationUpdateView(UpdateView):
+class AssociationUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'association/update.html'
     form_class = AssociationForm
     model = Association
@@ -85,7 +74,6 @@ class AssociationUpdateView(UpdateView):
             self.form_class = AssociationAdminForm
         return super(AssociationUpdateView, self).dispatch(request, *args, **kwargs)
 
-    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         form = self.create_form(self.form_class, **{
             'name': self.object.name,
@@ -97,7 +85,6 @@ class AssociationUpdateView(UpdateView):
 
         return render(request, self.template_name, {'association': self.object, 'form': form})
 
-    @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         form = self.get_form(self.form_class)
         if form.is_valid():
@@ -127,9 +114,15 @@ class AssociationUpdateView(UpdateView):
         return redirect(reverse('association-detail', kwargs={'pk': self.object.id}))
 
 
-class AssociationNewView(CreateView):
+class AssociationNewView(LoginRequiredMixin, CreateView):
     template_name = 'association/new.html'
     form_class = AssociationAdminForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('association.add_association') or \
+                not request.user.has_perm('association.admin_association'):
+            raise PermissionDenied
+        return super(AssociationNewView, self).dispatch(request, *args, **kwargs)
 
     def get_form(self, form_class=AssociationAdminForm):
         return form_class(self.request.POST)
@@ -157,12 +150,11 @@ class AssociationNewView(CreateView):
         return redirect(reverse('association-list'))
 
 
-class AssociationDeleteView(DeleteView):
+class AssociationDeleteView(LoginRequiredMixin, DeleteView):
     model = Association
     template_name = 'association/delete.html'
     success_url = reverse_lazy('association-list')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if not self.object.can_admin(request.user):
@@ -295,7 +287,6 @@ class AssociationMandateListView(AssociationMixin, ListView):
     model = Mandate
     template_name = 'association/mandate/list.html'
 
-    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         if not request.user.has_perm('association.can_admin_mandate'):
             raise PermissionDenied
@@ -353,7 +344,6 @@ class AssociationMandateMixin(AssociationMixin):
     mandate = None
     success_url = None
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         mandate = Mandate.objects.all()\
             .filter(association_id=kwargs.get('association_pk'))\
@@ -597,7 +587,6 @@ class AssociationDirectoryEntryPublishView(AssociationMixin, TemplateView):
     template_name = 'association/directory_entry/publish.html'
     http_method_names = ['get', 'post']
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.has_perm('association.admin_directoryentry'):
             raise PermissionDenied
@@ -618,7 +607,6 @@ class AssociationDirectoryEntryDeleteView(AssociationMixin, TemplateView):
     template_name = 'association/directory_entry/delete.html'
     http_method_names = ['get', 'post']
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.has_perm('association.admin_directoryentry'):
             raise PermissionDenied
