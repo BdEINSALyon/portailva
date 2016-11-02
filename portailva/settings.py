@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'anymail',
     'bootstrapform',
     'crispy_forms',
+    'rest_framework',
     'social.apps.django_app.default',
 
     'portailva.utils',
@@ -168,11 +169,21 @@ ANYMAIL = {
 EMAIL_BACKEND = 'anymail.backends.mailgun.MailgunBackend'
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@asso-insa-lyon.fr')
 
+# REST API
+REST_FRAMEWORK = {
+    # By default, we only want authenticated requests
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
+
 PORTAILVA_APP = {
     'site': {
         'name': "PortailVA",
         'litteral_name': "Portail VA",
         'url': os.environ.get('SITE_URL', "http://127.0.0.1:8000"),
+        'api_url': os.environ.get('API_URL', "http://127.0.0.1:8000/api"),
         'email_contact': "contact@asso-insa-lyon.fr",
         'email_noreply': "noreply@asso-insa-lyon.fr",
         'contribute_link': "https://github.com/VAINSALyon/portailva/blob/dev/CONTRIBUTING.md",

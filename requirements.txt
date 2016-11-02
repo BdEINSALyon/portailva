@@ -9,3 +9,4 @@ python-magic==0.4.12
 gitpython==2.1.0
 django-anymail==0.6.1
 premailer==3.0.1
+djangorestframework==3.5.2
