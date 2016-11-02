@@ -12,13 +12,13 @@ from .mixins import AssociationDirectoryEntryMixin, OpeningHourMixin
 
 class AssociationDirectoryEntryDetailView(AssociationDirectoryEntryMixin, DetailView):
     model = DirectoryEntry
-    template_name = 'association/directory_entry/detail.html'
+    template_name = 'directory/detail.html'
 
 
 class AssociationDirectoryEntryUpdateView(AssociationDirectoryEntryMixin, UpdateView):
     model = DirectoryEntry
     form_class = DirectoryEntryForm
-    template_name = 'association/directory_entry/update.html'
+    template_name = 'directory/update.html'
 
     def form_valid(self, form):
         if self.object is not None and not self.object.is_online:
@@ -53,7 +53,7 @@ class AssociationDirectoryEntryUpdateView(AssociationDirectoryEntryMixin, Update
 
 class AssociationDirectoryEntryOpeningHourCreateView(AssociationDirectoryEntryMixin, CreateView):
     form_class = OpeningHourForm
-    template_name = 'association/directory_entry/opening_hour_new.html'
+    template_name = 'directory/opening_hour/new.html'
 
     def form_valid(self, form):
         directory_entry = self.get_object()
@@ -85,7 +85,7 @@ class AssociationDirectoryEntryOpeningHourCreateView(AssociationDirectoryEntryMi
 
 class AssociationDirectoryEntryOpeningHourUpdateView(OpeningHourMixin, UpdateView):
     form_class = OpeningHourForm
-    template_name = 'association/directory_entry/opening_hour_update.html'
+    template_name = 'directory/opening_hour/update.html'
     directory_entry = None
 
     def form_valid(self, form):
@@ -122,7 +122,7 @@ class AssociationDirectoryEntryOpeningHourUpdateView(OpeningHourMixin, UpdateVie
 
 class AssociationDirectoryEntryOpeningHourDeleteView(OpeningHourMixin, DeleteView):
     form_class = OpeningHourForm
-    template_name = 'association/directory_entry/opening_hour_delete.html'
+    template_name = 'directory/opening_hour/delete.html'
     directory_entry = None
 
     def post(self, request, *args, **kwargs):
@@ -151,11 +151,11 @@ class AssociationDirectoryEntryOpeningHourDeleteView(OpeningHourMixin, DeleteVie
 
 
 class AssociationDirectoryEntryPublishView(AssociationMixin, TemplateView):
-    template_name = 'association/directory_entry/publish.html'
+    template_name = 'directory/publish.html'
     http_method_names = ['get', 'post']
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('association.admin_directoryentry'):
+        if not request.user.has_perm('directory.admin_directoryentry'):
             raise PermissionDenied
         self.object = DirectoryEntry.objects.get_last_for_association_id(kwargs.get('association_pk'))
         if self.object.is_online:
@@ -171,11 +171,11 @@ class AssociationDirectoryEntryPublishView(AssociationMixin, TemplateView):
 
 
 class AssociationDirectoryEntryDeleteView(AssociationMixin, TemplateView):
-    template_name = 'association/directory_entry/delete.html'
+    template_name = 'directory/delete.html'
     http_method_names = ['get', 'post']
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('association.admin_directoryentry'):
+        if not request.user.has_perm('directory.admin_directoryentry'):
             raise PermissionDenied
         return super(AssociationDirectoryEntryDeleteView, self).dispatch(request, *args, **kwargs)
 

@@ -60,7 +60,7 @@ class FileView(DetailView):
 
 # Association files
 class AssociationFileTreeView(AssociationMixin, DetailView):
-    template_name = 'association/files.html'
+    template_name = 'file/association_file_tree.html'
 
     def get(self, request, *args, **kwargs):
         try:
@@ -95,7 +95,7 @@ class AssociationFileTreeView(AssociationMixin, DetailView):
 
 
 class AssociationFileUploadView(AssociationMixin, CreateView):
-    template_name = 'association/file_upload.html'
+    template_name = 'file/association_file_upload.html'
     http_method_names = ['get', 'post']
     form_class = AssociationFileUploadForm
     current_folder = None
@@ -164,7 +164,7 @@ class AssociationFileUploadView(AssociationMixin, CreateView):
 
 class AssociationFileDeleteView(AssociationMixin, DeleteView):
     model = AssociationFile
-    template_name = 'association/file_delete.html'
+    template_name = 'file/association_file_delete.html'
     success_url = None
 
     def post(self, request, *args, **kwargs):
