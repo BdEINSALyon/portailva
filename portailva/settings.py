@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'portailva.utils',
     'portailva.association',
     'portailva.directory',
+    'portailva.event',
     'portailva.file',
     'portailva.pages',
     'portailva.member'
