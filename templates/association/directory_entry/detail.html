@@ -110,5 +110,7 @@
         <i>Non défini</i>
       {% endif %}
     </div>
+
+    <p><small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small></p>
   {% endif %}
 {% endblock %}

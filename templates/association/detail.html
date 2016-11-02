@@ -32,4 +32,6 @@
   <b>Description courte</b>
   <div class="well well-sm">{{ object.description }}</div>
 
+  <p><small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small></p>
+
 {% endblock %}
