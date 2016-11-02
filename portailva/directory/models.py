@@ -1,3 +1,5 @@
+from itertools import groupby
+
 from django.db import models
 
 from portailva.association.models import Association
@@ -9,6 +11,10 @@ class DirectoryEntryManager(models.Manager):
         return self.get_queryset()\
             .filter(association_id=association_id)\
             .order_by('-id')[:1][0]
+
+    def get_last_active(self):
+        return [list(g)[0] for k, g in groupby(DirectoryEntry.objects.all().filter(is_online=True)
+                                               .order_by('association__name', '-created_at'), lambda x: x.association_id)]
 
 
 class DirectoryEntry(models.Model):

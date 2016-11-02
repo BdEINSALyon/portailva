@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'', include('portailva.utils.urls')),
 
     # REST API
-    url(r'^api/v1/', include('portailva.api_v1_urls')),  # API v1
+    url(r'^api/', include('portailva.api_urls')),
 
     url(r'^$', home_view, name='homepage'),
 ]
