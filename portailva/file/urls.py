@@ -1,10 +1,19 @@
 from django.conf.urls import url
 
-from portailva.file.views import FileListView, FileView
+from .views import FileListView, FileView, AssociationFileTreeView, AssociationFileUploadView, AssociationFileDeleteView
 
 urlpatterns = [
-    url('^(?P<pk>\d+)/$', FileView.as_view(), name='file-view'),
+    # File
+    url('^file/(?P<pk>\d+)/$', FileView.as_view(), name='file-view'),
+
+    # Association file
+    url('^association/(?P<association_pk>\d+)/file/tree(?:/(?P<folder_pk>\d+))?/$', AssociationFileTreeView.as_view(),
+        name='association-file-tree'),
+    url('^association/(?P<association_pk>\d+)/file/tree/(?P<folder_pk>\d+)/upload/$',
+        AssociationFileUploadView.as_view(), name='association-file-upload'),
+    url('^association/(?P<association_pk>\d+)/file/(?P<pk>\d+)/delete/$', AssociationFileDeleteView.as_view(),
+        name='association-file-delete'),
 
     # Admin stuff
-    url('^$', FileListView.as_view(), name='file-list'),
+    url('^file/$', FileListView.as_view(), name='file-list'),
 ]

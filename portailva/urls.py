@@ -22,7 +22,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^association/', include('portailva.association.urls')),
     url(r'^member/', include('portailva.member.urls')),
-    url(r'^file/', include('portailva.file.urls')),
+    url(r'', include('portailva.directory.urls')),
+    url(r'', include('portailva.file.urls')),
     url(r'', include('portailva.utils.urls')),
 
     # REST API
