@@ -15,7 +15,7 @@
         <a class="list-group-item" href="{% url 'association-file-tree' association.id %}"><i class="fa fa-file"></i> Fichiers</a>
         <a class="list-group-item" href="{% url 'association-directory-detail' association.id %}"><i class="fa fa-book"></i> Bot'INSA</a>
         <a class="list-group-item" href="{% url 'association-mandate-list' association.id %}"><i class="fa fa-users"></i> Mandats (bureaux)</a>
-        <a class="list-group-item disabled" href="#" data-toggle="tooltip" title="Prochainement"><i class="fa fa-calendar-check-o"></i> Evénements</a>
+        <a class="list-group-item" href="{% url 'association-event-list' association.id %}"><i class="fa fa-calendar-check-o"></i> Evénements</a>
         <a class="list-group-item disabled" href="#" data-toggle="tooltip" title="Prochainement"><i class="fa fa-money"></i> Demandes de subvention</a>
       </div>
 

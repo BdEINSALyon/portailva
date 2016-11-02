@@ -1,0 +1,96 @@
+{% extends 'association/base_association.html' %}
+
+{% block page_sub_title %}
+  Evénements
+{% endblock %}
+
+{% block quick_actions %}
+  <a href="{% url 'association-event-new' association.id %}" class="btn btn-success"><i class="fa fa-plus"></i> Ajouter</a>
+{% endblock %}
+
+{% block content_association %}
+  <div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#current_or_coming" aria-controls="home" role="tab" data-toggle="tab">En cours ou à venir</a></li>
+      <li role="presentation"><a href="#past" aria-controls="profile" role="tab" data-toggle="tab">Passés</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="current_or_coming">
+
+          <table class="table table-bordered table-stripped">
+            <thead>
+              <tr>
+                <th>Nom de l'événement</th>
+                <th>Début</th>
+                <th>Fin</th>
+                <th>Statut</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for event in object_list %}
+                <tr>
+                  <td><a href="#">{{ event.name }}</a></td>
+                  <td>{{ event.begins_at|date }}</td>
+                  <td>{{ event.ends_at|date }}</td>
+                  <td>
+                    {% if event.is_online %}
+                      <i class="fa fa-check"></i>
+                    {% else %}
+                      <i class="fa fa-times"></i>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if not event.is_online %}
+                      <a href="#" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
+                    {% endif %}
+                    <a href="#" data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="5"><i>Aucun événement en cours ou à venir.</i></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+      </div>
+      <div role="tabpanel" class="tab-pane" id="past">
+
+          <table id="prettyTable2" class="table table-bordered table-stripped">
+            <thead>
+              <tr>
+                <th>Nom de l'événement</th>
+                <th>Début</th>
+                <th>Fin</th>
+                <th>Statut</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for event in past_events %}
+                <tr>
+                  <td><a href="#">{{ event.name }}</a></td>
+                  <td>{{ event.begins_at|date }}</td>
+                  <td>{{ event.ends_at|date }}</td>
+                  <td>
+                    {% if event.is_online %}
+                      <i class="fa fa-check"></i>
+                    {% else %}
+                      <i class="fa fa-times"></i>
+                    {% endif %}
+                  </td>
+                  <td>-</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -26,11 +26,12 @@ class Event(models.Model):
                              on_delete=models.SET_NULL)
     association = models.ForeignKey(Association, verbose_name="Association", related_name="events",
                                     on_delete=models.CASCADE)
-    place = models.ForeignKey(Place, verbose_name="Lieu", related_name="events", null=True, on_delete=models.SET_NULL)
+    place = models.ForeignKey(Place, verbose_name="Lieu", related_name="events", blank=True, null=True,
+                              on_delete=models.SET_NULL)
     picture = models.ForeignKey(File, verbose_name="Image", blank=True, null=True, on_delete=models.SET_NULL)
 
-    begins_at = models.DateTimeField("Date de début")
-    ends_at = models.DateTimeField("Date de fin")
+    begins_at = models.DateTimeField("Date et heure de début")
+    ends_at = models.DateTimeField("Date et heure de fin")
     created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
     updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
 
