@@ -24,54 +24,19 @@
     </div>
   {% endif %}
 
-  <b>Description</b>
-  <div class="well well-sm">{{ object.description|linebreaksbr }}</div>
+  <b>Nom</b>
+  <div class="well well-sm">{{ object.name }}</div>
 
   <div class="row">
     <div class="col-md-6">
-      <b>Adresse de contact</b>
-      <div class="well well-sm"><a href="mailto:{{ object.contact_address }}">{{ object.contact_address }}</a></div>
+      <b>Type d'événement</b>
+      <div class="well well-sm">{{ object.type.name }}</div>
     </div>
-    <div class="col-md-6">
-      <b>Numéro de téléphone</b>
-      <div class="well well-sm">
-        {% if object.phone %}
-          {{ object.phone }}
-        {% else %}
-          <i>Non défini</i>
-        {% endif %}
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-6">
-      <b>Horaires de permanence</b>
-      <div class="well well-sm">
-        <table class="table">
-          <tbody>
-            {% for opening_hour in object.opening_hours.all %}
-            <tr>
-              <td>{{ days|get_tuple:opening_hour.day }}</td>
-              <td>de {{ opening_hour.begins_at|time:"H:i" }}</td>
-              <td>à {{ opening_hour.ends_at|time:"H:i" }}</td>
-              <td>
-                <a href="{% url 'association-directory-opening-hour-update' association.id opening_hour.id %}" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
-                <a href="{% url 'association-directory-opening-hour-delete' association.id opening_hour.id %}" data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
-              </td>
-            </tr>
-            {% endfor %}
-            <tr>
-              <td colspan="4"><a href="{% url 'association-directory-opening-hour-new' association.id %}">Ajouter un horaire</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
     <div class="col-md-6">
       <b>Lieu</b>
       <div class="well well-sm">
-        {% if object.place_id %}
+        {% if object.place %}
           {{ object.place.name }}
         {% else %}
           <i>Non défini</i>
@@ -80,31 +45,22 @@
     </div>
   </div>
 
-  <b>URL site web</b>
-  <div class="well well-sm">
-    {% if object.website_url %}
-      <a href="{{ object.website_url }}">{{ object.website_url }}</a>
-    {% else %}
-      <i>Non défini</i>
-    {% endif %}
-  </div>
+  <b>Description courte</b>
+  <div class="well well-sm">{{ object.short_description|linebreaksbr }}</div>
 
-  <b>URL page Facebook</b>
-  <div class="well well-sm">
-    {% if object.facebook_url %}
-      <a href="{{ object.facebook_url }}">{{ object.facebook_url }}</a>
-    {% else %}
-      <i>Non défini</i>
-    {% endif %}
-  </div>
+  <b>Description courte</b>
+  <div class="well well-sm">{{ object.description|linebreaksbr }}</div>
 
-  <b>URL fil Twitter</b>
-  <div class="well well-sm">
-    {% if object.twitter_url %}
-      <a href="{{ object.twitter_url }}">{{ object.twitter_url }}</a>
-    {% else %}
-      <i>Non défini</i>
-    {% endif %}
+  <div class="row">
+    <div class="col-md-6">
+      <b>Date et heure de début</b>
+      <div class="well well-sm">{{ object.begins_at|date:'DATETIME_FORMAT' }}</div>
+    </div>
+
+    <div class="col-md-6">
+      <b>Date et heure de fin</b>
+      <div class="well well-sm">{{ object.ends_at|date:'DATETIME_FORMAT' }}</div>
+    </div>
   </div>
 
   <p><small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small></p>
