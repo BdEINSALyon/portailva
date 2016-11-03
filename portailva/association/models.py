@@ -2,10 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Create your models here.
-from portailva.utils.models import Place
-
-
 class Category(models.Model):
     """
     A Category is a simple container for Associations.
