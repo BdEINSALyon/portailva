@@ -25,6 +25,7 @@ const postcssPlugins = [
 
 // Css vendors
 const cssVendors = [
+  'node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
   'assets/css/datatables.bootstrap.css'
 ];
 
@@ -34,6 +35,9 @@ const jsVendors = [
   'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
   'node_modules/datatables/media/js/jquery.dataTables.js',
   'assets/js/datatables.bootstrap.js',
+  'node_modules/moment/moment.js',
+  'node_modules/moment/locale/fr.js',
+  'node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
   // Used by other scripts, must be first
   'assets/js/main.js'
 ];

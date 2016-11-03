@@ -46,7 +46,7 @@
                   </td>
                   <td>
                     {% if not event.is_online %}
-                      <a href="#" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
+                      <a href="{% url 'association-event-update' association.id event.id %}" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
                     {% endif %}
                     <a href="#" data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
                   </td>

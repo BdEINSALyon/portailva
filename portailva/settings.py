@@ -158,6 +158,22 @@ STATICFILES_DIRS = (
 # Crispy forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+# Datetime picker
+PICKER_OPTIONS = {
+    "format": "DD/MM/YYYY HH:mm",
+    "sideBySide": True,
+    "allowInputToggle": True,
+    "locale": "fr",
+    "widgetPositioning": {
+        "vertical": "top"
+    },
+}
+
+PICKER_DATE_OPTIONS = PICKER_OPTIONS.copy()
+PICKER_DATE_OPTIONS['format'] = 'DD/MM/YYYY'
+PICKER_DATETIME_OPTIONS = PICKER_OPTIONS.copy()
+PICKER_DATETIME_OPTIONS['format'] = 'DD/MM/YYYY HH:mm'
+
 # Files upload
 FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler'

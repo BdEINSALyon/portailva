@@ -1,5 +1,7 @@
+from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.helper import FormHelper
 from django import forms
+from django.conf import settings
 from django.utils.datetime_safe import datetime
 
 from .models import Event
@@ -14,26 +16,15 @@ class EventForm(forms.ModelForm):
 
     begins_at = forms.DateTimeField(
         label="Date et heure de début",
-        help_text="Format : JJ/MM/AAAA HH:MM",
-        input_formats=[
-            '%d/%m/%Y %H:%M'
-        ],
-        widget=forms.TextInput(
-            attrs={'type': 'datetime'}
-        )
+        help_text="Format : " + settings.PICKER_DATETIME_OPTIONS['format'],
+        widget=DateTimePicker(options=settings.PICKER_DATETIME_OPTIONS)
 
     )
 
     ends_at = forms.DateTimeField(
         label="Date et heure de fin",
-        help_text="Format : JJ/MM/AAAA HH:MM",
-        input_formats=[
-            '%d/%m/%Y %H:%M'
-        ],
-        widget=forms.TextInput(
-            attrs={'type': 'datetime'}
-        )
-
+        help_text="Format : " + settings.PICKER_DATETIME_OPTIONS['format'],
+        widget=DateTimePicker(options=settings.PICKER_DATETIME_OPTIONS)
     )
 
     class Meta(object):
