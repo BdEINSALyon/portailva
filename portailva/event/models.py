@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.datetime_safe import datetime
 
 from portailva.association.models import Association
 from portailva.file.models import File
@@ -40,6 +41,28 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+    def can_update(self, user):
+        if not user.has_perm('event.admin_event'):
+            if not user in self.association.users.all():
+                return False
+            elif self.is_online:
+                return False
+            else:
+                return True
+        else:
+            return True
+
+    def can_delete(self, user):
+        if not user.has_perm('event.admin_event'):
+            if not user in self.association.users.all():
+                return False
+            elif self.is_online and self.ends_at.replace(tzinfo=None) <= datetime.now().replace(tzinfo=None):
+                return False
+            else:
+                return True
+        else:
+            return True
 
 
 class EventPrice(models.Model):

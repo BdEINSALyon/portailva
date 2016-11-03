@@ -1,8 +1,11 @@
 from datetime import datetime
 
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView
+from django.views.generic import DeleteView
+from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
 
@@ -37,6 +40,19 @@ class AssociationEventListView(AssociationMixin, ListView):
             .order_by('-ends_at')
 
 
+class AssociationEventDetailView(AssociationMixin, DetailView):
+    model = Event
+    template_name = 'event/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AssociationEventDetailView, self).get_context_data()
+        context.update({
+            'can_update': self.object.can_update(self.request.user),
+            'can_delete': self.object.can_delete(self.request.user)
+        })
+        return context
+
+
 class AssociationEventNewView(AssociationMixin, CreateView):
     model = Event
     form_class = EventForm
@@ -65,7 +81,7 @@ class AssociationEventUpdateView(AssociationMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         # Can't update event after its validation
-        if self.object.is_online and not request.user.has_perm('event.admin_event'):
+        if not self.object.can_update(request.user):
             raise PermissionDenied
         self.success_url = reverse('association-event-list', kwargs={
             'association_pk': kwargs.get('association_pk')
@@ -79,3 +95,17 @@ class AssociationEventUpdateView(AssociationMixin, UpdateView):
         })
 
         return kwargs
+
+
+class AssociationEventDeleteView(AssociationMixin, DeleteView):
+    model = Event
+    template_name = 'event/delete.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.can_delete(request.user):
+            raise PermissionDenied
+        self.success_url = reverse('association-event-list', kwargs={
+            'association_pk': kwargs.get('association_pk')
+        })
+        return super(AssociationEventDeleteView, self).dispatch(request, *args, **kwargs)

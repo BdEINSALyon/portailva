@@ -28,13 +28,12 @@
                 <th>Début</th>
                 <th>Fin</th>
                 <th>Statut</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {% for event in object_list %}
                 <tr>
-                  <td><a href="#">{{ event.name }}</a></td>
+                  <td><a href="{% url 'association-event-detail' association.id event.id %}">{{ event.name }}</a></td>
                   <td>{{ event.begins_at|date }}</td>
                   <td>{{ event.ends_at|date }}</td>
                   <td>
@@ -43,12 +42,6 @@
                     {% else %}
                       <i class="fa fa-times"></i>
                     {% endif %}
-                  </td>
-                  <td>
-                    {% if not event.is_online %}
-                      <a href="{% url 'association-event-update' association.id event.id %}" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
-                    {% endif %}
-                    <a href="#" data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>
               {% empty %}
@@ -69,13 +62,12 @@
                 <th>Début</th>
                 <th>Fin</th>
                 <th>Statut</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {% for event in past_events %}
                 <tr>
-                  <td><a href="#">{{ event.name }}</a></td>
+                  <td><a href="{% url 'association-event-detail' association.id event.id %}">{{ event.name }}</a></td>
                   <td>{{ event.begins_at|date }}</td>
                   <td>{{ event.ends_at|date }}</td>
                   <td>
@@ -85,7 +77,6 @@
                       <i class="fa fa-times"></i>
                     {% endif %}
                   </td>
-                  <td>-</td>
                 </tr>
               {% endfor %}
             </tbody>
