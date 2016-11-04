@@ -1,5 +1,7 @@
 {% extends 'association/base_association.html' %}
 
+{% load humanize %}
+
 {% block page_sub_title %}
   Détail d'un événement
 {% endblock %}
@@ -8,13 +10,20 @@
   {% if can_update %}
     <a href="{% url 'association-event-delete' association.id object.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Supprimer</a>
   {% endif %}
+  {% if not object.is_online and perms.event.admin_event %}
+    <a href="{% url 'association-event-publish' association.id object.id %}" class="btn btn-success"><i class="fa fa-check"></i> Publier</a>
+  {% endif %}
   {% if can_delete %}
     <a href="{% url 'association-event-update' association.id object.id %}" class="btn btn-primary"><i class="fa fa-pencil"></i> Mettre à jour</a>
   {% endif %}
 {% endblock %}
 
 {% block content_association %}
-  {% if not object.is_online %}
+  {% if not object.is_online and object.prices.all|length < 1 %}
+    <div class="alert alert-danger" role="alert">
+      Cet événement ne sera pas publié tant qu'aucun tarif n'aura été paramétré.
+    </div>
+  {% elif not object.is_online %}
     <div class="alert alert-warning" role="alert">
       Cet événement n'a pas encore été validé. Il n'est donc pas en ligne.
     </div>
@@ -23,9 +32,6 @@
       Cet événement est validé et en ligne. Vous ne pouvez pas le modifier.
     </div>
   {% endif %}
-
-  <b>Nom</b>
-  <div class="well well-sm">{{ object.name }}</div>
 
   <div class="row">
     <div class="col-md-6">
@@ -45,6 +51,9 @@
     </div>
   </div>
 
+  <b>Nom</b>
+  <div class="well well-sm">{{ object.name }}</div>
+
   <b>Description courte</b>
   <div class="well well-sm">{{ object.short_description|linebreaksbr }}</div>
 
@@ -62,6 +71,47 @@
       <div class="well well-sm">{{ object.ends_at|date:'DATETIME_FORMAT' }}</div>
     </div>
   </div>
+
+  <b>Tarifs</b>
+  <table class="table table-bordered table-stripped">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prix</th>
+        <th>Tarif VA ?</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for price in event.prices.all %}
+      <tr>
+        <td>{{ price.name }}</td>
+        <td>
+          {% if price.is_variable %}
+            Prix libre
+          {% elif price.price == 0 %}
+            Gratuit
+          {% else %}
+            {{ price.price|floatformat:2|intcomma }}€</td>
+          {% endif %}
+        <td>{{ price.is_va|yesno:"Oui,Non" }}</td>
+        <td>
+          <a href="{% url 'association-event-price-update' association.id event.id price.id %}" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
+          <a href="{% url 'association-event-price-delete' association.id event.id price.id %}" data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4">
+          <i>Aucun tarif n'a été défini pour cet événement.</i><br>
+          {% if can_update %}
+            <a href="{% url 'association-event-price-new' association.id event.id %}" class="btn btn-xs btn-primary"><i class="fa fa-plus"></i> Ajouter un tarif</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
   <p><small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small></p>
 {% endblock %}

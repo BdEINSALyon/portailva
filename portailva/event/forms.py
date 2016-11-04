@@ -4,7 +4,7 @@ from django import forms
 from django.conf import settings
 from django.utils.datetime_safe import datetime
 
-from .models import Event
+from .models import Event, EventPrice
 
 
 class EventForm(forms.ModelForm):
@@ -53,3 +53,31 @@ class EventForm(forms.ModelForm):
     def save(self, commit=True):
         self.instance.association_id = self.association.id
         return super(EventForm, self).save(commit)
+
+
+class EventPriceForm(forms.ModelForm):
+    name = forms.CharField(
+        label="Nom du tarif",
+        max_length=EventPrice._meta.get_field('name').max_length,
+        widget=forms.TextInput(attrs={'placeholder': "Ex : plein tarif, Tarif VA, etc."})
+    )
+    price = forms.DecimalField(
+        label="Tarif",
+        initial=0.0,
+        help_text="Valeur en €. Mettre 0 pour gratuit."
+    )
+
+    class Meta(object):
+        model = EventPrice
+        fields = ('name', 'price', 'is_va', 'is_variable',)
+
+    def __init__(self, *args, **kwargs):
+        self.event = kwargs.pop('event', None)
+        super(EventPriceForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_id = 'eventPriceForm'
+
+    def save(self, commit=True):
+        self.instance.event_id = self.event.id
+        return super(EventPriceForm, self).save(commit)

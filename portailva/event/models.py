@@ -1,3 +1,5 @@
+from decimal import Decimal
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.datetime_safe import datetime
 
@@ -67,7 +69,8 @@ class Event(models.Model):
 
 class EventPrice(models.Model):
     name = models.CharField("Nom du tarif", max_length=50)
-    price = models.DecimalField("Tarif", max_digits=8, decimal_places=2)
+    price = models.DecimalField("Tarif", max_digits=8, decimal_places=2,
+                                validators=[MinValueValidator(Decimal('0'))])
 
     event = models.ForeignKey(Event, verbose_name="Evénement", related_name="prices", on_delete=models.CASCADE)
 
@@ -79,3 +82,9 @@ class EventPrice(models.Model):
 
     def __str__(self):
         return '[' + self.event.name + '] ' + self.name
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        # We delete price value if price is variable
+        if self.is_variable:
+            self.price = 0.0
+        return super(EventPrice, self).save(force_insert, force_update, using, update_fields)

@@ -1,0 +1,19 @@
+{% extends 'association/base_association.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block page_sub_title %}
+  Nouveau tarif
+{% endblock %}
+
+{% block quick_actions %}
+  <a href="{% url 'association-event-detail' association.id event.id %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>
+  <button form="eventPriceForm" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
+{% endblock %}
+
+{% block content_association %}
+  <b>Evénement</b>
+  <div class="well well-sm">{{ event.name }}</div>
+
+  {% crispy form %}
+{% endblock %}

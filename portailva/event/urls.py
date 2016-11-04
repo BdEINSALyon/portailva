@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
 from .views import AssociationEventListView, AssociationEventNewView, AssociationEventUpdateView, \
-    AssociationEventDetailView, AssociationEventDeleteView
+    AssociationEventDetailView, AssociationEventDeleteView, AssociationEventPriceNewView, \
+    AssociationEventPriceUpdateView, AssociationEventPriceDeleteView, AssociationEventPublishView
 
 urlpatterns = [
     url('^association/(?P<association_pk>\d+)/event/$', AssociationEventListView.as_view(),
@@ -13,7 +14,15 @@ urlpatterns = [
     url('^association/(?P<association_pk>\d+)/event/(?P<pk>\d+)/update/$', AssociationEventUpdateView.as_view(),
         name='association-event-update'),
     url('^association/(?P<association_pk>\d+)/event/(?P<pk>\d+)/delete/$', AssociationEventDeleteView.as_view(),
-        name='association-event-delete')
+        name='association-event-delete'),
+    url('^association/(?P<association_pk>\d+)/event/(?P<event_pk>\d+)/price/new/$',
+        AssociationEventPriceNewView.as_view(), name='association-event-price-new'),
+    url('^association/(?P<association_pk>\d+)/event/(?P<event_pk>\d+)/price/(?P<pk>\d+)/update/$',
+        AssociationEventPriceUpdateView.as_view(), name='association-event-price-update'),
+    url('^association/(?P<association_pk>\d+)/event/(?P<event_pk>\d+)/price/(?P<pk>\d+)/delete/$',
+        AssociationEventPriceDeleteView.as_view(), name='association-event-price-delete'),
 
     # Admin stuff
+    url('^association/(?P<association_pk>\d+)/event/(?P<event_pk>\d+)/publish/$',
+        AssociationEventPublishView.as_view(), name='association-event-publish')
 ]
