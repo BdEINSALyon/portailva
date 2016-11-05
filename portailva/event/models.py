@@ -18,6 +18,11 @@ class EventType(models.Model):
         return self.name
 
 
+class EventManager(models.Manager):
+    def get_online(self):
+        return self.all().filter(is_online=True)
+
+
 class Event(models.Model):
     name = models.CharField("Nom", max_length=50)
     short_description = models.TextField("Description courte", max_length=150)
@@ -37,6 +42,8 @@ class Event(models.Model):
     ends_at = models.DateTimeField("Date et heure de fin")
     created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
     updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
+
+    objects = EventManager()
 
     class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'admin',)
