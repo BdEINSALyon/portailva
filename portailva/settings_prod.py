@@ -12,3 +12,5 @@ DATABASES = {
 }
 
 STATIC_ROOT = "./static/"
+
+DEBUG = os.environ.get('APP_DEBUG', False)
