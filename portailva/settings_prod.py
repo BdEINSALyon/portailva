@@ -14,3 +14,6 @@ DATABASES = {
 STATIC_ROOT = "./static/"
 
 DEBUG = os.environ.get('APP_DEBUG', False)
+
+if os.environ.get('API_DNS', False):
+    ALLOWED_HOSTS.append(os.environ.get('API_DNS'))
