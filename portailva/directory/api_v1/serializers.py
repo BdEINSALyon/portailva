@@ -15,12 +15,12 @@ class DirectoryEntrySerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     short_description = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
-    opening_hours = serializers.SerializerMethodField()
+    schedule = serializers.SerializerMethodField()
 
     class Meta(object):
         model = DirectoryEntry
         fields = ('id', 'name', 'short_description', 'description', 'contact_address', 'phone', 'website_url',
-                  'facebook_url', 'twitter_url', 'location', 'opening_hours',)
+                  'facebook_url', 'twitter_url', 'location', 'schedule',)
 
     def get_id(self, obj):
         return obj.association_id
@@ -37,5 +37,5 @@ class DirectoryEntrySerializer(serializers.ModelSerializer):
     def get_location(self, obj):
         return PlaceSerializer(obj.place).data
 
-    def get_opening_hours(self, obj):
+    def get_schedule(self, obj):
         return OpeningHourSerializer(obj.opening_hours.all(), many=True).data
