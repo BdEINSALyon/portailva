@@ -14,6 +14,9 @@ body {
     padding-top: 70px;
     margin-bottom: 40px;
 }
+.brand-colored {
+  color: $app-color-light;
+}
 
 /* Fixed footer */
 .footer {
@@ -23,6 +26,10 @@ body {
   /* Set the fixed height of the footer here */
   height: 40px;
   background-color: $brand-primary;
+
+  a {
+    color: $app-color-light;
+  }
 }
 
 .container .text-muted {
