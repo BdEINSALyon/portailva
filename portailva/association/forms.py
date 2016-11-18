@@ -1,5 +1,7 @@
+from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.helper import FormHelper
 from django import forms
+from django.conf import settings
 
 from .models import Category, Association, Mandate, People
 
@@ -45,27 +47,13 @@ class AssociationAdminForm(AssociationForm):
 class MandateForm(forms.Form):
     begins_at = forms.DateField(
         label="Début de mandat",
-        input_formats=[
-            '%Y-%m-%d',
-            '%d/%m/%Y',
-            '%d/%m/%y'
-        ],
-        widget=forms.TextInput(
-            attrs={'type': 'date'}
-        ),
+        widget=DateTimePicker(options=settings.PICKER_DATE_OPTIONS),
         help_text="Format : JJ/MM/AAAA"
     )
 
     ends_at = forms.DateField(
         label="Fin de mandat",
-        input_formats=[
-            '%Y-%m-%d',
-            '%d/%m/%Y',
-            '%d/%m/%y'
-        ],
-        widget=forms.TextInput(
-            attrs={'type': 'date'}
-        ),
+        widget=DateTimePicker(options=settings.PICKER_DATE_OPTIONS),
         help_text="Format : JJ/MM/AAAA"
     )
 

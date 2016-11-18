@@ -1,5 +1,7 @@
+from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.helper import FormHelper
 from django import forms
+from django.conf import settings
 
 from .models import DirectoryEntry, OpeningHour
 
@@ -19,25 +21,13 @@ class DirectoryEntryForm(forms.ModelForm):
 class OpeningHourForm(forms.ModelForm):
     begins_at = forms.TimeField(
         label="Heure d'ouverture",
-        input_formats=[
-            '%H:%M',
-            '%H:%M:%S'
-        ],
-        widget=forms.TextInput(
-            attrs={'type': 'time'}
-        ),
+        widget=DateTimePicker(options=settings.PICKER_TIME_OPTIONS),
         help_text="Format : HH:MM"
     )
 
     ends_at = forms.TimeField(
         label="Heure de fermeture",
-        input_formats=[
-            '%H:%M',
-            '%H:%M:%S'
-        ],
-        widget=forms.TextInput(
-            attrs={'type': 'time'}
-        ),
+        widget=DateTimePicker(options=settings.PICKER_TIME_OPTIONS),
         help_text="Format : HH:MM"
     )
 
