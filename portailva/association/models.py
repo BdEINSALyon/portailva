@@ -101,6 +101,7 @@ class PeopleRole(models.Model):
 
     class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'admin',)
+        ordering = ('position',)
 
     def __str__(self):
         return self.name
@@ -121,6 +122,7 @@ class People(models.Model):
 
     class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'admin',)
+        ordering = ('role',)
 
     def __str__(self):
         return self.first_name + " " + self.last_name.upper()
