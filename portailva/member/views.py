@@ -67,7 +67,7 @@ class PasswordUpdateView(LoginRequiredMixin, UpdateView):
             template_html_name='mail/member/reset_password.html',
             template_text_name='mail/member/reset_password.text',
             context={},
-            subject="Redéfinition du votre mot de passe",
+            subject="Redéfinition de votre mot de passe",
             to=self.request.user.email
         )
 
