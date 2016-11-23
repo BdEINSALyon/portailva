@@ -166,7 +166,7 @@ class Requirement(models.Model):
             tag_id = int(data['tag_id'])
             nb_files = AssociationFile.objects \
                 .filter(association__id=association_id) \
-                .filter(tags__id__exact=tag_id) \
+                .filter(folder__id__exact=tag_id) \
                 .count()
             if nb_files > 0:
                 achieved = True
