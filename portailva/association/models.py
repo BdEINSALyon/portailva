@@ -163,7 +163,7 @@ class Requirement(models.Model):
         data = json.loads(self.data)
         achieved = False
         if self.type == 'file':
-            tag_id = int(self.data['tag_id'])
+            tag_id = int(data['tag_id'])
             nb_files = AssociationFile.objects \
                 .filter(association__id=association_id) \
                 .filter(tags__id__exact=tag_id) \
