@@ -270,7 +270,7 @@ class AssociationRequirementListView(AssociationMixin, ListView):
     template_name = 'association/requirement/list.html'
 
     def get_queryset(self):
-        return self.model.objects.all()
+        return self.model.objects.get_all_active()
 
 
 class AssociationRequirementAchieveView(AssociationMixin, SingleObjectMixin, View):

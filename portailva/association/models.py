@@ -135,7 +135,7 @@ class People(models.Model):
 
 class RequirementManager(models.Manager):
     def get_all_active(self):
-        return self.all().filter(active_until__lt=datetime.now())
+        return self.all().filter(active_until__gt=datetime.now())
 
 
 class Requirement(models.Model):
@@ -155,6 +155,9 @@ class Requirement(models.Model):
     active_until = models.DateTimeField("Date de fin de validité")
 
     objects = RequirementManager()
+
+    class Meta(object):
+        ordering = ('name',)
 
     def __str__(self):
         return '[' + self.type + '] ' + self.name
