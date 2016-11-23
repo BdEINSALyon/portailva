@@ -20,7 +20,7 @@ from portailva.pages.views import home as home_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^association/', include('portailva.association.urls')),
+    url(r'', include('portailva.association.urls')),
     url(r'^member/', include('portailva.member.urls')),
     url(r'', include('portailva.directory.urls')),
     url(r'', include('portailva.file.urls')),

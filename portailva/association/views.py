@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -297,4 +298,34 @@ class AssociationRequirementAchieveView(AssociationMixin, SingleObjectMixin, Vie
         except Accomplishment.DoesNotExist:
             Accomplishment.objects.create(association_id=self.association.id, requirement_id=self.object.id)
         finally:
-            return redirect(reverse('association-requirement-list', kwargs={'association_pk': self.association.id}))
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class RequirementListView(ListView):
+    model = Requirement
+    template_name = 'association/requirement/admin_list.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('association.admin_requirement'):
+            raise PermissionDenied
+        return super(RequirementListView, self).dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.model.objects.get_all_active()
+
+
+class RequirementDetailView(DetailView):
+    model = Requirement
+    template_name = 'association/requirement/detail.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('association.admin_requirement'):
+            raise PermissionDenied
+        return super(RequirementDetailView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(RequirementDetailView, self).get_context_data(**kwargs)
+        context.update({
+            'associations': Association.objects.all()
+        })
+        return context

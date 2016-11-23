@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% load requirement_extras %}
+{% block page_title %}
+  Situation administrative
+{% endblock %}
+
+{% block page_sub_title %}
+  {{ object.name }}
+{% endblock %}
+
+{% block content %}
+  <table id="prettyTable" class="table table-bordered table-stripped">
+    <thead>
+      <tr>
+        <th>Association</th>
+        <th>Etat</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for association in associations %}
+        <tr>
+          <td><a href="{% url 'association-detail' association.id %}">{{ association.name }}</a></td>
+          <td class="text-center">
+            {% if object|is_achieved:association.id %}
+              <span class="label label-success">Validé</span>
+            {% else %}
+              <span class="label label-danger">Non validé</span>
+            {% endif %}
+          </td>
+          <td class="text-center">
+            {% if object.type == 'accomplishment' %}
+              {% if not requirement|is_achieved:association.id %}
+                <form action="{% url 'association-requirement-achieve' association.id object.id %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-xs btn-success"><i class="fa fa-check"></i> Valider</button>
+                </form>
+              {% else %}
+                <form action="{% url 'association-requirement-achieve' association.id object.id %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-xs btn-danger"><i class="fa fa-times"></i> Invalider</button>
+                </form>
+              {% endif %}
+            {% elif object.type == 'file' %}
+              {% if not requirement|is_achieved:association.id %}
+                -
+              {% else %}
+                <a href="{% url 'association-file-tree' association.id object.get_folder_id %}" class="btn btn-xs btn-primary">
+                  <i class="fa fa-eye"></i> Voir
+                </a>
+              {% endif %}
+            {% else %}
+              -
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

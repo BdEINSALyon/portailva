@@ -158,6 +158,7 @@ class Requirement(models.Model):
 
     class Meta(object):
         ordering = ('name',)
+        default_permissions = ('add', 'change', 'delete', 'admin',)
 
     def __str__(self):
         return '[' + self.type + '] ' + self.name
@@ -166,10 +167,10 @@ class Requirement(models.Model):
         data = json.loads(self.data)
         achieved = False
         if self.type == 'file':
-            tag_id = int(data['tag_id'])
+            folder_id = int(data['tag_id'])
             nb_files = AssociationFile.objects \
                 .filter(association__id=association_id) \
-                .filter(folder__id__exact=tag_id) \
+                .filter(folder__id__exact=folder_id) \
                 .count()
             if nb_files > 0:
                 achieved = True
@@ -197,6 +198,11 @@ class Requirement(models.Model):
                 achieved = True
         return achieved
 
+    def get_folder_id(self):
+        data = json.loads(self.data)
+        folder_id = int(data['tag_id'])
+        return folder_id
+
 
 class Accomplishment(models.Model):
     """
@@ -210,7 +216,7 @@ class Accomplishment(models.Model):
     updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
 
     class Meta(object):
-        default_permissions = ('achieve', 'unachieve',)
+        default_permissions = ('add', 'change', 'delete', 'admin', 'achieve',)
 
     def __str__(self):
         return '[' + self.association.name + '] ' + self.requirement.name
