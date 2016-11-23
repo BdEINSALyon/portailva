@@ -12,6 +12,7 @@
 
       <div class="list-group table-of-contents">
         <a class="list-group-item" href="{% url 'association-detail' association.id %}"><i class="fa fa-eye"></i> Vue générale</a>
+        <a class="list-group-item" href="{% url 'association-requirement-list' association.id %}"><i class="fa fa-check-square-o"></i> Situation administrative</a>
         <a class="list-group-item" href="{% url 'association-file-tree' association.id %}"><i class="fa fa-file"></i> Fichiers</a>
         <a class="list-group-item" href="{% url 'association-directory-detail' association.id %}"><i class="fa fa-book"></i> Bot'INSA</a>
         <a class="list-group-item" href="{% url 'association-mandate-list' association.id %}"><i class="fa fa-users"></i> Mandats (bureaux)</a>

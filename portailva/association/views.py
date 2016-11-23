@@ -6,11 +6,13 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse, reverse_lazy
+from django.views import View
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.views.generic.detail import SingleObjectMixin
 
 from .forms import AssociationForm, AssociationAdminForm, MandateForm, PeopleForm
 from .mixins import AssociationMixin
-from .models import Association, Mandate, People
+from .models import Association, Mandate, People, Requirement, Accomplishment
 
 
 class AssociationListView(LoginRequiredMixin, ListView):
@@ -261,3 +263,38 @@ class AssociationMandatePeopleUpdateView(AssociationMandatePeopleMixin, UpdateVi
 class AssociationMandatePeopleDeleteView(AssociationMandateMixin, DeleteView):
     model = People
     template_name = 'association/mandate/people_delete.html'
+
+
+class AssociationRequirementListView(AssociationMixin, ListView):
+    model = Requirement
+    template_name = 'association/requirement/list.html'
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+
+class AssociationRequirementAchieveView(AssociationMixin, SingleObjectMixin, View):
+    model = Requirement
+    http_method_names = ['post']
+    object = None
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('association.achieve_requirement'):
+            raise PermissionDenied
+        return super(AssociationRequirementAchieveView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        # We only can achieve accomplishment typed requirements
+        if self.object.type != 'accomplishment':
+            return Http404
+
+        try:
+            accomplishment = Accomplishment.objects.get(
+                association_id=self.association.id,
+                requirement_id=self.object.id)
+            accomplishment.delete()
+        except Accomplishment.DoesNotExist:
+            Accomplishment.objects.create(association_id=self.association.id, requirement_id=self.object.id)
+        finally:
+            return redirect(reverse('association-requirement-list', kwargs={'association_pk': self.association.id}))

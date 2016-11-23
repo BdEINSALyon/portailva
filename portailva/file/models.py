@@ -4,8 +4,6 @@ from django.conf import settings
 from django.db import models
 from django.dispatch import receiver
 
-from portailva.association.models import Association
-
 
 class FileType(models.Model):
     """
@@ -79,7 +77,7 @@ class FileFolder(models.Model):
 
 
 class AssociationFile(File):
-    association = models.ForeignKey(Association, related_name="files", verbose_name="Association", null=True,
+    association = models.ForeignKey('association.Association', related_name="files", verbose_name="Association", null=True,
                                     blank=True, on_delete=models.CASCADE)
     folder = models.ForeignKey(FileFolder, verbose_name="Dossier", related_name="files", on_delete=models.CASCADE)
 
