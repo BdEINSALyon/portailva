@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'portailva.event',
     'portailva.file',
     'portailva.pages',
-    'portailva.member'
+    'portailva.member',
+    'portailva.newsletter'
 ]
 
 MIDDLEWARE = [
