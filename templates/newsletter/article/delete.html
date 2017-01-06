@@ -1,0 +1,26 @@
+{% extends 'association/base_association.html' %}
+
+{% block page_sub_title %}
+  Suppression d'un événement
+{% endblock %}
+
+{% block quick_actions %}
+  <a href="{% url 'association-event-detail' association.id object.id %}" class="btn btn-default">Annuler</a>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="alert alert-danger" role="alert">
+        <b>Attention !</b> La suppression de l'événement <i>{{ object.name }}</i> entraînera sa <u>perte irréversible</u>.<br>
+        Voulez-vous <u>vraiment</u> poursuivre ?
+      </div>
+      <form action="" method="post">
+        {% csrf_token %}
+        <p class="text-center">
+          <input class="btn btn-default" type="submit" value="Confirmer la suppression" />
+        </p>
+      </form>
+    </div>
+  </div>
+{% endblock %}

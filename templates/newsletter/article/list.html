@@ -1,0 +1,43 @@
+{% extends 'association/base_association.html' %}
+
+{% block page_sub_title %}
+    Articles
+{% endblock %}
+
+{% block quick_actions %}
+    <a href="{% url 'association-event-new' association.id %}" class="btn btn-success"><i class="fa fa-plus"></i>
+        Ajouter</a>
+{% endblock %}
+
+{% block content_association %}
+    <div>
+        <table class="table table-bordered table-stripped">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Statut</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for article in object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'association-article-detail' association.id article.id %}">{{ article.title }}</a>
+                    </td>
+                    <td>
+                        {% if event.validated %}
+                            <a data-toggle="tooltip" title="Validé"><i class="fa fa-check"></i></a>
+                        {% else %}
+                            <a data-toggle="tooltip" title="Non validé"><i class="fa fa-times"></i></a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5"><i>Aucun article.</i></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

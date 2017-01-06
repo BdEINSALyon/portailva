@@ -5,25 +5,26 @@ from portailva.association.mixins import AssociationMixin
 from portailva.newsletter.models import Article
 
 
-class AssociationArticleListArticleView(AssociationMixin, ListView):
+class AssociationArticleListView(AssociationMixin, ListView):
     model = Article
-    template_name = 'newsletter/article/.html'
+    template_name = 'newsletter/article/list.html'
 
 
-class AssociationArticleNewArticleView(AssociationMixin, CreateView):
+class AssociationArticleNewView(AssociationMixin, CreateView):
     model = Article
-    template_name = 'newsletter/article/.html'
+    template_name = 'newsletter/article/new.html'
 
 
-class AssociationArticleUpdateArticleView(AssociationMixin, UpdateView):
+class AssociationArticleUpdateView(AssociationMixin, UpdateView):
     model = Article
-    template_name = 'newsletter/article/.html'
+    template_name = 'newsletter/article/update.html'
 
 
-class AssociationArticleDetailedView(AssociationMixin, DetailView):
+class AssociationArticleDetailView(AssociationMixin, DetailView):
     model = Article
-    template_name = 'newsletter/article/.html'
+    template_name = 'newsletter/article/detail.html'
 
 
 class AssociationArticleDeleteView(AssociationMixin, DeleteView):
     model = Article
+    template_name = 'newsletter/article/delete.html'
