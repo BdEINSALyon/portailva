@@ -14,7 +14,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255, verbose_name="Titre")
     content = models.TextField(verbose_name="contenu")
 
-    type = models.CharField(max_length=20, verbose_name="type",
+    type = models.CharField(max_length=20, verbose_name="type", blank=False, default='CLASSIC',
                             choices=(('FEATURED', 'A la une'), ('CLASSIC', 'Normal')))
 
     def __str__(self):
@@ -24,12 +24,12 @@ class Article(models.Model):
         if not user.has_perm('article.admin_article'):
             if user not in self.association.users.all():
                 return False
-            elif self.is_online:
+            elif self.validated:
                 return False
             else:
                 return True
         else:
-            return True
+            return not self.validated
 
     def can_delete(self, user):
         if not user.has_perm('article.admin_article'):
