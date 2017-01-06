@@ -21,6 +21,28 @@ class Article(models.Model):
     def __str__(self):
         return "{} - {}".format(self.association.name, self.title)
 
+    def can_update(self, user):
+        if not user.has_perm('article.admin_article'):
+            if user not in self.association.users.all():
+                return False
+            elif self.is_online:
+                return False
+            else:
+                return True
+        else:
+            return True
+
+    def can_delete(self, user):
+        if not user.has_perm('article.admin_article'):
+            if user not in self.association.users.all():
+                return False
+            elif self.validated:
+                return False
+            else:
+                return True
+        else:
+            return True
+
 
 class NewsletterElement(models.Model):
 
