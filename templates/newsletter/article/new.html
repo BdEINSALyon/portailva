@@ -3,12 +3,12 @@
 {% load crispy_forms_tags %}
 
 {% block page_sub_title %}
-  Nouvel événement
+  Nouvel article
 {% endblock %}
 
 {% block quick_actions %}
-  <a href="{% url 'association-event-list' association.id %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>
-  <button form="eventForm" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
+  <a href="{% url 'association-article-list' association.id %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>
+  <button form="articleForm" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
 {% endblock %}
 
 {% block content_association %}

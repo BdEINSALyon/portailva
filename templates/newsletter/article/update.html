@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block quick_actions %}
-  <a href="{% url 'association-event-detail' association.id object.id %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>
-  <button form="eventForm" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
+  <a href="{% url 'association-article-detail' association.id object.id %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>
+  <button form="articleForm" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
 {% endblock %}
 
 {% block content_association %}

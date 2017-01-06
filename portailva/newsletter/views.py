@@ -1,7 +1,10 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
+from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from portailva.association.mixins import AssociationMixin
+from portailva.newsletter.forms import ArticleForm
 from portailva.newsletter.models import Article
 
 
@@ -12,12 +15,43 @@ class AssociationArticleListView(AssociationMixin, ListView):
 
 class AssociationArticleNewView(AssociationMixin, CreateView):
     model = Article
+    form_class = ArticleForm
     template_name = 'newsletter/article/new.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.success_url = reverse('association-article-list', kwargs={
+            'association_pk': kwargs.get('association_pk')
+        })
+        return super(AssociationArticleNewView, self).dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super(AssociationArticleNewView, self).get_form_kwargs()
+        kwargs.update({
+            'association': self.association
+        })
+
+        return kwargs
 
 
 class AssociationArticleUpdateView(AssociationMixin, UpdateView):
     model = Article
+    form_class = ArticleForm
     template_name = 'newsletter/article/update.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.success_url = reverse('association-article-detail', kwargs={
+            'association_pk': kwargs.get('association_pk'),
+            'pk': kwargs.get('pk'),
+        })
+        return super(AssociationArticleUpdateView, self).dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super(AssociationArticleUpdateView, self).get_form_kwargs()
+        kwargs.update({
+            'association': self.association
+        })
+
+        return kwargs
 
 
 class AssociationArticleDetailView(AssociationMixin, DetailView):
@@ -36,3 +70,12 @@ class AssociationArticleDetailView(AssociationMixin, DetailView):
 class AssociationArticleDeleteView(AssociationMixin, DeleteView):
     model = Article
     template_name = 'newsletter/article/delete.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        object = self.get_object()
+        if not object.can_delete(request.user):
+            raise PermissionDenied
+        self.success_url = reverse('association-article-list', kwargs={
+            'association_pk': kwargs.get('association_pk')
+        })
+        return super(AssociationArticleDeleteView, self).dispatch(request, *args, **kwargs)

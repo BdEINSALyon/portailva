@@ -6,11 +6,10 @@ from portailva.event.models import Event
 
 class Article(models.Model):
 
-    author = models.CharField(max_length=255, verbose_name="Auteur")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     association = models.ForeignKey(Association, related_name='articles', verbose_name='Association')
-    validated = models.BooleanField(verbose_name='publié')
+    validated = models.BooleanField(verbose_name='publié', default=False)
 
     title = models.CharField(max_length=255, verbose_name="Titre")
     content = models.TextField(verbose_name="contenu")
