@@ -29,18 +29,13 @@ class NewsletterForm(forms.ModelForm):
 
     class Meta(object):
         model = Newsletter
-        fields = ('title',)
+        fields = ('title', 'sent')
 
     def __init__(self, *args, **kwargs):
-        self.association = kwargs.pop('association', None)
         super(NewsletterForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_id = 'newsletterForm'
-
-    def save(self, commit=True):
-        self.instance.association_id = self.association.id
-        return super(NewsletterForm, self).save(commit)
 
 
 class ArticleNewsletterForm(forms.ModelForm):
@@ -50,15 +45,10 @@ class ArticleNewsletterForm(forms.ModelForm):
         fields = ('position', 'article',)
 
     def __init__(self, *args, **kwargs):
-        self.association = kwargs.pop('association', None)
         super(ArticleNewsletterForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_id = 'newsletterForm'
-
-    def save(self, commit=True):
-        self.instance.association_id = self.association.id
-        return super(ArticleNewsletterForm, self).save(commit)
 
 
 class EventNewsletterForm(forms.ModelForm):

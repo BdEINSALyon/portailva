@@ -4,8 +4,8 @@ from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from portailva.association.mixins import AssociationMixin
-from portailva.newsletter.forms import ArticleForm
-from portailva.newsletter.models import Article
+from portailva.newsletter.forms import ArticleForm, NewsletterForm
+from portailva.newsletter.models import Article, Newsletter
 
 
 class AssociationArticleListView(AssociationMixin, ListView):
@@ -79,3 +79,69 @@ class AssociationArticleDeleteView(AssociationMixin, DeleteView):
             'association_pk': kwargs.get('association_pk')
         })
         return super(AssociationArticleDeleteView, self).dispatch(request, *args, **kwargs)
+
+
+class NewsletterListView(ListView):
+    model = Newsletter
+    template_name = 'newsletter/newsletter/list.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('newsletter.admin_newsletter'):
+            raise PermissionDenied
+        return super(NewsletterListView, self).dispatch(request, *args, **kwargs)
+
+
+class NewsletterNewView(CreateView):
+    model = Newsletter
+    template_name = 'newsletter/newsletter/new.html'
+    form_class = NewsletterForm
+
+    def get_success_url(self):
+        return reverse('newsletter-detail', kwargs={'pk': self.object.id})
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('newsletter.admin_newsletter'):
+            raise PermissionDenied
+        return super(NewsletterNewView, self).dispatch(request, *args, **kwargs)
+
+
+class NewsletterUpdateView(CreateView):
+    model = Newsletter
+    template_name = 'newsletter/newsletter/update.html'
+    form_class = NewsletterForm
+    object = None
+
+    def get_success_url(self):
+        return reverse('newsletter-detail', kwargs={'pk': self.object.id})
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not request.user.has_perm('newsletter.admin_newsletter'):
+            raise PermissionDenied
+        return super(NewsletterUpdateView, self).dispatch(request, *args, **kwargs)
+
+
+class NewsletterDetailView(DetailView):
+    model = Newsletter
+    template_name = 'newsletter/newsletter/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(NewsletterDetailView, self).get_context_data()
+        context.update({
+            'can_update': self.request.user.has_perm('newsletter.admin_newsletter'),
+            'can_delete': self.request.user.has_perm('newsletter.admin_newsletter')
+        })
+        return context
+
+
+class NewsletterDeleteView(DeleteView):
+    model = Newsletter
+    template_name = 'newsletter/newsletter/delete.html'
+
+    def get_success_url(self):
+        return reverse('newsletter-list')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('newsletter.admin_newsletter'):
+            raise PermissionDenied
+        return super(NewsletterDeleteView, self).dispatch(request, *args, **kwargs)
