@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,132 +23,147 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{% static "js/script.js" %}"></script>
 
-  </head>
-  <body>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 
-    {# Menu #}
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
+</head>
+<body>
+
+{# Menu #}
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{% url 'homepage' %}">Portail<b class="brand-colored">VA</b></a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'homepage' %}">Portail<b class="brand-colored">VA</b></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav">
 
-            <li{% if request.resolver_match.url_name == 'homepage' %} class="active"{% endif %}><a href="{% url 'homepage' %}">Accueil</a></li>
+                <li{% if request.resolver_match.url_name == 'homepage' %} class="active"{% endif %}><a
+                        href="{% url 'homepage' %}">Accueil</a></li>
 
-            {% if my_associations.count == 1 %}
+                {% if my_associations.count == 1 %}
 
-            <li><a href="{% url 'association-detail' my_associations.0.id %}">{{ my_associations.0.name }}</a></li>
+                    <li><a href="{% url 'association-detail' my_associations.0.id %}">{{ my_associations.0.name }}</a>
+                    </li>
 
-            {% elif my_associations.count > 1 %}
+                {% elif my_associations.count > 1 %}
 
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mes associations<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                {% for association in my_associations %}
-                <li><a href="{% url 'association-detail' association.id %}">{{ association.name }}</a></li>
-                {% endfor %}
-              </ul>
-            </li>
-            {% endif %}
-
-            {# Admin stuff #}
-            {% if request.user.is_active and request.user.is_staff %}
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Supervision<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                {% if perms.association.admin_requirement %}
-                  <li><a href="{% url 'requirement-list' %}">Situation administrative</a> </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Mes associations<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% for association in my_associations %}
+                                <li><a href="{% url 'association-detail' association.id %}">{{ association.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
                 {% endif %}
-              </ul>
-            </li>
-            {% endif %}
 
-            {% if request.user.is_active and request.user.is_staff %}
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                {% if perms.association.admin_association %}
-                  <li><a href="{% url 'association-list' %}">Associations</a> </li>
+                {# Admin stuff #}
+                {% if request.user.is_active and request.user.is_staff %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Supervision<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% if perms.association.admin_requirement %}
+                                <li><a href="{% url 'requirement-list' %}">Situation administrative</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
                 {% endif %}
-                {% if perms.file.can_admin_file %}
-                  <li><a href="{% url 'file-list' %}">Fichiers</a> </li>
-                {% endif %}
-                {% if perms.utils.can_admin_place %}
-                  <li><a href="{% url 'place-list' %}">Lieux</a> </li>
-                {% endif %}
-              </ul>
-            </li>
-            {% endif %}
 
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
+                {% if request.user.is_active and request.user.is_staff %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Admin<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% if perms.association.admin_association %}
+                                <li><a href="{% url 'association-list' %}">Associations</a></li>
+                            {% endif %}
+                            {% if perms.file.can_admin_file %}
+                                <li><a href="{% url 'file-list' %}">Fichiers</a></li>
+                            {% endif %}
+                            {% if perms.utils.can_admin_place %}
+                                <li><a href="{% url 'place-list' %}">Lieux</a></li>
+                            {% endif %}
+                            {% if perms.utils.can_admin_newsletter %}
+                                <li><a href="{% url 'newsletter-list' %}">Newsletters</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% endif %}
 
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.email }} <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="{% url 'member-change-password' %}">Changer le mot de passe</a></li>
-                <li><a href="{% url 'member-logout' %}">Déconnexion</a></li>
-              </ul>
-            </li>
-            {% else %}
-            <li{% if request.resolver_match.url_name == 'member-login' %} class="active"{% endif %}><a href="{% url 'member-login' %}">Connexion</a></li>
-            {% endif %}
-          </ul>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ user.email }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'member-change-password' %}">Changer le mot de passe</a></li>
+                            <li><a href="{% url 'member-logout' %}">Déconnexion</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li{% if request.resolver_match.url_name == 'member-login' %} class="active"{% endif %}><a
+                            href="{% url 'member-login' %}">Connexion</a></li>
+                {% endif %}
+            </ul>
         </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+    </div>
+</nav>
 
-    <div class="container">
+<div class="container">
 
-      {% if messages %}
+    {% if messages %}
         {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade in" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-            {{ message }}
-          </div>
-        {% endfor %}
-      {% endif %}
-
-      <div class="row">
-        <div class="col-xs-12">
-          <h1>
-            {% block page_title %}{% endblock %}
-            <small>{% block page_sub_title %}{% endblock %}</small>
-
-            <div class="btn-group pull-right" role="group" aria-label="...">
-              <div class="btn-group" role="group">
-                {% block quick_actions %}{% endblock %}
-              </div>
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ message }}
             </div>
-          </h1>
-          <hr>
-        </div>
-      </div>
+        {% endfor %}
+    {% endif %}
 
-      {% block content %}{% endblock %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>
+                {% block page_title %}{% endblock %}
+                <small>{% block page_sub_title %}{% endblock %}</small>
+
+                <div class="btn-group pull-right" role="group" aria-label="...">
+                    <div class="btn-group" role="group">
+                        {% block quick_actions %}{% endblock %}
+                    </div>
+                </div>
+            </h1>
+            <hr>
+        </div>
     </div>
 
-    <footer class="footer">
-      <div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+<footer class="footer">
+    <div class="container">
         <p class="text-muted pull-left">
-          <span class="brand">{{ app.site.name }}</span>
-          <span class="version">• Version : <a href="{{ git_version.url }}">{{ git_version.name }}</a></span>
+            <span class="brand">{{ app.site.name }}</span>
+            <span class="version">• Version : <a href="{{ git_version.url }}">{{ git_version.name }}</a></span>
         </p>
         <p class="text-muted pull-right">
-          <a href="#">A propos</a>
+            <a href="#">A propos</a>
         </p>
-      </div>
-    </footer>
-  </body>
+    </div>
+</footer>
+</body>
 </html>

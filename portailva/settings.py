@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework',
     'social.apps.django_app.default',
+    'ckeditor',
+    'ckeditor_uploader',
 
     'portailva.utils',
     'portailva.association',
@@ -105,8 +107,12 @@ WSGI_APPLICATION = 'portailva.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DATABASE_NAME', 'portailva'),
+        'USER': os.environ.get('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', None),
+        'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
+        'PORT': os.environ.get('DATABASE_PORT', 32768)
     }
 }
 
@@ -155,6 +161,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR, 'dist'),
+    os.path.join(BASE_DIR, 'assets'),
 )
 
 # Crispy forms
@@ -232,3 +239,5 @@ PORTAILVA_APP = {
         'file_max_size': 20 * 1024 * 1024  # 20Mo
     }
 }
+
+CKEDITOR_UPLOAD_PATH = "uploads/"

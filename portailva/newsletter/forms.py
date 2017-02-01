@@ -4,14 +4,14 @@ from django import forms
 from django.conf import settings
 from django.utils.datetime_safe import datetime
 
-from .models import Article, Newsletter, ArticleNewsletterElement, EventNewsletterElement
+from .models import Article, Newsletter
 
 
 class ArticleForm(forms.ModelForm):
 
     class Meta(object):
         model = Article
-        fields = ('title', 'content',)
+        fields = ('title', 'featured_image', 'short_content', 'content',)
 
     def __init__(self, *args, **kwargs):
         self.association = kwargs.pop('association', None)
@@ -29,7 +29,7 @@ class NewsletterForm(forms.ModelForm):
 
     class Meta(object):
         model = Newsletter
-        fields = ('title', 'sent')
+        fields = ('title', 'sent', 'articles', 'events')
 
     def __init__(self, *args, **kwargs):
         super(NewsletterForm, self).__init__(*args, **kwargs)
@@ -37,33 +37,3 @@ class NewsletterForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_id = 'newsletterForm'
 
-
-class ArticleNewsletterForm(forms.ModelForm):
-
-    class Meta(object):
-        model = ArticleNewsletterElement
-        fields = ('position', 'article',)
-
-    def __init__(self, *args, **kwargs):
-        super(ArticleNewsletterForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.form_id = 'newsletterForm'
-
-
-class EventNewsletterForm(forms.ModelForm):
-
-    class Meta(object):
-        model = EventNewsletterElement
-        fields = ('position', 'event',)
-
-    def __init__(self, *args, **kwargs):
-        self.association = kwargs.pop('association', None)
-        super(EventNewsletterForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.form_id = 'newsletterForm'
-
-    def save(self, commit=True):
-        self.instance.association_id = self.association.id
-        return super(EventNewsletterForm, self).save(commit)

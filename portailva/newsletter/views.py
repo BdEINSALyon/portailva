@@ -134,6 +134,21 @@ class NewsletterDetailView(DetailView):
         return context
 
 
+class NewsletterOnlineView(DetailView):
+    model = Newsletter
+    template_name = 'newsletter/email/template.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(NewsletterOnlineView, self).get_context_data()
+        context.update({
+            'articles': kwargs['object'].articles,
+            'events': kwargs['object'].events,
+            'top_articles': kwargs['object'].articles.filter(type='FEATURED'),
+            'classic_articles': kwargs['object'].articles.filter(type='CLASSIC')
+        })
+        return context
+
+
 class NewsletterDeleteView(DeleteView):
     model = Newsletter
     template_name = 'newsletter/newsletter/delete.html'

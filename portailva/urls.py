@@ -32,4 +32,5 @@ urlpatterns = [
     url(r'^api/', include('portailva.api_urls')),
 
     url(r'^$', home_view, name='homepage'),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]

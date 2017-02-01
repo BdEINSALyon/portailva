@@ -1,3 +1,5 @@
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 
 from portailva.association.models import Association
@@ -12,7 +14,10 @@ class Article(models.Model):
     validated = models.BooleanField(verbose_name='publié', default=False)
 
     title = models.CharField(max_length=255, verbose_name="Titre")
-    content = models.TextField(verbose_name="contenu")
+    short_content = models.CharField(max_length=255, verbose_name="Description courte")
+    featured_image = models.ImageField(verbose_name="Image à la une", help_text="Cette image est utilisée dans "
+                                                                                "l'envoie de la newsletter VA")
+    content = RichTextUploadingField(verbose_name="Contenu")
 
     type = models.CharField(max_length=20, verbose_name="type", blank=False, default='CLASSIC',
                             choices=(('FEATURED', 'A la une'), ('CLASSIC', 'Normal')))
@@ -43,31 +48,6 @@ class Article(models.Model):
             return True
 
 
-class NewsletterElement(models.Model):
-
-    class Meta:
-        abstract = True
-        verbose_name = "Element de Newsletter"
-
-    position = models.IntegerField(verbose_name='position')
-
-
-class ArticleNewsletterElement(NewsletterElement):
-
-    class Meta:
-        verbose_name = "Article de newsletter"
-
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-
-
-class EventNewsletterElement(NewsletterElement):
-
-    class Meta:
-        verbose_name = "Evenement de newsletter"
-
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-
-
 class Newsletter(models.Model):
 
     title = models.CharField(max_length=255, verbose_name='Nom')
@@ -75,8 +55,8 @@ class Newsletter(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    articles = models.ManyToManyField(ArticleNewsletterElement, related_name='newletter', verbose_name='Articles')
-    events = models.ManyToManyField(EventNewsletterElement, related_name='newletter', verbose_name='Evènements')
+    articles = models.ManyToManyField(Article, related_name='newletter', verbose_name='Articles')
+    events = models.ManyToManyField(Event, related_name='newletter', verbose_name='Evènements')
 
     def __str__(self):
         return "{}".format(self.title)
