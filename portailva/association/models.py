@@ -1,5 +1,10 @@
+import json
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
+
+from portailva.file.models import AssociationFile
 
 
 class Category(models.Model):
@@ -101,6 +106,7 @@ class PeopleRole(models.Model):
 
     class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'admin',)
+        ordering = ('position',)
 
     def __str__(self):
         return self.name
@@ -121,6 +127,96 @@ class People(models.Model):
 
     class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'admin',)
+        ordering = ('role',)
 
     def __str__(self):
         return self.first_name + " " + self.last_name.upper()
+
+
+class RequirementManager(models.Manager):
+    def get_all_active(self):
+        return self.all().filter(active_until__gt=datetime.now())
+
+
+class Requirement(models.Model):
+    """
+    A Requirement represents an action that an Association can accomplish.
+    """
+    REQUIREMENT_TYPES = (
+        ('mandate', 'Mandat'),
+        ('file', 'Fichier'),
+        ('accomplishment', 'Validation manuelle')
+    )
+    name = models.CharField("Nom", max_length=100)
+    type = models.CharField("Type de condition", max_length=40, choices=REQUIREMENT_TYPES)
+    data = models.TextField("Meta données", blank=True, default='{}')
+    help_text = models.TextField("Texte d'aide", blank=True, null=True)
+
+    active_until = models.DateTimeField("Date de fin de validité")
+
+    objects = RequirementManager()
+
+    class Meta(object):
+        ordering = ('name',)
+        default_permissions = ('add', 'change', 'delete', 'admin',)
+
+    def __str__(self):
+        return '[' + self.type + '] ' + self.name
+
+    def is_achieved(self, association_id):
+        data = json.loads(self.data)
+        achieved = False
+        if self.type == 'file':
+            folder_id = int(data['tag_id'])
+            nb_files = AssociationFile.objects \
+                .filter(association__id=association_id) \
+                .filter(folder__id__exact=folder_id) \
+                .count()
+            if nb_files > 0:
+                achieved = True
+
+        if self.type == 'mandate':
+            year = data['year']
+            try:
+                last_mandate = Mandate.objects \
+                                   .filter(association__id=association_id) \
+                                   .filter(ends_at__year=int(year)) \
+                                   .order_by('-ends_at')[0:1].get()
+                if last_mandate is not None:
+                    people = People.objects.filter(mandate__id=last_mandate.id).count()
+                    if people > 2:
+                        achieved = True
+            except Mandate.DoesNotExist:
+                pass
+
+        if self.type == 'accomplishment':
+            accomplishment = Accomplishment.objects \
+                .filter(requirement__id=self.id) \
+                .filter(association__id=association_id) \
+                .count()
+            if accomplishment > 0:
+                achieved = True
+        return achieved
+
+    def get_folder_id(self):
+        data = json.loads(self.data)
+        folder_id = int(data['tag_id'])
+        return folder_id
+
+
+class Accomplishment(models.Model):
+    """
+    An Accomplishment is used to achieve a Requirement manually.
+    """
+    association = models.ForeignKey(Association, verbose_name="Association", on_delete=models.CASCADE)
+    requirement = models.ForeignKey(Requirement, verbose_name="Condition", limit_choices_to={'type': 'accomplishment'},
+                                    on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
+    updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
+
+    class Meta(object):
+        default_permissions = ('add', 'change', 'delete', 'admin', 'achieve',)
+
+    def __str__(self):
+        return '[' + self.association.name + '] ' + self.requirement.name

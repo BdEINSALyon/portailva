@@ -1,0 +1,37 @@
+{% extends 'association/base_association.html' %}
+
+{% load humanize %}
+
+{% block page_sub_title %}
+  Détail d'un article
+{% endblock %}
+
+{% block quick_actions %}
+  <a href="{% url 'newsletter-list' %}" class="btn btn-default"><i class="fa fa-list"></i> Retourner à la liste</a>
+  {% if can_delete %}
+    <a href="{% url 'newsletter-delete' object.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Supprimer</a>
+  {% endif %}
+  {% if can_update %}
+    <a href="{% url 'newsletter-update' object.id %}" class="btn btn-primary"><i class="fa fa-pencil"></i> Mettre à jour</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% if object.sent %}
+    <div class="alert alert-success" role="alert">
+      Cette newsletter a déjà été envoyé.
+    </div>
+  {% else %}
+    <div class="alert alert-warning" role="alert">
+      Cette newsletter est toujours en attente d'envoie.
+    </div>
+  {% endif %}
+
+  <b>Sujet</b>
+  <div class="well well-sm">{{ object.title }}</div>
+
+  <b>Contenu</b>
+  <div class="well well-sm">{{ object.content|linebreaksbr }}</div>
+
+  <p><small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small></p>
+{% endblock %}

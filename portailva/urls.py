@@ -20,15 +20,17 @@ from portailva.pages.views import home as home_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^association/', include('portailva.association.urls')),
+    url(r'', include('portailva.association.urls')),
     url(r'^member/', include('portailva.member.urls')),
     url(r'', include('portailva.directory.urls')),
     url(r'', include('portailva.file.urls')),
     url(r'', include('portailva.utils.urls')),
     url(r'', include('portailva.event.urls')),
+    url(r'', include('portailva.newsletter.urls')),
 
     # REST API
     url(r'^api/', include('portailva.api_urls')),
 
     url(r'^$', home_view, name='homepage'),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]

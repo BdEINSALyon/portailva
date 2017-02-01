@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+  Situation administrative
+{% endblock %}
+
+{% block page_sub_title %}
+  Liste des critères
+{% endblock %}
+
+{% block content %}
+  <table id="prettyTable" class="table table-bordered table-stripped">
+    <thead>
+      <tr>
+        <th>Nom</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for requirement in object_list %}
+        <tr>
+          <td><a href="{% url 'requirement-detail' requirement.id %}">{{ requirement.name }}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
