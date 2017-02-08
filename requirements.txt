@@ -1,6 +1,7 @@
 cssselect==1.0.1
 cssutils==1.0.1
 defusedxml==0.4.1
+dj-database-url==0.4.2
 Django==1.10.3
 django-anymail==0.6.1
 django-bootstrap-form==3.2.1
@@ -25,4 +26,3 @@ requests==2.13.0
 requests-oauthlib==0.7.0
 six==1.10.0
 smmap2==2.0.1
-wheel==0.24.0

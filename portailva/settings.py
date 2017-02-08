@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import dj_database_url
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',
     'ckeditor',
     'ckeditor_uploader',
+    'django_premailer',
 
     'portailva.utils',
     'portailva.association',
@@ -90,6 +93,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
                 'portailva.association.context_processors.my_associations',
                 'portailva.utils.context_processors.app_settings',
@@ -106,14 +110,7 @@ WSGI_APPLICATION = 'portailva.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DATABASE_NAME', 'portailva'),
-        'USER': os.environ.get('DATABASE_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', None),
-        'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
-        'PORT': os.environ.get('DATABASE_PORT', 32768)
-    }
+    'default': dj_database_url.config(default='sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite')))
 }
 
 
@@ -240,4 +237,7 @@ PORTAILVA_APP = {
     }
 }
 
-CKEDITOR_UPLOAD_PATH = "uploads/"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
+CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'ck_editor')

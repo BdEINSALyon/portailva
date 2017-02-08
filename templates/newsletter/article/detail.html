@@ -1,6 +1,7 @@
 {% extends 'association/base_association.html' %}
 
 {% load humanize %}
+{% load static %}
 
 {% block page_sub_title %}
   Détail d'un article
@@ -29,8 +30,15 @@
   <b>Titre</b>
   <div class="well well-sm">{{ object.title }}</div>
 
+    {% if object.featured_image %}
+  <b>Image</b>
+  <div class="well well-sm"><img src="{% get_media_prefix %}{{ object.featured_image }}"></div>
+    {% endif %}
+  <b>Brève</b>
+  <div class="well well-sm">{{ object.short_content|safe }}</div>
+
   <b>Contenu</b>
-  <div class="well well-sm">{{ object.content|linebreaksbr }}</div>
+  <div class="well well-sm">{{ object.content|safe }}</div>
 
   <p><small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small></p>
 {% endblock %}

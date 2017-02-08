@@ -1,5 +1,6 @@
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
+from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
@@ -11,6 +12,9 @@ from portailva.newsletter.models import Article, Newsletter
 class AssociationArticleListView(AssociationMixin, ListView):
     model = Article
     template_name = 'newsletter/article/list.html'
+
+    def get_queryset(self):
+        return Article.objects.filter(association=self.association)
 
 
 class AssociationArticleNewView(AssociationMixin, CreateView):
@@ -39,6 +43,8 @@ class AssociationArticleUpdateView(AssociationMixin, UpdateView):
     template_name = 'newsletter/article/update.html'
 
     def dispatch(self, request, *args, **kwargs):
+        if not self.get_object().can_update(request.user):
+            raise PermissionDenied
         self.success_url = reverse('association-article-detail', kwargs={
             'association_pk': kwargs.get('association_pk'),
             'pk': kwargs.get('pk'),
@@ -57,6 +63,9 @@ class AssociationArticleUpdateView(AssociationMixin, UpdateView):
 class AssociationArticleDetailView(AssociationMixin, DetailView):
     model = Article
     template_name = 'newsletter/article/detail.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(AssociationArticleDetailView, self).get_context_data()
@@ -160,3 +169,23 @@ class NewsletterDeleteView(DeleteView):
         if not request.user.has_perm('newsletter.admin_newsletter'):
             raise PermissionDenied
         return super(NewsletterDeleteView, self).dispatch(request, *args, **kwargs)
+
+
+def article_display(request, pk):
+    article = Article.objects.get(pk=pk)
+    return TemplateResponse(request, template='newsletter/article/view.html', context={
+        'article': article
+    })
+
+
+class ArticleDisplayView(DetailView):
+    model = Newsletter
+    template_name = 'newsletter/newsletter/delete.html'
+
+    def get_success_url(self):
+        return reverse('newsletter-list')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('newsletter.admin_newsletter'):
+            raise PermissionDenied
+        return super(ArticleDisplayView, self).dispatch(request, *args, **kwargs)

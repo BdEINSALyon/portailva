@@ -13,6 +13,10 @@ class ArticleForm(forms.ModelForm):
         model = Article
         fields = ('title', 'featured_image', 'short_content', 'content',)
 
+    short_content = forms.CharField(widget=forms.Textarea, label="Brève de l'article",
+                                    help_text="Ce texte est affiché dans la newsletter VA. Il est limité à 255 "
+                                              "caractères. Les retours à la ligne sont tolérés.")
+
     def __init__(self, *args, **kwargs):
         self.association = kwargs.pop('association', None)
         super(ArticleForm, self).__init__(*args, **kwargs)

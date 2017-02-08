@@ -16,8 +16,9 @@ class Article(models.Model):
     title = models.CharField(max_length=255, verbose_name="Titre")
     short_content = models.CharField(max_length=255, verbose_name="Description courte")
     featured_image = models.ImageField(verbose_name="Image à la une", help_text="Cette image est utilisée dans "
-                                                                                "l'envoie de la newsletter VA")
-    content = RichTextUploadingField(verbose_name="Contenu")
+                                                                                "l'envoie de la newsletter VA",
+                                       blank=True, null=True)
+    content = RichTextField(verbose_name="Contenu", blank=True, null=True)
 
     type = models.CharField(max_length=20, verbose_name="type", blank=False, default='CLASSIC',
                             choices=(('FEATURED', 'A la une'), ('CLASSIC', 'Normal')))
