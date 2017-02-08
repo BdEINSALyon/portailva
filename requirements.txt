@@ -8,6 +8,7 @@ django-bootstrap-form==3.2.1
 django-bootstrap3-datetimepicker-2==2.4.2
 django-ckeditor==5.2.1
 django-crispy-forms==1.6.1
+django-premailer==0.2.0
 djangorestframework==3.5.2
 gitdb2==2.0.0
 GitPython==2.1.0
@@ -26,3 +27,4 @@ requests==2.13.0
 requests-oauthlib==0.7.0
 six==1.10.0
 smmap2==2.0.1
+wheel==0.24.0
