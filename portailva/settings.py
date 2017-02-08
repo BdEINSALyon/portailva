@@ -235,4 +235,7 @@ PORTAILVA_APP = {
     }
 }
 
-CKEDITOR_UPLOAD_PATH = "uploads/"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
+CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'ck_editor')

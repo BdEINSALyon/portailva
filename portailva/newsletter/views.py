@@ -12,6 +12,9 @@ class AssociationArticleListView(AssociationMixin, ListView):
     model = Article
     template_name = 'newsletter/article/list.html'
 
+    def get_queryset(self):
+        return Article.objects.filter(association=self.association)
+
 
 class AssociationArticleNewView(AssociationMixin, CreateView):
     model = Article
@@ -39,6 +42,8 @@ class AssociationArticleUpdateView(AssociationMixin, UpdateView):
     template_name = 'newsletter/article/update.html'
 
     def dispatch(self, request, *args, **kwargs):
+        if not self.get_object().can_update(request.user):
+            raise PermissionDenied
         self.success_url = reverse('association-article-detail', kwargs={
             'association_pk': kwargs.get('association_pk'),
             'pk': kwargs.get('pk'),
@@ -57,6 +62,9 @@ class AssociationArticleUpdateView(AssociationMixin, UpdateView):
 class AssociationArticleDetailView(AssociationMixin, DetailView):
     model = Article
     template_name = 'newsletter/article/detail.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(AssociationArticleDetailView, self).get_context_data()
