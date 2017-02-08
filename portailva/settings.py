@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',
     'ckeditor',
     'ckeditor_uploader',
+    'django_premailer',
 
     'portailva.utils',
     'portailva.association',
@@ -92,6 +93,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
                 'portailva.association.context_processors.my_associations',
                 'portailva.utils.context_processors.app_settings',
