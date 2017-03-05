@@ -100,6 +100,7 @@ ENV/
 
 # Dev database
 db.sqlite3
+db.sqlite
 
 # Node modules
 node_modules
