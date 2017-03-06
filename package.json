@@ -26,10 +26,8 @@
     "autoprefixer": "6.5.1",
     "bootstrap-sass": "^3.3.7",
     "cssnano": "3.8.0",
-    "datatables": "1.10.12",
     "del": "2.2.2",
     "eonasdan-bootstrap-datetimepicker": "^4.17.43",
-    "font-awesome": "4.7.0",
     "gulp": "3.9.1",
     "gulp-concat": "2.6.0",
     "gulp-imagemin": "3.0.3",
@@ -40,9 +38,7 @@
     "gulp-sourcemaps": "2.2.0",
     "gulp-uglify": "2.0.0",
     "gulp.spritesmith": "6.2.1",
-    "jquery": "3.1.1",
-    "merge-stream": "1.0.0",
-    "moment": "^2.15.2"
+    "merge-stream": "1.0.0"
   },
   "devDependencies": {
     "gulp-jshint": "2.0.1",
