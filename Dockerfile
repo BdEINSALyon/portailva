@@ -26,6 +26,8 @@ ENV SITE_URL 'http://portail.example.com'
 ENV API_URL 'http://portail.example.com/api'
 ENV SECRET_KEY '%8r$1anftcza)6)uth+ij(2o)si0)l^8o4=t!7^c_0_sz%1gkz'
 
+VOLUME /app/staticfiles
+VOLUME /app/mediafiles
 
 RUN chmod +x /app/bash/run-prod.sh
 CMD /app/bash/run-prod.sh
