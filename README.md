@@ -1,11 +1,10 @@
 [![Licence GPL](http://img.shields.io/badge/license-GPL-green.svg)](http://www.gnu.org/licenses/quick-guide-gplv3.fr.html)
-[![Code Health](https://landscape.io/github/VAINSALyon/portailva/dev/landscape.svg?style=flat)](https://landscape.io/github/VAINSALyon/portailva/dev)
-[![dependencies Status](https://david-dm.org/VAINSALyon/portailva/status.svg)](https://david-dm.org/VAINSALyon/portailva)
-[![Requirements Status](https://requires.io/github/VAINSALyon/portailva/requirements.svg?branch=dev)](https://requires.io/github/VAINSALyon/portailva/requirements/?branch=dev)
+[![Code Health](https://landscape.io/github/BdEINSALyon/portailva/feature/docker/landscape.svg?style=flat)](https://landscape.io/github/BdEINSALyon/portailva/feature/docker)
+[![Requirements Status](https://requires.io/github/BdEINSALyon/portailva/requirements.svg?branch=master)](https://requires.io/github/BdEINSALyon/portailva/requirements/?branch=master)
 
 # PortailVA
 
-PortailVA is a web application that helps INSA Lyon's organizations 
+PortailVA is a web application that helps INSA Lyon's organizations
 to properly manage their structure.
 
 This application can be forked to be tuned or improved.
