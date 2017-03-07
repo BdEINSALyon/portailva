@@ -16,7 +16,7 @@ RUN pip install -r requirements.txt
 # Then copy the rest of the app
 COPY . /app
 
-ENV DATABASE_URL postgres://postgresql:postgresql@db:5432/valet
+ENV DATABASE_URL ''
 ENV DJANGO_SETTINGS_MODULE portailva.settings
 ENV WSGI_APP portailva.wsgi
 ENV APP_DEBUG False
