@@ -1,6 +1,5 @@
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
-from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
@@ -169,23 +168,3 @@ class NewsletterDeleteView(DeleteView):
         if not request.user.has_perm('newsletter.admin_newsletter'):
             raise PermissionDenied
         return super(NewsletterDeleteView, self).dispatch(request, *args, **kwargs)
-
-
-def article_display(request, pk):
-    article = Article.objects.get(pk=pk)
-    return TemplateResponse(request, template='newsletter/article/view.html', context={
-        'article': article
-    })
-
-
-class ArticleDisplayView(DetailView):
-    model = Newsletter
-    template_name = 'newsletter/newsletter/delete.html'
-
-    def get_success_url(self):
-        return reverse('newsletter-list')
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('newsletter.admin_newsletter'):
-            raise PermissionDenied
-        return super(ArticleDisplayView, self).dispatch(request, *args, **kwargs)
