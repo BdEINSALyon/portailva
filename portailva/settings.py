@@ -28,6 +28,9 @@ DEBUG = not os.environ.get('APP_DEBUG', False)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', os.environ.get('SITE_DNS')]
 
+if os.environ.get('API_DNS', False):
+    ALLOWED_HOSTS.append(os.environ.get('API_DNS'))
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,7 +49,6 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',
     'ckeditor',
     'ckeditor_uploader',
-    'pipeline',
 
     'portailva.utils',
     'portailva.association',
@@ -152,27 +154,8 @@ STATICFILES_DIRS = (
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'pipeline.finders.PipelineFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
-
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-
-PIPELINE = {
-    'PIPELINE_ENABLED': True,
-    'STYLESHEETS': {
-        'bootstrap': {
-            'source_filenames': (
-                'css/datatables.bootstrap.css',
-                'sass/main.scss'
-            ),
-            'output_filename': 'css/main.css'
-        },
-    },
-    'COMPILERS': (
-        'pipeline.compilers.sass.SASSCompiler',
-    )
-}
 
 # Crispy forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
@@ -251,5 +234,6 @@ PORTAILVA_APP = {
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'ck_editor')

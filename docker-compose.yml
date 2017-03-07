@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   nginx:
@@ -10,29 +10,24 @@ services:
       - app
     volumes:
       - ./docker/config/nginx:/etc/nginx/conf.d
-      - ./static:/app/static
+      - ./staticfiles:/app/staticfiles
+      - ./mediafiles:/app/mediafiles
 
   app:
     build: .
     container_name: portailva
 
-    # As migrate and collectstatic need configuration from this file, we can't extract them to Dockerfile
-    command: bash -c "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn portailva.wsgi -b 0.0.0.0:8000"
-
     environment:
       - DJANGO_SETTINGS_MODULE=portailva.settings_prod
-      - DATABASE_HOST=db
-      - DATABASE_USER=postgresql
-      - DATABASE_PASSWORD=postgresql
-      - DATABASE_NAME=portailva
-      - DATABASE_PORT=5432
+      - DATABASE_URL=postgres://postgresql@postgresql/portailva
 
     depends_on:
       - db
     expose:
       - "8000"
     volumes:
-      - ./static:/app/static
+      - ./staticfiles:/app/staticfiles
+      - ./mediafiles:/app/mediafiles
 
   db:
     image: postgres:latest
