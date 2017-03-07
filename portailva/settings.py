@@ -28,6 +28,9 @@ DEBUG = not os.environ.get('APP_DEBUG', False)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', os.environ.get('SITE_DNS')]
 
+if os.environ.get('API_DNS', False):
+    ALLOWED_HOSTS.append(os.environ.get('API_DNS'))
+
 # Application definition
 
 INSTALLED_APPS = [
