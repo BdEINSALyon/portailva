@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '%8r$1anftcza)6)uth+ij(2o)si0)l^8o4=t!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = not os.environ.get('APP_DEBUG', False)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', os.environ.get('SITE_DNS')]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', os.environ.get('SITE_DNS'), 'portail.asso-insa-lyon.fr']
 
 if os.environ.get('API_DNS', False):
     ALLOWED_HOSTS.append(os.environ.get('API_DNS'))
