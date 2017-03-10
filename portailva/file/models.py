@@ -82,6 +82,20 @@ class AssociationFile(File):
     folder = models.ForeignKey(FileFolder, verbose_name="Dossier", related_name="files", on_delete=models.CASCADE)
 
 
+class ResourceFile(File):
+    class Meta:
+        permissions = (
+            ("manage_resources", "Gérer les resources disponibles aux associations"),
+        )
+
+    published = models.BooleanField('Publié', default=False)
+
+    def can_access(self, user):
+        if user is not None and user.is_authenticated():
+            return self.published
+        return False
+
+
 def user_directory_path(instance, filename):
     return 'uploads/' + str(uuid.uuid1())
 
