@@ -11,8 +11,7 @@ class FileVersionAdmin(admin.ModelAdmin):
     list_display = ('id', 'file', 'version', 'data')
     list_display_links = ('id', 'file')
     search_fields = ('file__name', 'version')
-    list_per_page = 25
-    list_filter = ('version', 'user')
+    list_per_page = 50
 
 admin.site.register(FileVersion, FileVersionAdmin)
 
