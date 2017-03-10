@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY', '%8r$1anftcza)6)uth+ij(2o)si0)l^8o4=t!7^c_0_sz%1gkz')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = not os.environ.get('APP_DEBUG', False)
+DEBUG = ('True' == os.environ.get('APP_DEBUG', False))
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', os.environ.get('SITE_DNS'), 'portail.asso-insa-lyon.fr']
 

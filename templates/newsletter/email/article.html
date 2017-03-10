@@ -35,7 +35,7 @@
                                     <tr>
                                         <td>
                                             <h3>{{ article.title }}</h3>
-                                            {% if article.type == 'FEATURED' %}
+                                            {% if article.featured_image %}
                                                 <div class="article-image">
                                                     <img src="{{ article.featured_image.url }}">
                                                 </div>
