@@ -1,0 +1,54 @@
+<tr>
+    <td>&nbsp;</td>
+    <td class="container">
+        <div class="content">
+
+            <!-- START CENTERED WHITE CONTAINER -->
+            <table class="main">
+
+                <!-- START MAIN CONTENT AREA -->
+                <tr>
+                    <td class="wrapper">
+                        <table border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td>
+                                    <h3>{{ article.title }}</h3>
+                                    {% if article.featured_image and article.type == 'FEATURED' %}
+                                        <div class="article-image">
+                                            <img src="{{ article.featured_image.url }}">
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        <p>{{ article.short_content }}</p>
+                                    </div>
+                                    <table border="0" cellpadding="0" cellspacing="0"
+                                           class="btn btn-primary">
+                                        <tbody>
+                                        <tr>
+                                            <td align="center" style="padding-bottom: 0">
+                                                <table border="0" cellpadding="0" cellspacing="0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td><a href="{% url 'newsletter-article' article.pk %}"
+                                                               class="button"
+                                                               target="_blank">En savoir plus</a></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- END MAIN CONTENT AREA -->
+            </table>
+
+            <!-- END CENTERED WHITE CONTAINER --></div>
+    </td>
+    <td>&nbsp;</td>
+</tr>

@@ -50,7 +50,7 @@ class FileView(DetailView):
                 .latest('created_at')
 
             mime = magic.Magic(mime=True, magic_file=settings.MAGIC_BIN)
-            mime_type = mime.from_file(version.data.url)
+            mime_type = mime.from_file(version.data.path)
 
             response = HttpResponse(version.data.read(), content_type=mime_type)
             return response

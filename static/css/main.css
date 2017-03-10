@@ -1,0 +1,57 @@
+/* main.scss */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/* Fixed top navba */
+body {
+    padding-top: 70px;
+    margin-bottom: 40px;
+}
+
+.brand-colored {
+    color: #e93c46;
+}
+
+/* Fixed footer */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 40px;
+    background-color: #f8f8f8;
+}
+
+.footer a {
+    color: #337ab7;
+}
+
+.container .text-muted {
+    margin: 13px 0 0;
+    font-size: 12px;
+}
+
+.container .text-muted .brand {
+    color: #333;
+}
+
+.container .text-muted .version a {
+    color: #b4bcc2;
+    text-decoration: underline;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/* Icons */
+i.fa {
+    padding-right: 5px;
+}
+
+.tab-content {
+    padding-top: 20px;
+}

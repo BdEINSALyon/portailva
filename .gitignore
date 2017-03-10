@@ -14,7 +14,6 @@ env/
 build/
 develop-eggs/
 dist/
-static/
 downloads/
 eggs/
 .eggs/
@@ -100,6 +99,7 @@ ENV/
 
 # Dev database
 db.sqlite3
+db.sqlite
 
 # Node modules
 node_modules

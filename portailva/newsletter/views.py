@@ -1,6 +1,5 @@
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
-from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
@@ -145,17 +144,22 @@ class NewsletterDetailView(DetailView):
 
 class NewsletterOnlineView(DetailView):
     model = Newsletter
-    template_name = 'newsletter/email/template.html'
+    template_name = 'newsletter/email/email.html'
 
     def get_context_data(self, **kwargs):
         context = super(NewsletterOnlineView, self).get_context_data()
         context.update({
-            'articles': kwargs['object'].articles,
-            'events': kwargs['object'].events,
+            'articles': kwargs['object'].articles.all(),
+            'events': kwargs['object'].events.order_by('begins_at').all(),
             'top_articles': kwargs['object'].articles.filter(type='FEATURED'),
             'classic_articles': kwargs['object'].articles.filter(type='CLASSIC')
         })
         return context
+
+
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = 'newsletter/email/article.html'
 
 
 class NewsletterDeleteView(DeleteView):
@@ -169,23 +173,3 @@ class NewsletterDeleteView(DeleteView):
         if not request.user.has_perm('newsletter.admin_newsletter'):
             raise PermissionDenied
         return super(NewsletterDeleteView, self).dispatch(request, *args, **kwargs)
-
-
-def article_display(request, pk):
-    article = Article.objects.get(pk=pk)
-    return TemplateResponse(request, template='newsletter/article/view.html', context={
-        'article': article
-    })
-
-
-class ArticleDisplayView(DetailView):
-    model = Newsletter
-    template_name = 'newsletter/newsletter/delete.html'
-
-    def get_success_url(self):
-        return reverse('newsletter-list')
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('newsletter.admin_newsletter'):
-            raise PermissionDenied
-        return super(ArticleDisplayView, self).dispatch(request, *args, **kwargs)

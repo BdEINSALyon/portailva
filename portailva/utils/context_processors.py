@@ -28,4 +28,7 @@ def app_settings(request):
     """
     A context processor with all APP settings.
     """
-    return {'app': settings.PORTAILVA_APP}
+    return {
+        'app': settings.PORTAILVA_APP,
+        'site_url': settings.SITE_URL
+    }

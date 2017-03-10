@@ -17,7 +17,6 @@ import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -25,10 +24,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY', '%8r$1anftcza)6)uth+ij(2o)si0)l^8o4=t!7^c_0_sz%1gkz')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = not os.environ.get('APP_DEBUG', False)
+DEBUG = ('True' == os.environ.get('APP_DEBUG', False))
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', os.environ.get('SITE_DNS')]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', os.environ.get('SITE_DNS'), 'portail.asso-insa-lyon.fr']
 
+SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')
+
+if os.environ.get('API_DNS', False):
+    ALLOWED_HOSTS.append(os.environ.get('API_DNS'))
 
 # Application definition
 
@@ -93,7 +96,6 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
                 'portailva.association.context_processors.my_associations',
                 'portailva.utils.context_processors.app_settings',
@@ -105,14 +107,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portailva.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
     'default': dj_database_url.config(default='sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite')))
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -132,7 +132,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -146,7 +145,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
@@ -154,11 +152,12 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(BASE_DIR, 'dist'),
-    os.path.join(BASE_DIR, 'assets'),
+    os.path.join(BASE_DIR, 'static'),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
 
 # Crispy forms
@@ -203,7 +202,6 @@ REST_FRAMEWORK = {
     )
 }
 
-
 PORTAILVA_APP = {
     'site': {
         'name': "PortailVA",
@@ -239,5 +237,6 @@ PORTAILVA_APP = {
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'ck_editor')
