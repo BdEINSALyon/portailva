@@ -28,6 +28,8 @@ DEBUG = not os.environ.get('APP_DEBUG', False)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', os.environ.get('SITE_DNS'), 'portail.asso-insa-lyon.fr']
 
+SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')
+
 if os.environ.get('API_DNS', False):
     ALLOWED_HOSTS.append(os.environ.get('API_DNS'))
 
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',
     'ckeditor',
     'ckeditor_uploader',
+    'django_premailer',
 
     'portailva.utils',
     'portailva.association',

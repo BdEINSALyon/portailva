@@ -1,0 +1,107 @@
+{% load static %}
+{% load premailer %}
+
+{% premailer site_url %}
+    <!doctype html>
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>{{ newsletter.title }}</title>
+        <link href="{% static 'css/mail.css' %}" rel="stylesheet">
+    </head>
+    <body class="">
+    <span class="preheader">{{ newsletter.title }}</span>
+    <table border="0" cellpadding="0" cellspacing="0" class="body">
+        <tr>
+            <td id="header" colspan="3">
+                <img src="{% static 'img/va_white.png' %}">
+                <h1>{{ newsletter.title }}</h1>
+            </td>
+        </tr>
+        {% if top_articles %}
+            <tr>
+                <td>&nbsp;</td>
+                <td class="container">
+                    <div class="content">
+                        <h2 class="section-title">Information{{ top_articles|pluralize }} à la une</h2>
+                    </div>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            {% for article in top_articles %}
+                {% include 'newsletter/email/_article.html' %}
+            {% endfor %}
+        {% endif %}
+        {% if classic_articles %}
+            <tr>
+                <td>&nbsp;</td>
+                <td class="container">
+                    <div class="content">
+                        <h2 class="section-title">Article{{ classic_articles|pluralize }} de la VA</h2>
+                    </div>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            {% for article in classic_articles %}
+                {% include 'newsletter/email/_article.html' %}
+            {% endfor %}
+        {% endif %}
+        {% if events %}
+            <tr>
+                <td>&nbsp;</td>
+                <td class="container">
+                    <div class="content">
+                        <h2 class="section-title">Evénement{{ events|pluralize }} VA</h2>
+                    </div>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td class="container">
+                    <table border="0" cellpadding="0" cellspacing="0">
+                        {% for event in events %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                <tr>{% endif %}
+                        <td class="event-cell">
+                            <div class="event-card">
+                                <h3>{{ event.name }}</h3>
+                                <p class="time"><em>{{ event.begins_at | date:'D d b H:i' }}</em></p>
+                                <p>{{ event.short_description }}</p>
+                            </div>
+                        </td>
+                        {% if forloop.counter|divisibleby:3 or forloop.last %}</tr>{% endif %}
+                        {% endfor %}
+                    </table>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td>&nbsp;</td>
+            <td class="container">
+                <div class="content">
+
+                    <!-- START FOOTER -->
+                    <div class="footer">
+                        <table border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td class="content-block">
+                                    <span>BdE INSA Lyon</span><br>
+                                    <span class="apple-link">20 avenue Albert Einstein - 69100 Villeurbanne</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- END FOOTER -->
+
+                    <!-- END CENTERED WHITE CONTAINER --></div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    </body>
+    </html>
+{% endpremailer %}

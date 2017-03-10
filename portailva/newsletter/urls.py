@@ -2,7 +2,8 @@ from django.conf.urls import url
 
 from portailva.newsletter.views import AssociationArticleListView, AssociationArticleNewView, \
     AssociationArticleDetailView, AssociationArticleUpdateView, AssociationArticleDeleteView, NewsletterListView, \
-    NewsletterNewView, NewsletterDetailView, NewsletterUpdateView, NewsletterDeleteView, NewsletterOnlineView
+    NewsletterNewView, NewsletterDetailView, NewsletterUpdateView, NewsletterDeleteView, NewsletterOnlineView, \
+    ArticleDetailView
 
 urlpatterns = [
     url('^association/(?P<association_pk>\d+)/article/$', AssociationArticleListView.as_view(),
@@ -18,6 +19,7 @@ urlpatterns = [
 
     url('^newsletter/$', NewsletterListView.as_view(), name='newsletter-list'),
     url('^newsletter/new$', NewsletterNewView.as_view(), name='newsletter-new'),
+    url('^newsletter/article/(?P<pk>\d+)$', ArticleDetailView.as_view(), name='newsletter-article'),
     url('^newsletter/(?P<pk>\d+)/$', NewsletterDetailView.as_view(), name='newsletter-detail'),
     url('^newsletter/(?P<pk>\d+)/email', NewsletterOnlineView.as_view(), name='newsletter-online'),
     url('^newsletter/(?P<pk>\d+)/update$', NewsletterUpdateView.as_view(), name='newsletter-update'),
