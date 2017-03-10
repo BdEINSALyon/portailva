@@ -100,7 +100,7 @@ class FileVersion(models.Model):
     updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
 
     def __str__(self):
-        return 'Version ' + str(self.version)
+        return '#{} - {} (V{})'.format(self.pk, self.file.name, self.version)
 
 
 @receiver(models.signals.pre_delete, sender=FileVersion)
