@@ -85,7 +85,7 @@ class AssociationFile(File):
 class ResourceFile(File):
     class Meta:
         permissions = (
-            ("manage_resources", "Gérer les resources disponibles aux associations"),
+            ("file.manage_resources", "Gérer les resources disponibles aux associations"),
         )
 
     published = models.BooleanField('Publié', default=False)

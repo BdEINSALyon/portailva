@@ -1,5 +1,6 @@
 from django.conf.urls import url
 
+from portailva.file.views import ResourceFileListView, ResourceFileDeleteView, ResourceFileCreateView
 from .views import FileListView, FileView, AssociationFileTreeView, AssociationFileUploadView, AssociationFileDeleteView
 
 urlpatterns = [
@@ -16,4 +17,7 @@ urlpatterns = [
 
     # Admin stuff
     url('^file/$', FileListView.as_view(), name='file-list'),
+    url('^resourceFiles/$', ResourceFileListView.as_view(), name='resource-file-list'),
+    url('^resourceFiles/(?P<pk>\d+)/delete$', ResourceFileDeleteView.as_view(), name='resource-file-delete'),
+    url('^resourceFiles/new$', ResourceFileCreateView.as_view(), name='resource-file-create'),
 ]
