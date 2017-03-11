@@ -1,28 +1,29 @@
 {% extends 'base.html' %}
 
 {% block page_title %}
-  Liste des resources
+    Liste des resources
 {% endblock %}
 
 {% block quick_actions %}
-  <a href="{% url 'resource-file-create' %}" class="btn btn-success"><i class="fa fa-plus"></i> Ajouter</a>
+    <a href="{% url 'resource-file-create' %}" class="btn btn-success"><i class="fa fa-plus"></i> Ajouter</a>
 {% endblock %}
 
 {% block content %}
-  <table id="prettyTable" class="table table-bordered table-stripped">
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th data-orderable="false">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for file in object_list %}
+    <table id="prettyTable" class="table table-bordered table-stripped">
+        <thead>
         <tr>
-          <td><a href="{% url 'file-view' file.pk %}">{{ file.name }}</a></td>
-          <td><a href="{% url 'resource-file-delete' file.pk %}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a></td>
+            <th>Nom</th>
+            <th data-orderable="false">Action</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        </thead>
+        <tbody>
+        {% for file in object_list %}
+            <tr>
+                <td><a href="{% url 'file-view' file.pk %}">{{ file.name }}</a></td>
+                <td width="80px"><a href="{% url 'resource-file-delete' file.pk %}" class="btn btn-danger btn-sm"><i
+                        class="fa fa-trash"> Supprimer</i></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
