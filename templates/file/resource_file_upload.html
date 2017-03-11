@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block page_sub_title %}
+  Uploader une resource
+{% endblock %}
+
+{% block quick_actions %}
+  <a href="{% url 'resource-file-list' %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>
+  <button form="associationForm" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
+{% endblock %}
+
+{% block content %}
+  <div class="alert alert-info">
+  Ce fichier sera publié imédiatement.
+  </div>
+  {% crispy form %}
+{% endblock %}
