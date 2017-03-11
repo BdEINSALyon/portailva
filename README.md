@@ -35,6 +35,8 @@ and improve the general PortailVA experience for all users.
 ```
 PortailVA - Managing platform for organizations
 Copyright (C) 2016 Léo MARTINEZ
+Copyright (C) 2017 Philippe VIENNE
+Copyright (C) 2017 BdE INSA Lyon
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
