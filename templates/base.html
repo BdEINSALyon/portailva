@@ -105,7 +105,7 @@
                                 <li><a href="{% url 'file-list' %}">Fichiers</a></li>
                             {% endif %}
                             {% if perms.file.can_admin_file %}
-                                <li><a href="{% url 'resource-file-list' %}">Resources</a></li>
+                                <li><a href="{% url 'resource-file-list' %}">Ressources</a></li>
                             {% endif %}
                             {% if perms.utils.can_admin_place %}
                                 <li><a href="{% url 'place-list' %}">Lieux</a></li>
