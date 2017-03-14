@@ -10,7 +10,7 @@
 <table class="table table-stripped">
   <tbody>
     {% for requirement in object_list %}
-      <tr class="{% if requirement|is_achieved:association.id %}success{% else %}danger{% endif %}">
+      <tr class="{% if requirement|is_achieved:association.id %}success{% else %}danger{% endif %} text-{% if requirement|is_achieved:association.id %}success{% else %}danger{% endif %}">
         <td>
           <i class="fa {% if requirement|is_achieved:association.id %}fa-check{% else %}fa-times{% endif %}"></i>
           {{ requirement.name }}
@@ -24,12 +24,12 @@
               {% if not requirement|is_achieved:association.id %}
                 <form action="{% url 'association-requirement-achieve' association.id requirement.id %}" method="post">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-xs btn-danger"><i class="fa fa-check"></i> Valider</button>
+                  <button type="submit" class="btn btn-xs btn-success"><i class="fa fa-check"></i> Valider</button>
                 </form>
               {% else %}
                 <form action="{% url 'association-requirement-achieve' association.id requirement.id %}" method="post">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-xs btn-success"><i class="fa fa-times"></i> Invalider</button>
+                  <button type="submit" class="btn btn-xs btn-danger"><i class="fa fa-times"></i> Invalider</button>
                 </form>
               {% endif %}
             {% endif %}
