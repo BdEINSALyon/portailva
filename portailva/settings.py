@@ -193,7 +193,7 @@ ANYMAIL = {
     'MAILGUN_SENDER_DOMAIN': os.environ.get('MAILGUN_DOMAIN', 'mg.asso-insa-lyon.fr')
 }
 EMAIL_BACKEND = 'anymail.backends.mailgun.MailgunBackend'
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@asso-insa-lyon.fr')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@mg.asso-insa-lyon.fr')
 
 # REST API
 REST_FRAMEWORK = {
