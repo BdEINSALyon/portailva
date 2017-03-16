@@ -89,6 +89,9 @@
                             {% if perms.association.admin_requirement %}
                                 <li><a href="{% url 'requirement-list' %}">Situation administrative</a></li>
                             {% endif %}
+                            {% if perms.association.admin_requirement %}
+                                <li><a href="{% url 'export' %}">Exporter les données</a></li>
+                            {% endif %}
                         </ul>
                     </li>
                 {% endif %}
