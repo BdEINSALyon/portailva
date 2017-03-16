@@ -54,6 +54,8 @@ class ExportView(AbleToExportMixin, TemplateView):
                 columns.append(RequirementExportColumn(requirement))
         if 'PRESIDENT' in datas:
             columns.append(ExportColumn('Président (Nom)', 'mandates.last().peoples.first().__str__()'))
+            columns.append(ExportColumn('Président (Téléphone)', 'mandates.last().peoples.first().phone'))
+            columns.append(ExportColumn('Président (Email)', 'mandates.last().peoples.first().email'))
 
         # Create first line of document
         for col_num in range(len(columns)):
@@ -62,7 +64,7 @@ class ExportView(AbleToExportMixin, TemplateView):
             ws.column_dimensions[ExportView.convertToTitle(col_num+1)].width = columns[col_num].column_size
 
         # Fetch the set of data
-        default_set = Association.objects.all()
+        default_set = Association.objects.all().order_by('name')
         if category == 'ALIVE':
             default_set = default_set.filter(is_active=True)
         elif category == 'DEAD':
@@ -90,7 +92,7 @@ class ExportColumn(object):
         try:
             return eval("association."+self.prop)
         except AttributeError:
-            return 'NC'
+            return ''
 
 
 class RequirementExportColumn(ExportColumn):
