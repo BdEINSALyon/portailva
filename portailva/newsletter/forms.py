@@ -46,6 +46,6 @@ class NewsletterForm(forms.ModelForm):
         self.fields['articles'].queryset = Article.objects.annotate(newsletter_count=Count('newsletter')) \
             .filter(newsletter_count__lte=0)
 
-        self.fields['events'].queryset = Event.objects.annotate(newsletter_count=Count('newsletter')) \
-            .filter(is_online=True, newsletter_count__lte=0,
-                    begins_at__gt=datetime.datetime.today() - datetime.timedelta(days=1)).order_by('begins_at')
+        self.fields['events'].queryset = Event.objects.filter(ends_at__gt=
+                                                              datetime.datetime.today() - datetime.timedelta(days=1))\
+            .order_by('begins_at')
