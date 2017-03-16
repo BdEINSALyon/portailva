@@ -49,7 +49,7 @@ class Event(models.Model):
         default_permissions = ('add', 'change', 'delete', 'admin',)
 
     def __str__(self):
-        return self.name
+        return "{} - {}".format(self.name, self.begins_at)
 
     def can_update(self, user):
         if not user.has_perm('event.admin_event'):
