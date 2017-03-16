@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'', include('portailva.utils.urls')),
     url(r'', include('portailva.event.urls')),
     url(r'', include('portailva.newsletter.urls')),
+    url(r'export/', include('portailva.export.urls')),
 
     # REST API
     url(r'^api/', include('portailva.api_urls')),

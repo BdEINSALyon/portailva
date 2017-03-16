@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page_sub_title %}
+    Exportation de données
+{% endblock %}
+
+{% block content %}
+    <p class="text-info">Cette page vous permet d'exporter les données liés aux associations vers des fichiers Excel.</p>
+    <div class="row">
+        <div class="col-md-12">
+            {% crispy form %}
+        </div>
+    </div>
+{% endblock %}

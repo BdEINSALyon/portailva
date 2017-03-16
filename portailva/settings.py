@@ -60,7 +60,8 @@ INSTALLED_APPS = [
     'portailva.file',
     'portailva.pages',
     'portailva.member',
-    'portailva.newsletter'
+    'portailva.newsletter',
+    'portailva.export'
 ]
 
 MIDDLEWARE = [
