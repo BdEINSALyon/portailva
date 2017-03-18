@@ -13,7 +13,7 @@ class Category(models.Model):
     There is no kind of logic in a Category. It simply here for Association presentation in a predefined order.
     """
     name = models.CharField("Nom", max_length=50)
-    position = models.IntegerField("Position", blank=True)
+    position = models.IntegerField("Position")
 
     class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'admin',)
