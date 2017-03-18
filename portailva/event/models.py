@@ -29,6 +29,7 @@ class Event(models.Model):
     description = models.TextField("Description")
 
     is_online = models.BooleanField("Est publié", default=False)
+    is_private = models.BooleanField("Est privé", default=True)
 
     type = models.ForeignKey(EventType, verbose_name="Type d'événement", related_name="events", null=True,
                              on_delete=models.SET_NULL)
