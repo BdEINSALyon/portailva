@@ -19,11 +19,8 @@ class AssociationForm(forms.ModelForm):
 
 
 class AssociationAdminForm(AssociationForm):
-    is_active = forms.BooleanField(
-        label="Association active ?",
-        required=False,
-        initial=True
-    )
+    class Meta(AssociationForm.Meta):
+        fields = AssociationForm.Meta.fields + ['is_active']
 
 
 class MandateForm(forms.Form):
