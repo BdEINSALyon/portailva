@@ -3,7 +3,7 @@ from crispy_forms.helper import FormHelper
 from django import forms
 from django.conf import settings
 
-from .models import Category, Association, Mandate, People
+from .models import Association, Mandate, People
 
 
 class AssociationForm(forms.ModelForm):
