@@ -13,11 +13,11 @@
   <div class="well well-sm">{{ object.name }}</div>
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <b>Catégorie d'association</b>
       <div class="well well-sm">{{ object.category.name }}</div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
       <b>Acronyme</b>
       <div class="well well-sm">
         {% if object.acronym %}
@@ -26,6 +26,10 @@
           <i>Non défini</i>
         {% endif %}
       </div>
+    </div>
+    <div class="col-md-4">
+      <b>Nombre de membres actifs</b>
+      <div class="well well-sm">{{ object.active_members_number }}</div>
     </div>
   </div>
 
