@@ -6,28 +6,10 @@ from django.conf import settings
 from .models import Category, Association, Mandate, People
 
 
-class AssociationForm(forms.Form):
-    category = forms.ModelChoiceField(
-        label="Catégorie",
-        queryset=Category.objects.all()
-    )
-
-    name = forms.CharField(
-        label="Nom",
-        max_length=Association._meta.get_field('name').max_length,
-    )
-
-    acronym = forms.CharField(
-        label="Acronyme",
-        max_length=Association._meta.get_field('acronym').max_length,
-        required=False
-    )
-
-    description = forms.CharField(
-        label="Description courte",
-        help_text="Cette description n'est pas visible dans le Bot'INSA",
-        widget=forms.Textarea()
-    )
+class AssociationForm(forms.ModelForm):
+    class Meta:
+        fields = ['category', 'name', 'acronym', 'description', 'active_members_number']
+        model = Association
 
     def __init__(self, *args, **kwargs):
         super(AssociationForm, self).__init__(*args, **kwargs)

@@ -28,7 +28,10 @@ class Association(models.Model):
     """
     name = models.CharField("Nom", max_length=50)
     acronym = models.CharField("Acronyme", max_length=20, null=True, blank=True)
-    description = models.TextField("Description")
+    description = models.TextField(
+        "Description",
+        help_text="Cette description n'est pas visible dans le Bot'INSA",
+    )
     active_members_number = models.PositiveIntegerField("Nombre de membres actifs", default=0)
 
     is_active = models.BooleanField("Est active", default=True)
