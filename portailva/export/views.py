@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 from portailva.association.models import Association, Requirement
-from portailva.export.forms import ExportForm
 from portailva.export.mixins import AbleToExportMixin
 
 
@@ -13,11 +12,6 @@ class ExportView(AbleToExportMixin, TemplateView):
 
     def post(self, request):
         return self.export_xlsx(request.POST['filter'], request.POST.getlist('data'))
-
-    def get_context_data(self, **kwargs):
-        return {
-            'form': ExportForm()
-        }
 
     @staticmethod
     def convertToTitle(num):
