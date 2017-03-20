@@ -56,8 +56,8 @@ class Newsletter(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    articles = models.ManyToManyField(Article, related_name='newletter', verbose_name='Articles')
-    events = models.ManyToManyField(Event, related_name='newletter', verbose_name='Evènements')
+    articles = models.ManyToManyField(Article, related_name='newsletter', verbose_name='Articles')
+    events = models.ManyToManyField(Event, related_name='newsletter', verbose_name='Evènements')
 
     def __str__(self):
         return "{}".format(self.title)

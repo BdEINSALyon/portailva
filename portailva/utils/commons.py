@@ -22,7 +22,8 @@ def send_mail(template_html_name=None, template_text_name=None, context=None, su
         to=[to])
 
     # Making context
-    logo_cid = attach_inline_image_file(msg, os.path.join(settings.BASE_DIR, "assets/img/logo_mail.png"))
+    logo_cid = attach_inline_image_file(msg,
+                                        os.path.join(settings.BASE_DIR, settings.STATIC_ROOT + "/img/logo_mail.png"))
     context.update({
         'logo_cid': logo_cid,
         'app': settings.PORTAILVA_APP
@@ -30,7 +31,6 @@ def send_mail(template_html_name=None, template_text_name=None, context=None, su
 
     # HTML part
     html_content = render_to_string(template_html_name, context=context)
-    inlined_html_content = transform(html_content)
 
-    msg.attach_alternative(inlined_html_content, "text/html")
+    msg.attach_alternative(html_content, "text/html")
     msg.send()

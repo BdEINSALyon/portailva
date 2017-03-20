@@ -8,10 +8,11 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from django.views.generic.edit import ModelFormMixin
 
 from portailva.association.mixins import AssociationMixin
-from .forms import AssociationFileUploadForm
-from .models import File, FileVersion, FileFolder, AssociationFile
+from .forms import AssociationFileUploadForm, ResourceFileUploadForm
+from .models import File, FileVersion, FileFolder, AssociationFile, ResourceFile
 
 
 class FileListView(LoginRequiredMixin, ListView):
@@ -29,6 +30,91 @@ class FileListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(FileListView, self).get_context_data(**kwargs)
         return context
+
+
+class ResourceFileListView(LoginRequiredMixin, ListView):
+    template_name = 'file/list_resources.html'
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.has_perm('file.manage_resources'):
+            raise PermissionDenied
+        return super(ResourceFileListView, self).get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        queryset = ResourceFile.objects.all()
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(ResourceFileListView, self).get_context_data(**kwargs)
+        return context
+
+
+class ResourceFileDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = 'file/resource_file_delete.html'
+    model = ResourceFile
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('file.manage_resources'):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('resource-file-list')
+
+    def get_queryset(self):
+        queryset = ResourceFile.objects.all()
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(ResourceFileDeleteView, self).get_context_data(**kwargs)
+        return context
+
+
+class ResourceFileCreateView(LoginRequiredMixin, CreateView):
+    template_name = 'file/resource_file_upload.html'
+    http_method_names = ['get', 'post']
+    form_class = ResourceFileUploadForm
+    current_folder = None
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('file.manage_resources'):
+            raise PermissionDenied
+        return super(ResourceFileCreateView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form(self.form_class)
+        if form.is_valid():
+            return self.form_valid(form)
+        return render(request, self.template_name, {
+            'form': form
+        })
+
+    def get_form(self, form_class=ResourceFileUploadForm):
+        return form_class(**super(ModelFormMixin, self).get_form_kwargs())
+
+    def get_folder(self):
+        try:
+            folder_pk = int(self.kwargs.get('folder_pk'))
+        except (KeyError, ValueError, TypeError):
+            return None
+        return get_object_or_404(FileFolder, pk=folder_pk)
+
+    def form_valid(self, form):
+
+        file = ResourceFile.objects.create(
+            name=form.data.get('name'),
+            published=True
+        )
+
+        # Then file version
+        FileVersion.objects.create(
+            version=1,
+            data=self.request.FILES['data'],
+            file=file,
+            user=self.request.user
+        )
+
+        return redirect(reverse('resource-file-list'))
 
 
 class FileView(DetailView):
@@ -83,7 +169,43 @@ class AssociationFileTreeView(AssociationMixin, DetailView):
             'association': self.association,
             'folders': folders,
             'files': files,
-            'current_folder': current_folder
+            'current_folder': current_folder,
+            'is_root': (current_folder is None)
+        })
+
+    def get_folder(self):
+        try:
+            folder_pk = int(self.kwargs.get('folder_pk'))
+        except (KeyError, ValueError, TypeError):
+            return None
+        return get_object_or_404(FileFolder, pk=folder_pk)
+
+
+# Association files
+class AssociationResourceFileTreeView(AssociationMixin, DetailView):
+    template_name = 'file/association_file_tree.html'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            current_folder = FileFolder(name='Resources')
+            folders = []
+            files = ResourceFile.objects.all()\
+                .filter(published=True)\
+                .order_by('name')
+        except (KeyError, ValueError, TypeError):
+            # User wants to list folders on root folder
+            folders = FileFolder.objects.all().filter(parent=None).order_by('name')
+            files = list()
+            current_folder = None
+        except:
+            raise Http404
+
+        return render(request, self.template_name, {
+            'association': self.association,
+            'folders': folders,
+            'files': files,
+            'current_folder': current_folder,
+            'is_root': False
         })
 
     def get_folder(self):

@@ -89,6 +89,9 @@
                             {% if perms.association.admin_requirement %}
                                 <li><a href="{% url 'requirement-list' %}">Situation administrative</a></li>
                             {% endif %}
+                            {% if perms.association.admin_requirement %}
+                                <li><a href="{% url 'export' %}">Exporter les données</a></li>
+                            {% endif %}
                         </ul>
                     </li>
                 {% endif %}
@@ -103,6 +106,9 @@
                             {% endif %}
                             {% if perms.file.can_admin_file %}
                                 <li><a href="{% url 'file-list' %}">Fichiers</a></li>
+                            {% endif %}
+                            {% if perms.file.can_admin_file %}
+                                <li><a href="{% url 'resource-file-list' %}">Ressources</a></li>
                             {% endif %}
                             {% if perms.utils.can_admin_place %}
                                 <li><a href="{% url 'place-list' %}">Lieux</a></li>
