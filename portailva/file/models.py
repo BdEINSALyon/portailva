@@ -112,6 +112,25 @@ class ResourceFolder(TreeObject):
         resources = self.resources.all()
         return sub_folders + resources
 
+    @staticmethod
+    def all_by_tree(folder=None, folders_list=None):
+        """
+        List all tree of resource folders.
+        This fetch mode is useful for administration sections
+        :type folders_list: list
+        :param folders_list: List of previously added folders
+        :type folder: ResourceFolder
+        """
+        if folders_list is None:
+            folders_list = []
+        if folder is None:
+            folders = ResourceFolder.objects.filter(parent=None).all()
+        else:
+            folders = folder.children.all()
+        for folder in folders:
+            folders_list.append(folder)
+            ResourceFolder.all_by_tree(folder, folders_list)
+
 
 class ResourceFile(File):
     class Meta:
