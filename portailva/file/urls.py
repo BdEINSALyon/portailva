@@ -1,8 +1,8 @@
 from django.conf.urls import url
 
 from portailva.file.views import ResourceFileListView, ResourceFileDeleteView, ResourceFileCreateView, \
-    AssociationResourceFileTreeView
-from .views import FileListView, FileView, AssociationFileTreeView, AssociationFileUploadView, AssociationFileDeleteView
+    AssociationResourceFileTreeView, FileListView, FileView, AssociationFileTreeView, AssociationFileUploadView, \
+    AssociationFileDeleteView
 
 urlpatterns = [
     # File
