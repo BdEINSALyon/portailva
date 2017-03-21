@@ -124,12 +124,7 @@ class AssociationNewView(LoginRequiredMixin, CreateView):
         return render(request, self.template_name, {'form': form})
 
     def form_valid(self, form):
-        association = Association()
-        association.name = form.data.get('name')
-        association.category_id = form.data.get('category')
-        association.acronym = form.data.get('acronym')
-        association.description = form.data.get('description')
-        association.is_active = True if form.data.get('is_active') else False
+        association = form.save()
         association.save()
 
         return redirect(reverse('association-list'))
