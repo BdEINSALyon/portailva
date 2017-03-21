@@ -1,9 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.generic import ListView, DeleteView, CreateView
-from django.views.generic.edit import ModelFormMixin
 
 from portailva.file.forms import ResourceFileUploadForm
 from portailva.file.models import ResourceFile, FileFolder, FileVersion
@@ -65,9 +64,6 @@ class ResourceFileCreateView(LoginRequiredMixin, CreateView):
         return render(request, self.template_name, {
             'form': form
         })
-
-    def get_form(self, form_class=ResourceFileUploadForm):
-        return form_class(**super(ModelFormMixin, self).get_form_kwargs())
 
     def get_folder(self):
         try:
