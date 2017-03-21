@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block page_title %}
+    {% if folder %}
+        {{ folder.path }}
+    {% else %}
+        Resources
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="panel panel-default">
+        <!-- List group -->
+        <div class="list-group">
+            {% if folder %}
+                {% if folder.parent %}
+                    <a class="list-group-item" href="{% url 'resource-folder-list' folder_pk=folder.parent_id %}">
+                        <i class="fa fa-angle-double-up"></i> Revenir à {{ folder.parent }}
+                    </a>
+                {% else %}
+                    <a class="list-group-item" href="{% url 'resource-folder-list' %}">
+                        <i class="fa fa-angle-double-up"></i> Revenir à la racine
+                    </a>
+                {% endif %}
+            {% endif %}
+            {% if folders %}
+                {% for subfolder in folders %}
+                    <div class="list-group-item clearfix">
+                        <i class="fa fa-folder"></i>
+                        <a href="{% url 'resource-folder-list' folder_pk=subfolder.id %}">
+                            {{ subfolder }}</a>
+                        <div class="pull-right">
+                            {% if folder %}
+                                <a href="{% url 'resource-folder-delete' folder_pk=folder.id pk=subfolder.id %}"
+                                   class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i> Supprimer
+                                </a>
+                            {% else %}
+                                <a href="{% url 'resource-folder-delete' pk=subfolder.id %}"
+                                   class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i> Supprimer
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if files %}
+                {% for file in files %}
+                    <div class="list-group-item clearfix">
+                        <a href="{% url 'file-view' pk=file.id %}" target="_blank">
+                            {{ file }}</a>
+                        <div class="pull-right">
+                            {% if folder %}
+                                <a href="{% url 'resource-file-delete' folder_pk=folder.id pk=file.id %}"
+                                   class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i> Supprimer
+                                </a>
+                            {% else %}
+                                <a href="{% url 'resource-file-delete' pk=file.id %}"
+                                   class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i> Supprimer
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if not files and not folders %}
+                <div class="list-group-item list-group-item-info text-center">Ce dossier est vide</div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Créer un dossier
+                </div>
+                <div class="panel-body">
+                    {% crispy new_folder %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Uploader un fichier
+                </div>
+                <div class="panel-body">
+                    {% crispy new_file %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

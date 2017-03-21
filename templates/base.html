@@ -108,18 +108,7 @@
                                 <li><a href="{% url 'file-list' %}">Fichiers</a></li>
                             {% endif %}
                             {% if perms.file.can_admin_file %}
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                                       aria-expanded="false">Ressources</a>
-                                    <ul class="dropdown-menu">
-                                        {% if perms.association.admin_requirement %}
-                                            <li><a href="{% url 'resource-file-list' %}">Fichiers</a></li>
-                                        {% endif %}
-                                        {% if perms.association.admin_requirement %}
-                                            <li><a href="{% url 'resource-folder-list' %}">Dossiers</a></li>
-                                        {% endif %}
-                                    </ul>
-                                </li>
+                                <li><a href="{% url 'resource-folder-list' %}">Ressources</a></li>
                             {% endif %}
                             {% if perms.utils.can_admin_place %}
                                 <li><a href="{% url 'place-list' %}">Lieux</a></li>

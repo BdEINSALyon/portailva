@@ -48,7 +48,7 @@ class TreeObject(models.Model):
         abstract = True
 
     parent = models.ForeignKey('self', verbose_name="Dossier parent", related_name='children', null=True, blank=True,
-                               on_delete=models.SET_NULL)
+                               on_delete=models.CASCADE)
     name = models.CharField("Nom", max_length=250)
 
     def get_tree(self):
@@ -130,6 +130,7 @@ class ResourceFolder(TreeObject):
         for folder in folders:
             folders_list.append(folder)
             ResourceFolder.all_by_tree(folder, folders_list)
+        return folders_list
 
 
 class ResourceFile(File):
