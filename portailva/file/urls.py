@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from portailva.file.views import ResourceFileListView, ResourceFileDeleteView, ResourceFileCreateView, \
     AssociationResourceFileTreeView, FileListView, FileView, AssociationFileTreeView, AssociationFileUploadView, \
-    AssociationFileDeleteView
+    AssociationFileDeleteView, ResourceFolderListView, ResourceFolderDeleteView, ResourceFolderCreateView
 
 urlpatterns = [
     # File
@@ -11,7 +11,7 @@ urlpatterns = [
     # Association file
     url('^association/(?P<association_pk>\d+)/file/tree(?:/(?P<folder_pk>\d+))?/$', AssociationFileTreeView.as_view(),
         name='association-file-tree'),
-    url('^association/(?P<association_pk>\d+)/file/resources/$', AssociationResourceFileTreeView.as_view(),
+    url('^association/(?P<association_pk>\d+)/resources(?:/(?P<folder_pk>\d+))?/$', AssociationResourceFileTreeView.as_view(),
         name='resource-file-tree'),
     url('^association/(?P<association_pk>\d+)/file/tree/(?P<folder_pk>\d+)/upload/$',
         AssociationFileUploadView.as_view(), name='association-file-upload'),
@@ -20,7 +20,10 @@ urlpatterns = [
 
     # Admin stuff
     url('^file/$', FileListView.as_view(), name='file-list'),
-    url('^resourceFiles/$', ResourceFileListView.as_view(), name='resource-file-list'),
-    url('^resourceFiles/(?P<pk>\d+)/delete$', ResourceFileDeleteView.as_view(), name='resource-file-delete'),
-    url('^resourceFiles/new$', ResourceFileCreateView.as_view(), name='resource-file-create'),
+    url('^resources/files/$', ResourceFileListView.as_view(), name='resource-file-list'),
+    url('^resources/files/(?P<pk>\d+)/delete$', ResourceFileDeleteView.as_view(), name='resource-file-delete'),
+    url('^resources/files/new$', ResourceFileCreateView.as_view(), name='resource-file-create'),
+    url('^resources/folders/$', ResourceFolderListView.as_view(), name='resource-folder-list'),
+    url('^resources/folders/(?P<pk>\d+)/delete$', ResourceFolderDeleteView.as_view(), name='resource-folder-delete'),
+    url('^resources/folders/new$', ResourceFolderCreateView.as_view(), name='resource-folder-create'),
 ]

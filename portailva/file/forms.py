@@ -5,6 +5,8 @@ from crispy_forms.helper import FormHelper
 from django import forms
 from django.conf import settings
 
+from portailva.file.models import ResourceFolder
+
 
 class AssociationFileUploadForm(forms.Form):
     name = forms.CharField(
@@ -65,3 +67,9 @@ class ResourceFileUploadForm(forms.Form):
                                         str(settings.PORTAILVA_APP['file']['file_max_size'] // (1024 * 1024)) + "Mo")
 
         return file
+
+
+class ResourceFolderForm(forms.ModelForm):
+    class Meta:
+        model = ResourceFolder
+        fields = ('name', 'parent')
