@@ -89,6 +89,8 @@ class ResourceFile(File):
         )
 
     published = models.BooleanField('Publié', default=False)
+    folder = models.ForeignKey(FileFolder, verbose_name="Dossier", default=None, blank=True,
+                               related_name="resources", null=True, on_delete=models.CASCADE)
 
     def can_access(self, user):
         if user is not None and user.is_authenticated():

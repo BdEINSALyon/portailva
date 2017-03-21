@@ -1,150 +1,15 @@
-import magic
-
-from django.conf import settings
+# Association files
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
-from django.http import Http404, HttpResponse
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from django.views.generic import CreateView, DeleteView, DetailView, ListView
-from django.views.generic.edit import ModelFormMixin
+from django.views.generic import DetailView, CreateView, DeleteView
 
 from portailva.association.mixins import AssociationMixin
-from .forms import AssociationFileUploadForm, ResourceFileUploadForm
-from .models import File, FileVersion, FileFolder, AssociationFile, ResourceFile
+from portailva.file.forms import AssociationFileUploadForm
+from portailva.file.models import FileFolder, AssociationFile, ResourceFile, FileVersion
 
 
-class FileListView(LoginRequiredMixin, ListView):
-    template_name = 'file/list.html'
-
-    def get(self, request, *args, **kwargs):
-        if not request.user.has_perm('file.admin_file'):
-            raise PermissionDenied
-        return super(FileListView, self).get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        queryset = File.objects.all()
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super(FileListView, self).get_context_data(**kwargs)
-        return context
-
-
-class ResourceFileListView(LoginRequiredMixin, ListView):
-    template_name = 'file/list_resources.html'
-
-    def get(self, request, *args, **kwargs):
-        if not request.user.has_perm('file.manage_resources'):
-            raise PermissionDenied
-        return super(ResourceFileListView, self).get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        queryset = ResourceFile.objects.all()
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super(ResourceFileListView, self).get_context_data(**kwargs)
-        return context
-
-
-class ResourceFileDeleteView(LoginRequiredMixin, DeleteView):
-    template_name = 'file/resource_file_delete.html'
-    model = ResourceFile
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('file.manage_resources'):
-            raise PermissionDenied
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_success_url(self):
-        return reverse('resource-file-list')
-
-    def get_queryset(self):
-        queryset = ResourceFile.objects.all()
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super(ResourceFileDeleteView, self).get_context_data(**kwargs)
-        return context
-
-
-class ResourceFileCreateView(LoginRequiredMixin, CreateView):
-    template_name = 'file/resource_file_upload.html'
-    http_method_names = ['get', 'post']
-    form_class = ResourceFileUploadForm
-    current_folder = None
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('file.manage_resources'):
-            raise PermissionDenied
-        return super(ResourceFileCreateView, self).dispatch(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        form = self.get_form(self.form_class)
-        if form.is_valid():
-            return self.form_valid(form)
-        return render(request, self.template_name, {
-            'form': form
-        })
-
-    def get_form(self, form_class=ResourceFileUploadForm):
-        return form_class(**super(ModelFormMixin, self).get_form_kwargs())
-
-    def get_folder(self):
-        try:
-            folder_pk = int(self.kwargs.get('folder_pk'))
-        except (KeyError, ValueError, TypeError):
-            return None
-        return get_object_or_404(FileFolder, pk=folder_pk)
-
-    def form_valid(self, form):
-
-        file = ResourceFile.objects.create(
-            name=form.data.get('name'),
-            published=True
-        )
-
-        # Then file version
-        FileVersion.objects.create(
-            version=1,
-            data=self.request.FILES['data'],
-            file=file,
-            user=self.request.user
-        )
-
-        return redirect(reverse('resource-file-list'))
-
-
-class FileView(DetailView):
-    template_name = None
-    model = File
-    object = None
-
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if not self.object.can_access(request.user):
-            raise PermissionDenied
-        return super(FileView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        # We get file last version
-        try:
-            version = FileVersion.objects\
-                .filter(file_id=self.object.id)\
-                .latest('created_at')
-
-            mime = magic.Magic(mime=True, magic_file=settings.MAGIC_BIN)
-            mime_type = mime.from_file(version.data.path)
-
-            response = HttpResponse(version.data.read(), content_type=mime_type)
-            return response
-        except FileVersion.DoesNotExist:
-            raise Http404
-
-
-# Association files
 class AssociationFileTreeView(AssociationMixin, DetailView):
     template_name = 'file/association_file_tree.html'
 
