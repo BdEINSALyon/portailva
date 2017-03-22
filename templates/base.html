@@ -61,6 +61,12 @@
                 <li{% if request.resolver_match.url_name == 'homepage' %} class="active"{% endif %}><a
                         href="{% url 'homepage' %}">Accueil</a></li>
 
+                {% if user.is_active %}
+                    <li{% if request.resolver_match.url_name == 'associations-directory' %} class="active"{% endif %}>
+                    <a href="{% url 'associations-directory' %}">Annuaire</a>
+                    </li>
+                {% endif %}
+
                 {% if my_associations.count == 1 %}
 
                     <li><a href="{% url 'association-detail' my_associations.0.id %}">{{ my_associations.0.name }}</a>

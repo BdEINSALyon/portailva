@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+Annuaire des associations
+{% endblock %}
+
+{% block content %}
+    <table class="table table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>Nom de l'association</th>
+                <th>Nom du président</th>
+                <th>Email de contact</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for association in object_list %}
+                <tr>
+                    <td>{{ association.name }}</td>
+                    <td>{{ association.mandates.last.peoples.first }}</td>
+                    <td>{{ association.mandates.last.peoples.first.email }}</td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}

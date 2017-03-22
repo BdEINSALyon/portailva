@@ -316,3 +316,11 @@ class RequirementDetailView(DetailView):
             'associations': Association.objects.all()
         })
         return context
+
+
+class GlobalDirectoryView(LoginRequiredMixin, ListView):
+    model = Association
+    template_name = 'association/global_directory.html'
+
+    def get_queryset(self):
+        return Association.objects.all().order_by('name')
