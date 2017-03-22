@@ -3,8 +3,9 @@ from django.conf.urls import url
 from portailva.file.views.admin_files import FileListView
 from portailva.file.views.admin_resources import UploadResourceView, CreateResourceFolderView, \
     ResourceFolderListView, ResourceFileDeleteView, ResourceFolderDeleteView
-from portailva.file.views.association_files_management import AssociationFileTreeView, AssociationResourceFileTreeView, \
+from portailva.file.views.association_files_management import AssociationFileTreeView, \
     AssociationFileUploadView, AssociationFileDeleteView
+from portailva.file.views.association_resources import AssocitationResourceView
 from portailva.file.views.files import FileView
 
 urlpatterns = [
@@ -15,7 +16,7 @@ urlpatterns = [
     url('^association/(?P<association_pk>\d+)/file/tree(?:/(?P<folder_pk>\d+))?/$', AssociationFileTreeView.as_view(),
         name='association-file-tree'),
     url('^association/(?P<association_pk>\d+)/resources(?:/(?P<folder_pk>\d+))?/$',
-        AssociationResourceFileTreeView.as_view(), name='resource-file-tree'),
+        AssocitationResourceView.as_view(), name='association-resource-tree'),
     url('^association/(?P<association_pk>\d+)/file/tree/(?P<folder_pk>\d+)/upload/$',
         AssociationFileUploadView.as_view(), name='association-file-upload'),
     url('^association/(?P<association_pk>\d+)/file/(?P<pk>\d+)/delete/$', AssociationFileDeleteView.as_view(),
