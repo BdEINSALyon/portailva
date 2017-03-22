@@ -65,7 +65,8 @@ class AssociationUpdateView(LoginRequiredMixin, UpdateView):
             'category': self.object.category,
             'acronym': self.object.acronym,
             'description': self.object.description,
-            'is_active': self.object.is_active
+            'is_active': self.object.is_active,
+            'active_members_number': self.object.active_members_number,
         })
 
         return render(request, self.template_name, {'association': self.object, 'form': form})
@@ -83,16 +84,7 @@ class AssociationUpdateView(LoginRequiredMixin, UpdateView):
         return form_class(self.request.POST)
 
     def form_valid(self, form):
-        self.object.name = form.data.get('name')
-        self.object.category_id = form.data.get('category')
-        self.object.acronym = form.data.get('acronym')
-        self.object.description = form.data.get('description')
-
-        # Admin form
-        if self.form_class is AssociationAdminForm:
-            self.object.is_active = False if not form.data.get('is_active') else True
-
-        self.object.save()
+        self.object = form.save()
 
         messages.add_message(self.request, messages.SUCCESS, "Les informations ont bien été mises à jour.")
 
