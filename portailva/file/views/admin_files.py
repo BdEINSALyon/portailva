@@ -6,7 +6,7 @@ from portailva.file.models import File
 
 
 class FileListView(LoginRequiredMixin, ListView):
-    template_name = 'file/list.html'
+    template_name = 'file/files/list.html'
 
     def get(self, request, *args, **kwargs):
         if not request.user.has_perm('file.admin_file'):

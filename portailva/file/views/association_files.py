@@ -11,7 +11,7 @@ from portailva.file.models import FileFolder, AssociationFile, ResourceFile, Fil
 
 
 class AssociationFileTreeView(AssociationMixin, DetailView):
-    template_name = 'file/association_file_tree.html'
+    template_name = 'file/files/tree.html'
 
     def get(self, request, *args, **kwargs):
         try:
@@ -46,43 +46,8 @@ class AssociationFileTreeView(AssociationMixin, DetailView):
         return get_object_or_404(FileFolder, pk=folder_pk)
 
 
-# Association files
-class AssociationResourceFileTreeView(AssociationMixin, DetailView):
-    template_name = 'file/association_file_tree.html'
-
-    def get(self, request, *args, **kwargs):
-        try:
-            current_folder = FileFolder(name='Resources')
-            folders = []
-            files = ResourceFile.objects.all()\
-                .filter(published=True)\
-                .order_by('name')
-        except (KeyError, ValueError, TypeError):
-            # User wants to list folders on root folder
-            folders = FileFolder.objects.all().filter(parent=None).order_by('name')
-            files = list()
-            current_folder = None
-        except:
-            raise Http404
-
-        return render(request, self.template_name, {
-            'association': self.association,
-            'folders': folders,
-            'files': files,
-            'current_folder': current_folder,
-            'is_root': False
-        })
-
-    def get_folder(self):
-        try:
-            folder_pk = int(self.kwargs.get('folder_pk'))
-        except (KeyError, ValueError, TypeError):
-            return None
-        return get_object_or_404(FileFolder, pk=folder_pk)
-
-
 class AssociationFileUploadView(AssociationMixin, CreateView):
-    template_name = 'file/association_file_upload.html'
+    template_name = 'file/files/upload.html'
     http_method_names = ['get', 'post']
     form_class = AssociationFileUploadForm
     current_folder = None
@@ -151,7 +116,7 @@ class AssociationFileUploadView(AssociationMixin, CreateView):
 
 class AssociationFileDeleteView(AssociationMixin, DeleteView):
     model = AssociationFile
-    template_name = 'file/association_file_delete.html'
+    template_name = 'file/files/delete.html'
     success_url = None
 
     def post(self, request, *args, **kwargs):

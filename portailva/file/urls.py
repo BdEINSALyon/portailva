@@ -3,7 +3,7 @@ from django.conf.urls import url
 from portailva.file.views.admin_files import FileListView
 from portailva.file.views.admin_resources import UploadResourceView, CreateResourceFolderView, \
     ResourceFolderListView, ResourceFileDeleteView, ResourceFolderDeleteView
-from portailva.file.views.association_files_management import AssociationFileTreeView, \
+from portailva.file.views.association_files import AssociationFileTreeView, \
     AssociationFileUploadView, AssociationFileDeleteView
 from portailva.file.views.association_resources import AssocitationResourceView
 from portailva.file.views.files import FileView
