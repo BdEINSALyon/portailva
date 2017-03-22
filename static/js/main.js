@@ -1,7 +1,7 @@
 /**
  * Created by leo on 13/10/2016.
  */
-$(document).ready(function() {
+$(function() {
   $('table[id^=prettyTable]').DataTable({
     "language": {
       "lengthMenu": "Afficher _MENU_ enregistrements par page",
