@@ -178,3 +178,13 @@ class AssociationEventPublishView(AssociationEventMixin, TemplateView):
 
     def get_object(self):
         return get_object_or_404(self.model, pk=self.kwargs.get('event_pk'))
+
+
+class EventDetailView(DetailView):
+    model = Event
+    template_name = 'event/public_detail.html'
+
+    def get_queryset(self):
+        return super().get_queryset()
+
+
