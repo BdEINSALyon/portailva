@@ -1,0 +1,49 @@
+{% extends 'association/base_association.html' %}
+
+{% block page_sub_title %}
+    Ressources
+    {% if current_folder %}
+        : {{ current_folder.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content_association %}
+    <table class="table table-stripped table-hover">
+        {% if current_folder %}
+            {% if current_folder.parent %}
+                <tr>
+                    <td><i class="fa fa-folder"></i> <a
+                            href="{% url 'association-resource-tree' association.id current_folder.parent.id %}">..</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td><i class="fa fa-folder"></i> <a
+                            href="{% url 'association-resource-tree' association.id %}">..</a>
+                    </td>
+                </tr>
+            {% endif %}
+        {% else %}
+            <tr>
+                <td><i class="fa fa-arrow-left"></i> <a
+                        href="{% url 'association-file-tree' association.id %}">Retourner aux fichiers</a></td>
+            </tr>
+        {% endif %}
+
+        {% for folder in folders %}
+            <tr>
+                <td><i class="fa fa-folder"></i> <a
+                        href="{% url 'association-resource-tree' association.id folder.id %}">{{ folder.name }}</a></td>
+            </tr>
+        {% endfor %}
+        {% for file in files %}
+            <tr>
+                <td><i class="fa fa-file"></i> <a href="{% url 'file-view' file.id %}">{{ file.name }}</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td><i>Aucun fichier dans ce répertoire</i></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
