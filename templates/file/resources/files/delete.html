@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block quick_actions %}
-  <a href="{% url 'resource-file-list' %}" class="btn btn-default">Annuler</a>
+  <a href="{% url 'resource-folder-list' %}" class="btn btn-default">Annuler</a>
 {% endblock %}
 
 {% block content %}
   <div class="row">
     <div class="col-xs-12">
       <div class="alert alert-danger" role="alert">
-        <b>Attention !</b> La suppression du fichier <i>{{ object.name }}</i> entraînera sa <u>perte irréversible</u>.<br>
+        <b>Attention !</b> La suppression du fichier <i>{{ object }}</i> entraînera sa <u>perte irréversible</u>,<br>
         Voulez-vous <u>vraiment</u> poursuivre ?
       </div>
       <form action="" method="post">

@@ -42,27 +42,14 @@ class File(models.Model):
         return False
 
 
-class FileFolder(models.Model):
-    """
-    A File Folder is used for Association File sorting.
-    """
+class TreeObject(models.Model):
+
+    class Meta:
+        abstract = True
+
+    parent = models.ForeignKey('self', verbose_name="Dossier parent", related_name='children', null=True, blank=True,
+                               on_delete=models.CASCADE)
     name = models.CharField("Nom", max_length=250)
-    description = models.TextField("Description")
-    position = models.IntegerField("Position", blank=True)
-    is_writable = models.BooleanField("Accessible en écriture ?", default=True)
-
-    parent = models.ForeignKey('self', verbose_name="Dossier parent", null=True, blank=True, on_delete=models.SET_NULL)
-    allowed_types = models.ManyToManyField(FileType, verbose_name="Extensions autorisées", blank=True)
-
-    def __str__(self):
-        return self.name
-
-    def get_all_children(self, include_self=True):
-        r = []
-        if include_self:
-            r.append(self)
-        for c in FileFolder.objects.filter(parent=self):
-            r.append(c.get_all_children(include_self=False))
 
     def get_tree(self):
         tree = []
@@ -75,11 +62,75 @@ class FileFolder(models.Model):
         tree = self.get_tree()
         return '/'.join(tree)
 
+    @property
+    def tree(self):
+        return self.get_tree()
+
+    @property
+    def path(self):
+        return self.get_path()
+
+    def __str__(self):
+        return self.name
+
+
+class FileFolder(TreeObject):
+    """
+    A File Folder is used for Association File sorting.
+    """
+    description = models.TextField("Description")
+    position = models.IntegerField("Position", blank=True)
+    is_writable = models.BooleanField("Accessible en écriture ?", default=True)
+
+    allowed_types = models.ManyToManyField(FileType, verbose_name="Extensions autorisées", blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_all_children(self, include_self=True):
+        r = []
+        if include_self:
+            r.append(self)
+        for c in FileFolder.objects.filter(parent=self):
+            r.append(c.get_all_children(include_self=False))
+
 
 class AssociationFile(File):
     association = models.ForeignKey('association.Association', related_name="files", verbose_name="Association", null=True,
                                     blank=True, on_delete=models.CASCADE)
     folder = models.ForeignKey(FileFolder, verbose_name="Dossier", related_name="files", on_delete=models.CASCADE)
+
+
+class ResourceFolder(TreeObject):
+    """
+    Resource folder to store ResourceFile objects.
+    """
+
+    def list(self):
+        """ List resources into this directory """
+        sub_folders = self.children.all()
+        resources = self.resources.all()
+        return sub_folders + resources
+
+    @staticmethod
+    def all_by_tree(folder=None, folders_list=None):
+        """
+        List all tree of resource folders.
+        This fetch mode is useful for administration sections
+        :type folders_list: list
+        :param folders_list: List of previously added folders
+        :type folder: ResourceFolder
+        """
+        if folders_list is None:
+            folders_list = []
+        if folder is None:
+            folders = ResourceFolder.objects.filter(parent=None).all()
+        else:
+            folders = folder.children.all()
+        for folder in folders:
+            folders_list.append(folder)
+            ResourceFolder.all_by_tree(folder, folders_list)
+        return folders_list
 
 
 class ResourceFile(File):
@@ -89,6 +140,8 @@ class ResourceFile(File):
         )
 
     published = models.BooleanField('Publié', default=False)
+    folder = models.ForeignKey(ResourceFolder, verbose_name="Dossier", default=None, blank=True,
+                               related_name="resources", null=True, on_delete=models.CASCADE)
 
     def can_access(self, user):
         if user is not None and user.is_authenticated():
@@ -96,6 +149,7 @@ class ResourceFile(File):
         return False
 
 
+# noinspection PyUnusedLocal
 def user_directory_path(instance, filename):
     return 'uploads/' + str(uuid.uuid1())
 
@@ -117,6 +171,7 @@ class FileVersion(models.Model):
         return '#{} - {} (V{})'.format(self.pk, self.file.name, self.version)
 
 
+# noinspection PyUnusedLocal
 @receiver(models.signals.pre_delete, sender=FileVersion)
 def file_version_delete(sender, instance, **kwargs):
     instance.data.delete(False)
