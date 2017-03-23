@@ -9,12 +9,12 @@
 {% endblock %}
 
 {% block content %}
-  <table id="prettyTable" class="table table-bordered table-stripped">
+  <table id="prettyTable" class="table table-bordered table-stripped datatables" data-page-length="50">
     <thead>
       <tr>
         <th>Nom</th>
         <th>Acronyme</th>
-        <th data-orderable="false">Active</th>
+        <th>Active</th>
         <th data-orderable="false">Action</th>
       </tr>
     </thead>
@@ -23,7 +23,7 @@
         <tr>
           <td><a href="{% url 'association-detail' association.id %}">{{ association.name }}</a></td>
           <td>{{ association.acronym }}</td>
-          <td>
+          <td data-order="{{ association.is_active }}">
             {% if association.is_active %}
               <i class="fa fa-check"></i>
             {% else %}
