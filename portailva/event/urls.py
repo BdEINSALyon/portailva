@@ -2,9 +2,11 @@ from django.conf.urls import url
 
 from .views import AssociationEventListView, AssociationEventNewView, AssociationEventUpdateView, \
     AssociationEventDetailView, AssociationEventDeleteView, AssociationEventPriceNewView, \
-    AssociationEventPriceUpdateView, AssociationEventPriceDeleteView, AssociationEventPublishView
+    AssociationEventPriceUpdateView, AssociationEventPriceDeleteView, AssociationEventPublishView, EventDetailView
 
 urlpatterns = [
+    url('^events/(?P<pk>\d+)$',
+        EventDetailView.as_view(), name='event-about'),
     url('^association/(?P<association_pk>\d+)/event/$', AssociationEventListView.as_view(),
         name='association-event-list'),
     url('^association/(?P<association_pk>\d+)/event/new/$', AssociationEventNewView.as_view(),
