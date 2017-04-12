@@ -9,6 +9,7 @@ class AssociationAdmin(admin.ModelAdmin):
     list_display_links = 'name',
     search_fields = 'name', 'acronym',
     list_filter = 'category', 'is_active', 'is_validated', 'has_place'
+    ordering = 'name', 'id'
 
 
 admin.site.register(Category)
