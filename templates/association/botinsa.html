@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  Bot'INSA
+{% endblock %}
+{% block page_sub_title %}
+  Liste des associations
+{% endblock %}
+
+{#{% block quick_actions %}#}
+{#  <a href="{% url 'association-mandate-list' association.id %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>#}
+{#  <button form="mandateForm" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>#}
+{#{% endblock %}#}
+
+{% block content %}
+    <div class="row">
+        {% for asso in object_list %}
+
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                  <img src="https://portail.asso-insa-lyon.fr/file/12/" alt="...">
+                  <div class="caption">
+                    <h3>{{ asso.name }} <small>{{ asso.acronym }}</small></h3>
+                    <p>{{ asso.description }}</p>
+                    <p><a href="#" class="btn btn-primary" role="button">En savoir plus...</a></p>
+                  </div>
+                </div>
+              </div>
+        {% endfor %}
+    </div>
+{% endblock %}

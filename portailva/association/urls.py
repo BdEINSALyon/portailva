@@ -3,7 +3,8 @@ from django.conf.urls import url
 from portailva.association.views import AssociationDetailView, AssociationUpdateView, AssociationListView, \
     AssociationNewView, AssociationDeleteView, AssociationMandateListView, AssociationMandateNewView, \
     AssociationMandatePeopleNewView, AssociationMandatePeopleUpdateView, AssociationMandatePeopleDeleteView, \
-    AssociationRequirementListView, AssociationRequirementAchieveView, RequirementListView, RequirementDetailView
+    AssociationRequirementListView, AssociationRequirementAchieveView, RequirementListView, RequirementDetailView, \
+    BotInsaListView
 
 urlpatterns = [
     # Association links
@@ -31,6 +32,9 @@ urlpatterns = [
     url('^association/$', AssociationListView.as_view(), name='association-list'),
     url('^requirement/$', RequirementListView.as_view(), name='requirement-list'),
     url('^requirement/(?P<pk>\d+)/$', RequirementDetailView.as_view(), name='requirement-detail'),
-    url('^association/(?P<pk>\d+)/delete/$', AssociationDeleteView.as_view(), name='association-delete')
+    url('^association/(?P<pk>\d+)/delete/$', AssociationDeleteView.as_view(), name='association-delete'),
+
+
+    url('^association/botinsa0123/$', BotInsaListView.as_view(), name='botinsa')
 
 ]
