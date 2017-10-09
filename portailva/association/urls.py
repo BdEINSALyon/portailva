@@ -35,6 +35,6 @@ urlpatterns = [
     url('^association/(?P<pk>\d+)/delete/$', AssociationDeleteView.as_view(), name='association-delete'),
 
 
-    url('^association/botinsa0123/$', BotInsaListView.as_view(), name='botinsa')
+    url('^association/botinsa-beta/$', BotInsaListView.as_view(), name='botinsa')
 
 ]
