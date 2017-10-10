@@ -18,7 +18,7 @@
                     <h4 class="card-title">
                         {{ asso.name }}
                         {% if asso.acronym %}
-                            <small>{{ asso.acronym }}</small>
+                            <small>({{ asso.acronym }})</small>
                         {% endif %}
                     </h4>
                     <p class="card-text">{{ asso.description }}</p>
@@ -39,89 +39,117 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="assoDetailsLabel{{ asso.id }}">{{ asso.name }}</h4>
+                        <h4 class="modal-title" id="assoDetailsLabel{{ asso.id }}">
+                            {{ asso.name }}
+                            {% if asso.acronym %}
+                                <small>({{ asso.acronym }})</small>
+                            {% endif %}
+                        </h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <h5>Description</h5>
-                        <p>
-                            {% if asso.current_directory_entry.description %}
-                                {{ asso.current_directory_entry.description|linebreaksbr }}
-                            {% else %}
-                                <em>Non défini</em>
-                            {% endif %}
-                        </p>
+                        <div class="row">
+                            <div class="col-12">
+                                <h5>Description</h5>
 
-                        <h5>Lieu</h5>
-                        <p>
-                            <i class="fa fa-fw fa-location-arrow"></i>
-                            {% if asso.current_directory_entry.place %}
-                                {% with place=asso.current_directory_entry.place %}
-                                <a href="http://www.google.com/maps/place/{{ place.lat|unlocalize }},{{ place.long|unlocalize }}">
-                                    {{ place.name }}
-                                </a>
-                                {% endwith %}
-                            {% else %}
-                                <em>Non défini</em>
-                            {% endif %}
-                        </p>
+                                {% if asso.logo_url %}
+                                    <img src="{{ asso.logo_url }}" alt="Logo" class="float-right">
+                                {% endif %}
 
-                        <h5>Contact</h5>
-                        <p>
-                            <i class="fa fa-fw fa-envelope-o"></i>
-                            {% if asso.current_directory_entry.contact_address %}
-                                <a href="mailto:{{ asso.current_directory_entry.contact_address }}">
-                                    {{ asso.current_directory_entry.contact_address }}
-                                </a>
-                            {% else %}
-                                <em>Non défini</em>
-                            {% endif %}<br>
+                                <p>
+                                    {% if asso.current_directory_entry.description %}
+                                        {{ asso.current_directory_entry.description|linebreaksbr }}
+                                    {% else %}
+                                        <em>Non défini</em>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
 
-                            <i class="fa fa-fw fa-phone"></i>
-                            {% if asso.current_directory_entry.phone %}
-                                <a href="tel:{{ asso.current_directory_entry.phone }}">
-                                    {{ asso.current_directory_entry.phone }}
-                                </a>
-                            {% else %}
-                                <em>Non défini</em>
-                            {% endif %}
-                        </p>
 
-                        <h5>Site web</h5>
-                        <p>
-                            <i class="fa fa-fw fa-external-link"></i>
-                            {% if asso.current_directory_entry.website_url %}
-                                <a href="{{ asso.current_directory_entry.website_url }}">
-                                    {{ asso.current_directory_entry.website_url }}
-                                </a>
-                            {% else %}
-                                <em>Non défini</em>
-                            {% endif %}
-                        </p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Lieu</h5>
+                                <p>
+                                    <i class="fa fa-fw fa-location-arrow"></i>
+                                    {% if asso.current_directory_entry.place %}
+                                        {% with place=asso.current_directory_entry.place %}
+                                            <a href="http://www.google.com/maps/place/{{ place.lat|unlocalize }},{{ place.long|unlocalize }}">
+                                                {{ place.name }}
+                                            </a>
+                                        {% endwith %}
+                                    {% else %}
+                                        <em>Non défini</em>
+                                    {% endif %}
+                                </p>
+                            </div>
 
-                        <h5>Réseaux sociaux</h5>
-                        <p>
-                            <i class="fa fa-fw fa-facebook-f"></i>
-                            {% if asso.current_directory_entry.facebook_url %}
-                                <a href="{{ asso.current_directory_entry.facebook_url }}">
-                                    {{ asso.current_directory_entry.facebook_url }}
-                                </a>
-                            {% else %}
-                                <em>Non défini</em>
-                            {% endif %}
-                            <br>
+                            <div class="col-md-6">
+                                <h5>Site web</h5>
+                                <p>
+                                    <i class="fa fa-fw fa-external-link"></i>
+                                    {% if asso.current_directory_entry.website_url %}
+                                        <a href="{{ asso.current_directory_entry.website_url }}">
+                                            {{ asso.current_directory_entry.website_url }}
+                                        </a>
+                                    {% else %}
+                                        <em>Non défini</em>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
 
-                            <i class="fa fa-fw fa-twitter"></i>
-                            {% if asso.current_directory_entry.twitter_url %}
-                                <a href="{{ asso.current_directory_entry.twitter_url }}">
-                                    {{ asso.current_directory_entry.twitter_url }}
-                                </a>
-                            {% else %}
-                                <em>Non défini</em>
-                            {% endif %}
-                        </p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Contact</h5>
+                                <p>
+                                    <i class="fa fa-fw fa-envelope-o"></i>
+                                    {% if asso.current_directory_entry.contact_address %}
+                                        <a href="mailto:{{ asso.current_directory_entry.contact_address }}">
+                                            {{ asso.current_directory_entry.contact_address }}
+                                        </a>
+                                    {% else %}
+                                        <em>Non défini</em>
+                                    {% endif %}<br>
+
+                                    <i class="fa fa-fw fa-phone"></i>
+                                    {% if asso.current_directory_entry.phone %}
+                                        <a href="tel:{{ asso.current_directory_entry.phone }}">
+                                            {{ asso.current_directory_entry.phone }}
+                                        </a>
+                                    {% else %}
+                                        <em>Non défini</em>
+                                    {% endif %}
+                                </p>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <h5>Réseaux sociaux</h5>
+                                <p>
+                                    <i class="fa fa-fw fa-facebook-f"></i>
+                                    {% if asso.current_directory_entry.facebook_url %}
+                                        <a href="{{ asso.current_directory_entry.facebook_url }}">
+                                            Facebook
+                                        </a>
+                                    {% else %}
+                                        <em>Non défini</em>
+                                    {% endif %}
+                                    <br>
+
+                                    <i class="fa fa-fw fa-twitter"></i>
+                                    {% if asso.current_directory_entry.twitter_url %}
+                                        <a href="{{ asso.current_directory_entry.twitter_url }}">
+                                            Twitter
+                                        </a>
+                                    {% else %}
+                                        <em>Non défini</em>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
