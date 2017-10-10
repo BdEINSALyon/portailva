@@ -1,41 +1,45 @@
 {% extends 'base.html' %}
 
 {% block page_title %}
-  Liste des associations
+    Liste des associations
 {% endblock %}
 
 {% block quick_actions %}
-  <a href="{% url 'association-new' %}" class="btn btn-success"><i class="fa fa-plus"></i> Ajouter</a>
+    <a href="{% url 'association-new' %}" class="btn btn-success"><i class="fa fa-plus"></i> Ajouter</a>
 {% endblock %}
 
 {% block content %}
-  <table id="prettyTable" class="table table-bordered table-stripped datatables" data-page-length="50">
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Acronyme</th>
-        <th>Active</th>
-        <th data-orderable="false">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for association in object_list %}
-        <tr>
-          <td><a href="{% url 'association-detail' association.id %}">{{ association.name }}</a></td>
-          <td>{{ association.acronym }}</td>
-          <td data-order="{{ association.is_active }}">
-            {% if association.is_active %}
-              <i class="fa fa-check"></i>
-            {% else %}
-              <i class="fa fa-times"></i>
-            {% endif %}
-          </td>
-          <td>
-            <a href="{% url 'association-update' association.id %}" data-toggle="tooltip" title="Modifier les informations"><i class="fa fa-pencil"></i></a>
-            <a href="{% url 'association-delete' association.id %}" data-toggle="tooltip" title="Supprimer l'association"><i class="fa fa-trash"></i></a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <div class="row">
+        <table id="prettyTable" class="table table-bordered table-stripped datatables" data-page-length="50">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Acronyme</th>
+                <th>Active</th>
+                <th data-orderable="false">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for association in object_list %}
+                <tr>
+                    <td><a href="{% url 'association-detail' association.id %}">{{ association.name }}</a></td>
+                    <td>{{ association.acronym }}</td>
+                    <td data-order="{{ association.is_active }}">
+                        {% if association.is_active %}
+                            <i class="fa fa-check"></i>
+                        {% else %}
+                            <i class="fa fa-times"></i>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'association-update' association.id %}" data-toggle="tooltip"
+                           title="Modifier les informations"><i class="fa fa-pencil"></i></a>
+                        <a href="{% url 'association-delete' association.id %}" data-toggle="tooltip"
+                           title="Supprimer l'association"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
