@@ -52,6 +52,32 @@
             </div>
         </div>
     </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <b>IBAN</b>
+            <div class="card bg-light">
+                <div class="card-body">
+                    {% if object.iban %}
+                        {{ object.iban }}
+                    {% else %}
+                        <i>Non défini</i>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <b>BIC</b>
+            <div class="card bg-light">
+                <div class="card-body">
+                    {% if object.bic %}
+                        {{ object.bic }}
+                    {% else %}
+                        <i>Non défini</i>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <b>Logo</b>

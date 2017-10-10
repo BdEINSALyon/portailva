@@ -43,6 +43,9 @@ class Association(models.Model):
 
     logo_url = models.URLField("URL du logo", blank=True)
 
+    iban = models.CharField("IBAN", max_length=50, blank=True)
+    bic = models.CharField("BIC", max_length=15, blank=True)
+
     created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
     updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
 
