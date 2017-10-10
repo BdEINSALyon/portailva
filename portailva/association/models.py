@@ -41,6 +41,8 @@ class Association(models.Model):
     category = models.ForeignKey(Category, verbose_name="Catégorie")
     users = models.ManyToManyField(User, verbose_name="Utilisateurs", related_name='associations', blank=True)
 
+    logo_url = models.URLField("URL du logo", blank=True)
+
     created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
     updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
 

@@ -8,7 +8,7 @@ from .models import Association, Mandate, People
 
 class AssociationForm(forms.ModelForm):
     class Meta:
-        fields = ['category', 'name', 'acronym', 'description', 'active_members_number']
+        fields = ['category', 'name', 'acronym', 'description', 'active_members_number', 'logo_url']
         model = Association
 
     def __init__(self, *args, **kwargs):

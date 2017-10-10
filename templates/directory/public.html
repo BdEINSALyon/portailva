@@ -11,7 +11,7 @@
     <div class="card-columns">
         {% for asso in associations %}
             <div class="card">
-                <img class="card-img-top" src="https://portail.asso-insa-lyon.fr/file/12/" alt="...">
+                {% if asso.logo_url %}<img class="card-img-top" src="{{ asso.logo_url }}" alt="Logo">{% endif %}
                 <div class="card-body">
                     <h4 class="card-title">
                         {{ asso.name }}
