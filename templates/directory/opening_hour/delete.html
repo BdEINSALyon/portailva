@@ -10,7 +10,7 @@
 
 {% block content_association %}
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
       <div class="alert alert-danger" role="alert">
         <b>Attention !</b> Vous vous apprêtez à supprimer l'horaire de permanence <i>{{ days|get_tuple:object.day }} de {{ object.begins_at|time:"H:i" }} à {{ object.ends_at|time:"H:i" }}</i>.<br>
         Cette action nécessitera une validation du responsable VA avant publication effective.<br>
