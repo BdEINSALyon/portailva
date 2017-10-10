@@ -7,19 +7,15 @@
     Liste des associations
 {% endblock %}
 
-{#{% block quick_actions %}#}
-{#  <a href="{% url 'association-mandate-list' association.id %}" class="btn btn-secondary"><i class="fa fa-times"></i> Annuler</a>#}
-{#  <button form="mandateForm" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>#}
-{#{% endblock %}#}
-
 {% block content %}
     <div class="card-columns">
         {% for asso in associations %}
             <div class="card">
                 <img class="card-img-top" src="https://portail.asso-insa-lyon.fr/file/12/" alt="...">
                 <div class="card-body">
-                    <h4 class="card-title">{{ asso.name }}
-                        <small>{{ asso.acronym }}</small>
+                    <h4 class="card-title">
+                        {{ asso.name }}
+                        {% if asso.acronym %}<small>{{ asso.acronym }}</small>{% endif %}
                     </h4>
                     <p class="card-text">{{ asso.description }}</p>
                     <a href="#" class="btn btn-primary" role="button">En savoir plus...</a>
