@@ -150,8 +150,9 @@
                         </div>
                     </li>
                 {% else %}
-                    <li{% if request.resolver_match.url_name == 'member-login' %} class="active"{% endif %}><a
-                            href="{% url 'member-login' %}">Connexion</a></li>
+                    <li class="nav-item{% if request.resolver_match.url_name == 'member-login' %} active{% endif %}">
+                        <a href="{% url 'member-login' %}" class="nav-link">Connexion</a>
+                    </li>
                 {% endif %}
             </ul>
         </div><!--/.nav-collapse -->
