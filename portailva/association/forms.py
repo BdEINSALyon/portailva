@@ -26,13 +26,13 @@ class AssociationAdminForm(AssociationForm):
 class MandateForm(forms.Form):
     begins_at = forms.DateField(
         label="Début de mandat",
-        widget=DateTimePicker(options=settings.PICKER_DATE_OPTIONS),
+        # widget=DateTimePicker(options=settings.PICKER_DATE_OPTIONS),
         help_text="Format : JJ/MM/AAAA"
     )
 
     ends_at = forms.DateField(
         label="Fin de mandat",
-        widget=DateTimePicker(options=settings.PICKER_DATE_OPTIONS),
+        # widget=DateTimePicker(options=settings.PICKER_DATE_OPTIONS),
         help_text="Format : JJ/MM/AAAA"
     )
 
