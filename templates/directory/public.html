@@ -21,7 +21,7 @@
                             <small>({{ asso.acronym }})</small>
                         {% endif %}
                     </h4>
-                    <p class="card-text">{{ asso.description }}</p>
+                    <p class="card-text">{{ asso.description|linebreaksbr }}</p>
                     <button type="button" class="btn btn-primary" data-toggle="modal"
                             data-target="#assoDetails{{ asso.id }}">
                         Plus d'infos
