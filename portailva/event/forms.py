@@ -17,14 +17,14 @@ class EventForm(forms.ModelForm):
     begins_at = forms.DateTimeField(
         label="Date et heure de début",
         help_text="Format : " + settings.PICKER_DATETIME_OPTIONS['format'],
-        widget=DateTimePicker(options=settings.PICKER_DATETIME_OPTIONS)
+        # widget=DateTimePicker(options=settings.PICKER_DATETIME_OPTIONS)
 
     )
 
     ends_at = forms.DateTimeField(
         label="Date et heure de fin",
         help_text="Format : " + settings.PICKER_DATETIME_OPTIONS['format'],
-        widget=DateTimePicker(options=settings.PICKER_DATETIME_OPTIONS)
+        # widget=DateTimePicker(options=settings.PICKER_DATETIME_OPTIONS)
     )
 
     class Meta(object):
