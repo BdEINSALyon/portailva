@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block quick_actions %}
-  <a href="{% url 'association-directory-detail' association.id %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>
+  <a href="{% url 'association-directory-detail' association.id %}" class="btn btn-secondary"><i class="fa fa-times"></i> Annuler</a>
 {% endblock %}
 
 {% block content_association %}
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
       <div class="alert alert-danger" role="alert">
         <b>Attention !</b> Vous vous apprêtez à supprimer cette association du Bot'INSA. Cette action est <u>irréversible</u>.<br>
         Voulez-vous <u>vraiment</u> poursuivre ?
@@ -18,7 +18,7 @@
       <form action="" method="post">
         {% csrf_token %}
         <p class="text-center">
-          <input class="btn btn-default" type="submit" value="Confirmer la suppression" />
+          <input class="btn btn-danger" type="submit" value="Confirmer la suppression" />
         </p>
       </form>
     </div>
