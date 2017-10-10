@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block quick_actions %}
-  <a href="{% url 'association-event-detail' association.id event.id %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>
+  <a href="{% url 'association-event-detail' association.id event.id %}" class="btn btn-secondary"><i class="fa fa-times"></i> Annuler</a>
 {% endblock %}
 
 {% block content_association %}
@@ -17,7 +17,7 @@
       <form action="" method="post">
         {% csrf_token %}
         <p class="text-center">
-          <input class="btn btn-default" type="submit" value="Confirmer la publication" />
+          <input class="btn btn-success" type="submit" value="Confirmer la publication" />
         </p>
       </form>
     </div>

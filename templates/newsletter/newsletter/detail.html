@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block quick_actions %}
-  <a href="{% url 'newsletter-list' %}" class="btn btn-default"><i class="fa fa-list"></i> Retourner à la liste</a>
+  <a href="{% url 'newsletter-list' %}" class="btn btn-secondary"><i class="fa fa-list"></i> Retourner à la liste</a>
   {% if can_delete %}
     <a href="{% url 'newsletter-delete' object.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Supprimer</a>
   {% endif %}
