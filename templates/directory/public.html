@@ -59,7 +59,7 @@
                             <i class="fa fa-fw fa-location-arrow"></i>
                             {% if asso.current_directory_entry.place %}
                                 {% with place=asso.current_directory_entry.place %}
-                                <a href="http://www.google.com/maps/place/{{ place.loc_x|unlocalize }},{{ place.loc_y|unlocalize }}">
+                                <a href="http://www.google.com/maps/place/{{ place.lat|unlocalize }},{{ place.long|unlocalize }}">
                                     {{ place.name }}
                                 </a>
                                 {% endwith %}
