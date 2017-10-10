@@ -7,8 +7,8 @@ class Place(models.Model):
     A Place somewhere.
     """
     name = models.CharField("Nom", max_length=50)
-    loc_x = models.DecimalField("Longitude", max_digits=8, decimal_places=6)
-    loc_y = models.DecimalField("Latitude", max_digits=8, decimal_places=6)
+    loc_x = models.DecimalField("Latitude", max_digits=8, decimal_places=6)
+    loc_y = models.DecimalField("Longitude", max_digits=8, decimal_places=6)
 
     class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'admin',)

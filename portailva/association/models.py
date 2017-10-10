@@ -55,6 +55,9 @@ class Association(models.Model):
     def __str__(self):
         return self.name
 
+    def current_directory_entry(self):
+        return self.directory_entries.filter(is_online=True).last()
+
     def can_admin(self, user):
         """
         Checks if an user can administrate an association.
