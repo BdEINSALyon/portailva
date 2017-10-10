@@ -17,7 +17,7 @@
             <tbody>
             {% for file in object_list %}
                 <tr>
-                    <td><a href="#">{{ file.name }}</a></td>
+                    <td><a href="{% url 'file-view' file.id %}">{{ file.name }}</a></td>
                     <td>-</td>
                     <td>-</td>
                 </tr>
