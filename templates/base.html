@@ -11,10 +11,13 @@
     <title>PortailVA</title>
 
     {# Stylesheets #}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.13/cr-1.3.2/r-2.1.1/rr-1.2.0/sc-1.4.2/se-1.2.0/datatables.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/v/bs/dt-1.10.13/cr-1.3.2/r-2.1.1/rr-1.2.0/sc-1.4.2/se-1.2.0/datatables.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="{% static "css/main.css" %}">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -24,11 +27,18 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+            crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/cr-1.3.2/r-2.1.1/rr-1.2.0/sc-1.4.2/se-1.2.0/datatables.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/v/bs/dt-1.10.13/cr-1.3.2/r-2.1.1/rr-1.2.0/sc-1.4.2/se-1.2.0/datatables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <script src="{% static "js/main.js" %}"></script>
@@ -43,94 +53,101 @@
 <body>
 
 {# Menu #}
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{% url 'homepage' %}">Portail<b class="brand-colored">VA</b></a>
-        </div>
+        <a class="navbar-brand" href="{% url 'homepage' %}">Portail<b class="brand-colored">VA</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+                aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav mr-auto">
 
-                <li{% if request.resolver_match.url_name == 'homepage' %} class="active"{% endif %}><a
-                        href="{% url 'homepage' %}">Accueil</a></li>
+                <li class="nav-item{% if request.resolver_match.url_name == 'homepage' %} active{% endif %}">
+                    <a class="nav-link" href="{% url 'homepage' %}">Accueil</a>
+                </li>
 
                 {% if my_associations.count == 1 %}
 
-                    <li><a href="{% url 'association-detail' my_associations.0.id %}">{{ my_associations.0.name }}</a>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{% url 'association-detail' my_associations.0.id %}">{{ my_associations.0.name }}</a>
                     </li>
 
                 {% elif my_associations.count > 1 %}
 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Mes associations<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        <div class="dropdown-menu">
                             {% for association in my_associations %}
-                                <li><a href="{% url 'association-detail' association.id %}">{{ association.name }}</a>
-                                </li>
+                                <a class="dropdown-item"
+                                   href="{% url 'association-detail' association.id %}">{{ association.name }}</a>
                             {% endfor %}
-                        </ul>
+                        </div>
                     </li>
                 {% endif %}
 
                 {# Admin stuff #}
                 {% if request.user.is_active and request.user.is_staff %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Supervision<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        <div class="dropdown-menu">
                             {% if perms.association.admin_requirement %}
-                                <li><a href="{% url 'requirement-list' %}">Situation administrative</a></li>
+                                <a class="dropdown-item"
+                                   href="{% url 'requirement-list' %}">Situation administrative</a>
                             {% endif %}
                             {% if perms.association.admin_requirement %}
-                                <li><a href="{% url 'export' %}">Exporter les données</a></li>
+                                <a class="dropdown-item"
+                                   href="{% url 'export' %}">Exporter les données</a>
                             {% endif %}
-                        </ul>
+                        </div>
                     </li>
                 {% endif %}
 
                 {% if request.user.is_active and request.user.is_staff %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Admin<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        <div class="dropdown-menu">
                             {% if perms.association.admin_association %}
-                                <li><a href="{% url 'association-list' %}">Associations</a></li>
+                                <a class="dropdown-item"
+                                   href="{% url 'association-list' %}">Associations</a>
                             {% endif %}
                             {% if perms.file.can_admin_file %}
-                                <li><a href="{% url 'file-list' %}">Fichiers</a></li>
+                                <a class="dropdown-item"
+                                   href="{% url 'file-list' %}">Fichiers</a>
                             {% endif %}
                             {% if perms.file.can_admin_file %}
-                                <li><a href="{% url 'resource-folder-list' %}">Ressources</a></li>
+                                <a class="dropdown-item"
+                                   href="{% url 'resource-folder-list' %}">Ressources</a>
                             {% endif %}
                             {% if perms.utils.can_admin_place %}
-                                <li><a href="{% url 'place-list' %}">Lieux</a></li>
+                                <a class="dropdown-item"
+                                   href="{% url 'place-list' %}">Lieux</a>
                             {% endif %}
                             {% if perms.utils.can_admin_newsletter %}
-                                <li><a href="{% url 'newsletter-list' %}">Newsletters</a></li>
+                                <a class="dropdown-item"
+                                   href="{% url 'newsletter-list' %}">Newsletters</a>
                             {% endif %}
-                        </ul>
+                        </div>
                     </li>
                 {% endif %}
 
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="navbar-nav">
                 {% if user.is_authenticated %}
 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">{{ user.email }} <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'member-change-password' %}">Changer le mot de passe</a></li>
-                            <li><a href="{% url 'member-logout' %}">Déconnexion</a></li>
-                        </ul>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item"
+                                   href="{% url 'member-change-password' %}">Changer le mot de passe</a>
+                            <a class="dropdown-item"
+                                   href="{% url 'member-logout' %}">Déconnexion</a>
+                        </div>
                     </li>
                 {% else %}
                     <li{% if request.resolver_match.url_name == 'member-login' %} class="active"{% endif %}><a
