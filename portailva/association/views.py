@@ -300,17 +300,3 @@ class RequirementDetailView(DetailView):
         })
         return context
 
-
-class BotInsaListView(ListView):
-    template_name = 'association/botinsa.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_queryset(self):
-        queryset = Association.objects.all()
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
