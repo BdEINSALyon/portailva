@@ -29,7 +29,7 @@ class EventForm(forms.ModelForm):
 
     class Meta(object):
         model = Event
-        fields = ('type', 'name', 'short_description', 'description', 'place', 'begins_at', 'ends_at',)
+        fields = ('type', 'name', 'short_description', 'description', 'place', 'begins_at', 'ends_at', 'website_url',)
 
     def __init__(self, *args, **kwargs):
         self.association = kwargs.pop('association', None)
