@@ -58,6 +58,9 @@ class Association(models.Model):
     def current_directory_entry(self):
         return self.directory_entries.filter(is_online=True).last()
 
+    def online_events(self):
+        return self.events.filter(is_online=True).filter(ends_at__gte=datetime.now())
+
     def can_admin(self, user):
         """
         Checks if an user can administrate an association.

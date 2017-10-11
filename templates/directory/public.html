@@ -179,7 +179,9 @@
                             </div>
                             <div class="tab-pane fade" id="events-{{ asso.id }}" role="tabpanel"
                                  aria-labelledby="events-tab{{ asso.id }}">
-                                List of asso events
+                                {% for event in asso.online_events %}
+                                    {{ event.name }}<br>
+                                {% endfor %}
                             </div>
                         </div>
 
