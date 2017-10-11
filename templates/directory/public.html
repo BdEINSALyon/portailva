@@ -186,12 +186,26 @@
                                            aria-controls="event-{{ event.id }}">
                                             {{ event.name }} ({{ event.type.name }})
                                         </a>
-                                        <div id="event-{{ event.id }}" class="collapse" role="tabpanel">
+                                        <div id="event-{{ event.id }}" class="collapse{% if forloop.first %} show{% endif %}" role="tabpanel">
                                             {% if event.picture %}
                                                 {#<img src="" alt="Logo" class="float-right">#}
                                             {% endif %}
                                             <p>
                                                 {{ event.description }}
+                                            </p>
+                                            <p>
+                                                <i class="fa fa-fw fa-calendar"></i> {{ event.begins_at|date:'DATETIME_FORMAT' }}
+                                                - {{ event.ends_at|date:'DATETIME_FORMAT' }}<br>
+                                                <i class="fa fa-fw fa-location-arrow"></i>
+                                                {% if event.place %}
+                                                    {% with place=event.place %}
+                                                        <a href="http://www.google.com/maps/place/{{ place.lat|unlocalize }},{{ place.long|unlocalize }}">
+                                                            {{ place.name }}
+                                                        </a>
+                                                    {% endwith %}
+                                                {% else %}
+                                                    <em>Non défini</em>
+                                                {% endif %}
                                             </p>
                                         </div>
                                     </div>
