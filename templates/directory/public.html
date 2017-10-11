@@ -26,6 +26,11 @@
                             data-target="#assoDetails{{ asso.id }}">
                         Plus d'infos
                     </button>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'association-detail' asso.id %}" class="btn btn-secondary">
+                            Admin
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
@@ -152,6 +157,11 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        {% if user.is_superuser %}
+                            <a href="{% url 'association-detail' asso.id %}" class="btn btn-light">
+                                Admin
+                            </a>
+                        {% endif %}
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                     </div>
                 </div>
