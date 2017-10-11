@@ -18,7 +18,7 @@
                     <h4 class="card-title">
                         {{ asso.name }}
                         {% if asso.acronym %}
-                            <small>({{ asso.acronym }})</small>
+                            <small class="text-muted">({{ asso.acronym }})</small>
                         {% endif %}
                     </h4>
                     <p class="card-text">{{ asso.description|linebreaksbr }}</p>
@@ -42,7 +42,7 @@
                         <h4 class="modal-title" id="assoDetailsLabel{{ asso.id }}">
                             {{ asso.name }}
                             {% if asso.acronym %}
-                                <small>({{ asso.acronym }})</small>
+                                <small class="text-muted">({{ asso.acronym }})</small>
                             {% endif %}
                         </h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
