@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block quick_actions %}
-    {% if can_update %}
+    {% if can_delete %}
         <a href="{% url 'association-event-delete' association.id object.id %}" class="btn btn-danger"><i
                 class="fa fa-trash"></i> Supprimer</a>
     {% endif %}
@@ -15,7 +15,7 @@
         <a href="{% url 'association-event-publish' association.id object.id %}" class="btn btn-success"><i
                 class="fa fa-check"></i> Publier</a>
     {% endif %}
-    {% if can_delete %}
+    {% if can_update %}
         <a href="{% url 'association-event-update' association.id object.id %}" class="btn btn-primary"><i
                 class="fa fa-pencil"></i> Mettre à jour</a>
     {% endif %}
