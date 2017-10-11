@@ -81,7 +81,7 @@
                                         <h5>Description</h5>
 
                                         {% if asso.logo_url %}
-                                            <img src="{{ asso.logo_url }}" alt="Logo" class="float-right">
+                                            <img src="{{ asso.logo_url }}" alt="Logo" class="float-right col-3">
                                         {% endif %}
 
                                         <p>
@@ -178,10 +178,25 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="events-{{ asso.id }}" role="tabpanel"
-                                 aria-labelledby="events-tab{{ asso.id }}">
+                                 aria-labelledby="events-tab{{ asso.id }}" data-children=".item-{{ asso.id }}">
                                 {% for event in asso.online_events %}
-                                    {{ event.name }}<br>
+                                    <div class="item-{{ asso.id }}">
+                                        <a data-toggle="collapse" data-parent="#events-{{ asso.id }}"
+                                           href="#event-{{ event.id }}" aria-expanded="true"
+                                           aria-controls="event-{{ event.id }}">
+                                            {{ event.name }} ({{ event.type.name }})
+                                        </a>
+                                        <div id="event-{{ event.id }}" class="collapse" role="tabpanel">
+                                            {% if event.picture %}
+                                                {#<img src="" alt="Logo" class="float-right">#}
+                                            {% endif %}
+                                            <p>
+                                                {{ event.description }}
+                                            </p>
+                                        </div>
+                                    </div>
                                 {% endfor %}
+
                             </div>
                         </div>
 
