@@ -191,3 +191,4 @@ class AssociationDirectoryPublicView(ListView):
     template_name = 'directory/public.html'
     model = Association
     context_object_name = 'associations'
+    queryset = Association.objects.filter(is_active=True)
