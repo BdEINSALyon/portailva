@@ -44,6 +44,8 @@ class Event(models.Model):
     created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
     updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
 
+    website_url = models.URLField("Page web", blank=True)
+
     objects = EventManager()
 
     class Meta(object):

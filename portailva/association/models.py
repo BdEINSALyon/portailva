@@ -28,7 +28,11 @@ class Association(models.Model):
     """
     name = models.CharField("Nom", max_length=50)
     acronym = models.CharField("Acronyme", max_length=20, null=True, blank=True)
-    description = models.TextField("Description")
+    description = models.TextField(
+        "Description",
+        help_text="Cette description n'est pas visible dans le Bot'INSA",
+    )
+    active_members_number = models.PositiveIntegerField("Nombre de membres actifs", default=0)
 
     is_active = models.BooleanField("Est active", default=True)
     is_validated = models.BooleanField("Est validée", default=False)
@@ -36,6 +40,11 @@ class Association(models.Model):
 
     category = models.ForeignKey(Category, verbose_name="Catégorie")
     users = models.ManyToManyField(User, verbose_name="Utilisateurs", related_name='associations', blank=True)
+
+    logo_url = models.URLField("URL du logo", blank=True)
+
+    iban = models.CharField("IBAN", max_length=50, blank=True)
+    bic = models.CharField("BIC", max_length=15, blank=True)
 
     created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
     updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
@@ -45,6 +54,12 @@ class Association(models.Model):
 
     def __str__(self):
         return self.name
+
+    def current_directory_entry(self):
+        return self.directory_entries.filter(is_online=True).last()
+
+    def online_events(self):
+        return self.events.filter(is_online=True).filter(ends_at__gte=datetime.now())
 
     def can_admin(self, user):
         """

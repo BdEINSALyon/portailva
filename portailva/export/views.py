@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 from portailva.association.models import Association, Requirement
-from portailva.export.forms import ExportForm
 from portailva.export.mixins import AbleToExportMixin
 
 
@@ -13,11 +12,6 @@ class ExportView(AbleToExportMixin, TemplateView):
 
     def post(self, request):
         return self.export_xlsx(request.POST['filter'], request.POST.getlist('data'))
-
-    def get_context_data(self, **kwargs):
-        return {
-            'form': ExportForm()
-        }
 
     @staticmethod
     def convertToTitle(num):
@@ -29,7 +23,7 @@ class ExportView(AbleToExportMixin, TemplateView):
             title += alist[mod]
         return title[::-1]
 
-    def export_xlsx(self, category='ALL', datas=('BASIC', 'VALIDATIONS', 'PRESIDENT')):
+    def export_xlsx(self, category='ALL', datas=('BASIC', 'VALIDATIONS', 'PRESIDENT', 'BANK')):
 
         # Create the Excel file
         import openpyxl
@@ -56,6 +50,9 @@ class ExportView(AbleToExportMixin, TemplateView):
             columns.append(ExportColumn('Président (Nom)', 'mandates.last().peoples.first().__str__()'))
             columns.append(ExportColumn('Président (Téléphone)', 'mandates.last().peoples.first().phone'))
             columns.append(ExportColumn('Président (Email)', 'mandates.last().peoples.first().email'))
+        if 'BANK' in datas:
+            columns.append(ExportColumn('IBAN', 'iban'))
+            columns.append(ExportColumn('BIC', 'bic'))
 
         # Create first line of document
         for col_num in range(len(columns)):

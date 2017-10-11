@@ -5,20 +5,21 @@
 {% endblock %}
 
 {% block quick_actions %}
-  <a href="{% url 'resource-file-list' %}" class="btn btn-default">Annuler</a>
+  <a href="{% url 'resource-folder-list' %}" class="btn btn-secondary">Annuler</a>
 {% endblock %}
 
 {% block content %}
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
       <div class="alert alert-danger" role="alert">
-        <b>Attention !</b> La suppression du fichier <i>{{ object.name }}</i> entraînera sa <u>perte irréversible</u>.<br>
+        <b>Attention !</b> La suppression du dossier <i>{{ object.path }}</i> entraînera sa <u>perte irréversible</u>,
+          les fichiers qui y sont stockés seront supprimés.<br>
         Voulez-vous <u>vraiment</u> poursuivre ?
       </div>
       <form action="" method="post">
         {% csrf_token %}
         <p class="text-center">
-          <input class="btn btn-default" type="submit" value="Confirmer la suppression" />
+          <input class="btn btn-danger" type="submit" value="Confirmer la suppression" />
         </p>
       </form>
     </div>

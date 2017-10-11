@@ -9,38 +9,36 @@
     <p class="text-info">Cette page vous permet d'exporter les données liés aux associations vers des fichiers
         Excel.</p>
     <div class="row text-center">
-        <form method="post">{% csrf_token %}
-            <div class="col-md-12">
-                <h4>Séléctionner les associations :</h4>
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary active">
-                        <input type="radio" name="filter" value="ALL" id="option1" autocomplete="off" checked> Toutes
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="radio" name="filter" value="ACTIVE" id="option2" autocomplete="off"> Actives
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="radio" name="filter" value="DEAD" id="option3" autocomplete="off"> Mortes
-                    </label>
-                </div>
+        <form class="col-md-12" method="post">
+            {% csrf_token %}
+            <h4>Sélectionner les associations :</h4>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary active">
+                    <input type="radio" name="filter" value="ALL" id="option1" autocomplete="off" checked> Toutes
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="filter" value="ACTIVE" id="option2" autocomplete="off"> Actives
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="filter" value="DEAD" id="option3" autocomplete="off"> Mortes
+                </label>
             </div>
-            <div class="col-md-12">
-                <h4>Données à exporter :</h4>
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary active">
-                        <input type="checkbox" name="data" value="BASIC" autocomplete="off" checked> Informations Basiques
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="checkbox" name="data" value="VALIDATIONS" autocomplete="off"> Validations
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="checkbox" name="data" value="PRESIDENT" autocomplete="off"> Contact président
-                    </label>
-                </div>
+            <h4 class="mt-2">Données à exporter :</h4>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary active">
+                    <input type="checkbox" name="data" value="BASIC" autocomplete="off" checked> Informations basiques
+                </label>
+                <label class="btn btn-primary">
+                    <input type="checkbox" name="data" value="VALIDATIONS" autocomplete="off"> Validations
+                </label>
+                <label class="btn btn-primary">
+                    <input type="checkbox" name="data" value="PRESIDENT" autocomplete="off"> Contact président
+                </label>
+                <label class="btn btn-primary">
+                    <input type="checkbox" name="data" value="BANK" autocomplete="off"> Coordonnées bancaires
+                </label>
             </div>
-            <div class="col-md-2 col-md-offset-5" style="margin-top: 2em;">
-                <button type="submit" class="btn btn-success btn-block btn-lg">Télécharger</button>
-            </div>
+                <button type="submit" class="btn btn-success btn-block btn-lg col-md-4 mt-4 ml-auto mr-auto">Télécharger</button>
         </form>
     </div>
 {% endblock %}

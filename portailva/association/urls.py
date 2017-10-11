@@ -4,7 +4,6 @@ from portailva.association.views import AssociationDetailView, AssociationUpdate
     AssociationNewView, AssociationDeleteView, AssociationMandateListView, AssociationMandateNewView, \
     AssociationMandatePeopleNewView, AssociationMandatePeopleUpdateView, AssociationMandatePeopleDeleteView, \
     AssociationRequirementListView, AssociationRequirementAchieveView, RequirementListView, RequirementDetailView
-
 urlpatterns = [
     # Association links
     url('^association/new/$', AssociationNewView.as_view(), name='association-new'),
@@ -31,6 +30,6 @@ urlpatterns = [
     url('^association/$', AssociationListView.as_view(), name='association-list'),
     url('^requirement/$', RequirementListView.as_view(), name='requirement-list'),
     url('^requirement/(?P<pk>\d+)/$', RequirementDetailView.as_view(), name='requirement-detail'),
-    url('^association/(?P<pk>\d+)/delete/$', AssociationDeleteView.as_view(), name='association-delete')
+    url('^association/(?P<pk>\d+)/delete/$', AssociationDeleteView.as_view(), name='association-delete'),
 
 ]

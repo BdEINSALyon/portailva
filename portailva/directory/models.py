@@ -34,7 +34,6 @@ class DirectoryEntry(models.Model):
                                     on_delete=models.CASCADE)
     place = models.ForeignKey(Place, verbose_name="Lieu", related_name="associations", null=True, blank=True,
                               on_delete=models.SET_NULL)
-    logo = models.ForeignKey('file.File', verbose_name="Logo", null=True, blank=True, on_delete=models.SET_NULL)
 
     is_online = models.BooleanField("Est publié", default=False)
 

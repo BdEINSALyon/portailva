@@ -1,116 +1,158 @@
 {% extends 'association/base_association.html' %}
 
 {% block page_sub_title %}
-  Bot'INSA
+    Bot'INSA
 {% endblock %}
 
 {% block quick_actions %}
-  {% if perms.association.admin_directoryentry %}
-    {% if object != None %}
-      <a href="{% url 'association-directory-delete' association.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Supprimer</a>
-      {% if not object.is_online %}
-        <a href="{% url 'association-directory-publish' association.id %}" class="btn btn-success"><i class="fa fa-check"></i> Publier</a>
-      {% endif %}
+    {% if perms.association.admin_directoryentry %}
+        {% if object != None %}
+            <a href="{% url 'association-directory-delete' association.id %}" class="btn btn-danger"><i
+                    class="fa fa-trash"></i> Supprimer</a>
+            {% if not object.is_online %}
+                <a href="{% url 'association-directory-publish' association.id %}" class="btn btn-success"><i
+                        class="fa fa-check"></i> Publier</a>
+            {% endif %}
+        {% endif %}
     {% endif %}
-  {% endif %}
-  <a href="{% url 'association-directory-update' association.id %}" class="btn btn-primary"><i class="fa fa-pencil"></i> Mettre à jour</a>
+    <a href="{% url 'association-directory-update' association.id %}" class="btn btn-primary"><i
+            class="fa fa-pencil"></i> Mettre à jour</a>
 {% endblock %}
 
 {% block content_association %}
-  {% if not object %}
-  <div class="alert alert-warning" role="alert">
-    Vous n'avez jamais rempli de page pour le Bot'INSA.
-  </div>
-  {% else %}
-    {% if not object.is_online %}
-      <div class="alert alert-warning" role="alert">
-        Cette version est en cours de validation par le responsable VA. Elle n'est donc pas encore publiée.
-      </div>
+    {% if not object %}
+        <div class="alert alert-warning" role="alert">
+            Vous n'avez jamais rempli de page pour le Bot'INSA.
+        </div>
+    {% else %}
+        {% if not object.is_online %}
+            <div class="alert alert-warning" role="alert">
+                Cette version est en cours de validation par le responsable VA. Elle n'est donc pas encore publiée.
+            </div>
+        {% endif %}
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <b>Description</b>
+                <div class="card bg-light">
+                    <div class="card-body">{{ object.description|linebreaksbr }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <b>Adresse de contact</b>
+                <div class="card bg-light">
+                    <div class="card-body"><a
+                            href="mailto:{{ object.contact_address }}">{{ object.contact_address }}</a></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <b>Numéro de téléphone</b>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        {% if object.phone %}
+                            {{ object.phone }}
+                        {% else %}
+                            <i>Non défini</i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <b>Horaires de permanence</b>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <table class="table">
+                            <tbody>
+                            {% for opening_hour in object.opening_hours.all %}
+                                <tr>
+                                    <td>{{ days|get_tuple:opening_hour.day }}</td>
+                                    <td>de {{ opening_hour.begins_at|time:"H:i" }}</td>
+                                    <td>à {{ opening_hour.ends_at|time:"H:i" }}</td>
+                                    <td>
+                                        <a href="{% url 'association-directory-opening-hour-update' association.id opening_hour.id %}"
+                                           data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
+                                        <a href="{% url 'association-directory-opening-hour-delete' association.id opening_hour.id %}"
+                                           data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="4"><a
+                                        href="{% url 'association-directory-opening-hour-new' association.id %}">Ajouter
+                                    un horaire</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <b>Lieu</b>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        {% if object.place_id %}
+                            {{ object.place.name }}
+                        {% else %}
+                            <i>Non défini</i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <b>URL site web</b>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        {% if object.website_url %}
+                            <a href="{{ object.website_url }}">{{ object.website_url }}</a>
+                        {% else %}
+                            <i>Non défini</i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <b>URL page Facebook</b>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        {% if object.facebook_url %}
+                            <a href="{{ object.facebook_url }}">{{ object.facebook_url }}</a>
+                        {% else %}
+                            <i>Non défini</i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <b>URL fil Twitter</b>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        {% if object.twitter_url %}
+                            <a href="{{ object.twitter_url }}">{{ object.twitter_url }}</a>
+                        {% else %}
+                            <i>Non défini</i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p>
+            <small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small>
+        </p>
     {% endif %}
-
-    <b>Description</b>
-    <div class="well well-sm">{{ object.description|linebreaksbr }}</div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <b>Adresse de contact</b>
-        <div class="well well-sm"><a href="mailto:{{ object.contact_address }}">{{ object.contact_address }}</a></div>
-      </div>
-      <div class="col-md-6">
-        <b>Numéro de téléphone</b>
-        <div class="well well-sm">
-          {% if object.phone %}
-            {{ object.phone }}
-          {% else %}
-            <i>Non défini</i>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <b>Horaires de permanence</b>
-        <div class="well well-sm">
-          <table class="table">
-            <tbody>
-              {% for opening_hour in object.opening_hours.all %}
-              <tr>
-                <td>{{ days|get_tuple:opening_hour.day }}</td>
-                <td>de {{ opening_hour.begins_at|time:"H:i" }}</td>
-                <td>à {{ opening_hour.ends_at|time:"H:i" }}</td>
-                <td>
-                  <a href="{% url 'association-directory-opening-hour-update' association.id opening_hour.id %}" data-toggle="tooltip" title="Modifier"><i class="fa fa-pencil"></i></a>
-                  <a href="{% url 'association-directory-opening-hour-delete' association.id opening_hour.id %}" data-toggle="tooltip" title="Supprimer"><i class="fa fa-trash"></i></a>
-                </td>
-              </tr>
-              {% endfor %}
-              <tr>
-                <td colspan="4"><a href="{% url 'association-directory-opening-hour-new' association.id %}">Ajouter un horaire</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <b>Lieu</b>
-        <div class="well well-sm">
-          {% if object.place_id %}
-            {{ object.place.name }}
-          {% else %}
-            <i>Non défini</i>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-
-    <b>URL site web</b>
-    <div class="well well-sm">
-      {% if object.website_url %}
-        <a href="{{ object.website_url }}">{{ object.website_url }}</a>
-      {% else %}
-        <i>Non défini</i>
-      {% endif %}
-    </div>
-
-    <b>URL page Facebook</b>
-    <div class="well well-sm">
-      {% if object.facebook_url %}
-        <a href="{{ object.facebook_url }}">{{ object.facebook_url }}</a>
-      {% else %}
-        <i>Non défini</i>
-      {% endif %}
-    </div>
-
-    <b>URL fil Twitter</b>
-    <div class="well well-sm">
-      {% if object.twitter_url %}
-        <a href="{{ object.twitter_url }}">{{ object.twitter_url }}</a>
-      {% else %}
-        <i>Non défini</i>
-      {% endif %}
-    </div>
-
-    <p><small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small></p>
-  {% endif %}
 {% endblock %}

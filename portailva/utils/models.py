@@ -7,11 +7,11 @@ class Place(models.Model):
     A Place somewhere.
     """
     name = models.CharField("Nom", max_length=50)
-    loc_x = models.DecimalField("Longitude", max_digits=8, decimal_places=6)
-    loc_y = models.DecimalField("Latitude", max_digits=8, decimal_places=6)
+    lat = models.DecimalField("Latitude", max_digits=8, decimal_places=6)
+    long = models.DecimalField("Longitude", max_digits=8, decimal_places=6)
 
     class Meta(object):
         default_permissions = ('add', 'change', 'delete', 'admin',)
 
     def __str__(self):
-        return self.name + " (" + str(self.loc_x) + ", " + str(self.loc_y) + ")"
+        return self.name + " (" + str(self.lat) + ", " + str(self.long) + ")"

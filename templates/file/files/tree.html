@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block content_association %}
-    <table class="table table-stripped table-hover">
+    <table class="table table-hover">
         {% if current_folder %}
             {% if current_folder.parent %}
                 <tr>
@@ -32,7 +32,7 @@
             {% if is_root %}
                 <tr>
                     <td><i class="fa fa-folder"></i> <a
-                            href="{% url 'resource-file-tree' association.id %}">Ressources</a></td>
+                            href="{% url 'association-resource-tree' association.id %}">Ressources</a></td>
                 </tr>
             {% endif %}
         {% endif %}

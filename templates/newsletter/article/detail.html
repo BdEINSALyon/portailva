@@ -4,41 +4,70 @@
 {% load static %}
 
 {% block page_sub_title %}
-  Détail d'un article
+    Détail d'un article
 {% endblock %}
 
 {% block quick_actions %}
-  {% if can_delete %}
-    <a href="{% url 'association-article-delete' association.id object.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Supprimer</a>
-  {% endif %}
-  {% if can_update %}
-    <a href="{% url 'association-article-update' association.id object.id %}" class="btn btn-primary"><i class="fa fa-pencil"></i> Mettre à jour</a>
-  {% endif %}
+    {% if can_delete %}
+        <a href="{% url 'association-article-delete' association.id object.id %}" class="btn btn-danger"><i
+                class="fa fa-trash"></i> Supprimer</a>
+    {% endif %}
+    {% if can_update %}
+        <a href="{% url 'association-article-update' association.id object.id %}" class="btn btn-primary"><i
+                class="fa fa-pencil"></i> Mettre à jour</a>
+    {% endif %}
 {% endblock %}
 
 {% block content_association %}
-  {% if not object.validated %}
-    <div class="alert alert-danger" role="alert">
-      Cet article n'a pas encore été validé. Il n'est donc pas en ligne.
-    </div>
-  {% else %}
-    <div class="alert alert-success" role="alert">
-      Cet événement est validé et en ligne. Vous ne pouvez pas le modifier.
-    </div>
-  {% endif %}
+    {% if not object.validated %}
+        <div class="alert alert-danger" role="alert">
+            Cet article n'a pas encore été validé. Il n'est donc pas en ligne.
+        </div>
+    {% else %}
+        <div class="alert alert-success" role="alert">
+            Cet événement est validé et en ligne. Vous ne pouvez pas le modifier.
+        </div>
+    {% endif %}
 
-  <b>Titre</b>
-  <div class="well well-sm">{{ object.title }}</div>
+    <div class="row mb-3">
+        <div class="col-12">
+            <b>Titre</b>
+            <div class="card bg-light">
+                <div class="card-body">{{ object.title }}</div>
+            </div>
+        </div>
+    </div>
 
     {% if object.featured_image %}
-  <b>Image</b>
-  <div class="well well-sm"><img src="{% get_media_prefix %}{{ object.featured_image }}"></div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <b>Image</b>
+                <div class="card bg-light">
+                    <div class="card-body"><img src="{% get_media_prefix %}{{ object.featured_image }}"></div>
+                </div>
+            </div>
+        </div>
     {% endif %}
-  <b>Brève</b>
-  <div class="well well-sm">{{ object.short_content|safe }}</div>
 
-  <b>Contenu</b>
-  <div class="well well-sm">{{ object.content|safe }}</div>
+    <div class="row mb-3">
+        <div class="col-12">
+            <b>Brève</b>
+            <div class="card bg-light">
+                <div class="card-body">{{ object.short_content|safe }}</div>
+            </div>
+        </div>
+    </div>
 
-  <p><small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small></p>
+    <div class="row">
+        <div class="col-12">
+            <b>Contenu</b>
+            <div class="card bg-light">
+                <div class="card-body">{{ object.content|safe }}</div>
+            </div>
+        </div>
+    </div>
+
+    <p>
+        <small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small>
+    </p>
 {% endblock %}

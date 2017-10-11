@@ -1,0 +1,26 @@
+{% extends 'association/base_association.html' %}
+
+{% block page_sub_title %}
+  Suppression d'un fichier
+{% endblock %}
+
+{% block quick_actions %}
+  <a href="{% url 'resource-folder-list' %}" class="btn btn-secondary">Annuler</a>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12">
+      <div class="alert alert-danger" role="alert">
+        <b>Attention !</b> La suppression du fichier <i>{{ object }}</i> entraînera sa <u>perte irréversible</u>,<br>
+        Voulez-vous <u>vraiment</u> poursuivre ?
+      </div>
+      <form action="" method="post">
+        {% csrf_token %}
+        <p class="text-center">
+          <input class="btn btn-danger" type="submit" value="Confirmer la suppression" />
+        </p>
+      </form>
+    </div>
+  </div>
+{% endblock %}

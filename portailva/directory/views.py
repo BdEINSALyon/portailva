@@ -2,9 +2,10 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic import CreateView, DeleteView, DetailView, TemplateView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, TemplateView, UpdateView, ListView
 
 from portailva.association.mixins import AssociationMixin
+from portailva.association.models import Association
 from .forms import DirectoryEntryForm, OpeningHourForm
 from .models import DirectoryEntry, OpeningHour
 from .mixins import AssociationDirectoryEntryMixin, OpeningHourMixin
@@ -184,3 +185,10 @@ class AssociationDirectoryEntryDeleteView(AssociationMixin, TemplateView):
         return redirect(reverse('association-directory-detail', kwargs={
             'association_pk': self.association.id
         }))
+
+
+class AssociationDirectoryPublicView(ListView):
+    template_name = 'directory/public.html'
+    model = Association
+    context_object_name = 'associations'
+    queryset = Association.objects.filter(is_active=True)

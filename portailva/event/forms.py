@@ -17,19 +17,19 @@ class EventForm(forms.ModelForm):
     begins_at = forms.DateTimeField(
         label="Date et heure de début",
         help_text="Format : " + settings.PICKER_DATETIME_OPTIONS['format'],
-        widget=DateTimePicker(options=settings.PICKER_DATETIME_OPTIONS)
+        # widget=DateTimePicker(options=settings.PICKER_DATETIME_OPTIONS)
 
     )
 
     ends_at = forms.DateTimeField(
         label="Date et heure de fin",
         help_text="Format : " + settings.PICKER_DATETIME_OPTIONS['format'],
-        widget=DateTimePicker(options=settings.PICKER_DATETIME_OPTIONS)
+        # widget=DateTimePicker(options=settings.PICKER_DATETIME_OPTIONS)
     )
 
     class Meta(object):
         model = Event
-        fields = ('type', 'name', 'short_description', 'description', 'place', 'begins_at', 'ends_at',)
+        fields = ('type', 'name', 'short_description', 'description', 'place', 'begins_at', 'ends_at', 'website_url',)
 
     def __init__(self, *args, **kwargs):
         self.association = kwargs.pop('association', None)
