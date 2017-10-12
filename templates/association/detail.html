@@ -78,13 +78,15 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-md-12">
-            <b>Logo</b>
+            <b>URL du logo</b>
             <div class="card bg-light">
                 <div class="card-body">
                     {% if object.logo_url %}
-                        <a href="{{ object.logo_url }}">{{ object.logo_url }}</a>
+                        <a href="{{ object.logo_url }}">
+                            {{ object.logo_url }}
+                        </a>
                     {% else %}
                         <i>Non défini</i>
                     {% endif %}
@@ -92,6 +94,21 @@
             </div>
         </div>
     </div>
+    {% if object.logo_url %}
+        <div class="row">
+            <div class="col-md-12">
+                <b>Aperçu du logo</b>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <a href="{{ object.logo_url }}">
+                            <img class="img-fluid" src="{{ object.logo_url }}" alt="Logo non accessible">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
     <p>
         <small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small>
     </p>
