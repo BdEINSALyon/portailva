@@ -12,7 +12,6 @@
             <th>Nom de l'association</th>
             <th>Nom du président</th>
             <th>Email de contact</th>
-            <th>Début du mandat</th>
             <th>Fin du mandat</th>
         </tr>
         </thead>
@@ -23,11 +22,10 @@
                     <td>{{ association.name }}</td>
                     <td>{{ mandate.peoples.first }}</td>
                     <td>
-                        <a href="mailto:{{ mandate.peoples.first.email }}">
-                            {{ mandate.peoples.first.email }}
+                        <a href="mailto:{{ association.directory_entries.last.contact_address }}">
+                            {{ association.directory_entries.last.contact_address }}
                         </a>
                     </td>
-                    <td>{{ mandate.begins_at|date:'DATE_FORMAT' }}</td>
                     <td>{{ mandate.ends_at|date:'DATE_FORMAT' }}</td>
                 </tr>
             {% endwith %}
