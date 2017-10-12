@@ -21,7 +21,8 @@ class AssociationForm(forms.ModelForm):
 
     def clean_iban(self):
         iban = self.cleaned_data['iban']
-
+        if not iban:
+            return iban
         fr_iban_re = re.compile(r'^FR[0-9A-Z]{25}$')
         if not fr_iban_re.match(iban):
             raise forms.ValidationError("L'IBAN saisi n'est pas valide. "
