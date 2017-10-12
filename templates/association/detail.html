@@ -84,7 +84,7 @@
             <div class="card bg-light">
                 <div class="card-body">
                     {% if object.logo_url %}
-                        {{ object.logo_url }}
+                        <a href="{{ object.logo_url }}">{{ object.logo_url }}</a>
                     {% else %}
                         <i>Non défini</i>
                     {% endif %}
