@@ -57,7 +57,9 @@
                     <form action="{% url 'association-file-publish' association.id file.id %}"
                           method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-low-vision"></i>
+                        <button type="submit"
+                                class="btn btn-sm btn-{% if file.is_public %}warning{% else %}success{% endif %}">
+                            <i class="fa fa-low-vision"></i>
                             Rendre {% if file.is_public %}privé{% else %}public{% endif %}
                         </button>
                     </form>
