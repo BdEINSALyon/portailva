@@ -1,30 +1,36 @@
 {% extends 'base.html' %}
 
 {% block page_title %}
-Annuaire des associations
+    Annuaire des associations
 {% endblock %}
 
 {% block content %}
     <table class="table table-bordered table-responsive">
         <thead>
-            <tr>
-                <th>Nom de l'association</th>
-                <th>Nom du président</th>
-                <th>Email de contact</th>
-                <th>Début du mandat</th>
-                <th>Fin du mandat</th>
-            </tr>
+        <tr>
+            <th>Nom de l'association</th>
+            <th>Nom du président</th>
+            <th>Email de contact</th>
+            <th>Début du mandat</th>
+            <th>Fin du mandat</th>
+        </tr>
         </thead>
         <tbody>
-            {% for association in object_list %}
+        {% for association in object_list %}
+            {% with mandate=association.mandates.last %}
                 <tr>
                     <td>{{ association.name }}</td>
-                    <td>{{ association.mandates.last.peoples.first }}</td>
-                    <td>{{ association.mandates.last.peoples.first.email }}</td>
-                    <td>{{ association.mandates.last.begins_at|date:'DATE_FORMAT' }}</td>
-                    <td>{{ association.mandates.last.ends_at|date:'DATE_FORMAT' }}</td>
+                    <td>{{ mandate.peoples.first }}</td>
+                    <td>
+                        <a href="mailto:{{ mandate.peoples.first.email }}">
+                            {{ mandate.peoples.first.email }}
+                        </a>
+                    </td>
+                    <td>{{ mandate.begins_at|date:'DATE_FORMAT' }}</td>
+                    <td>{{ mandate.ends_at|date:'DATE_FORMAT' }}</td>
                 </tr>
-            {% endfor %}
+            {% endwith %}
+        {% endfor %}
 
         </tbody>
     </table>
