@@ -16,6 +16,11 @@ class AssociationFileUploadForm(forms.Form):
         max_length=255
     )
 
+    is_public = forms.BooleanField(
+        label="Public",
+        required=False
+    )
+
     data = forms.FileField(
         label="Fichier",
         help_text="Taille maximum : " + str(settings.PORTAILVA_APP['file']['file_max_size'] // (1024 * 1024)) + "Mo"
@@ -48,6 +53,11 @@ class ResourceFileUploadForm(forms.Form):
     name = forms.CharField(
         label="Nom",
         max_length=255
+    )
+
+    is_public = forms.BooleanField(
+        label="Public",
+        required=False
     )
 
     data = forms.FileField(

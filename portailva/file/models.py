@@ -22,6 +22,8 @@ class File(models.Model):
     """
     name = models.CharField("Nom", max_length=200)
 
+    is_public = models.BooleanField("Public", default=False, blank=True)
+
     created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
     updated_at = models.DateTimeField("Dernière mise à jour", auto_now=True)
 
@@ -33,6 +35,8 @@ class File(models.Model):
 
     def can_access(self, user):
         # By default, user must be logged in
+        if self.is_public:
+            return True
         if user is not None and user.is_authenticated():
             # If file is an association file, we ensure user belongs to association or is an admin
             if isinstance(self, AssociationFile):

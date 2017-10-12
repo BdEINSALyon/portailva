@@ -95,9 +95,10 @@ class AssociationFileUploadView(AssociationMixin, CreateView):
     def form_valid(self, form):
         # We first create file
         file = AssociationFile.objects.create(
-            name=form.data.get('name'),
+            name=form.cleaned_data.get('name'),
             association=self.association,
-            folder=self.current_folder
+            folder=self.current_folder,
+            is_public=form.cleaned_data.get('is_public', False)
         )
 
         # Then file version
