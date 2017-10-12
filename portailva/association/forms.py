@@ -26,7 +26,8 @@ class AssociationForm(forms.ModelForm):
         if not fr_iban_re.match(iban):
             raise forms.ValidationError("L'IBAN saisi n'est pas valide. "
                                         "Il doit commencer par FR et ne contenir que "
-                                        "des lettres majuscules ou des chiffres (pas d'espace, de tirets, ...)")
+                                        "des lettres majuscules ou des chiffres (pas d'espace, de tirets, ...). "
+                                        "27 caractères au total.")
 
         verif_iban = list(iban[4:] + iban[:4])
         verif_iban_num = ''
@@ -37,7 +38,7 @@ class AssociationForm(forms.ModelForm):
         verif_iban_num = int(verif_iban_num)
 
         if verif_iban_num % 97 != 1:
-            raise forms.ValidationError("L'IBAN saisi n'est pas valide, mais ce n'est pas un problème de forme.")
+            raise forms.ValidationError("L'IBAN saisi a la bonne forme mais n'est pas valide.")
 
         return iban
 
