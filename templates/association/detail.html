@@ -82,7 +82,13 @@
         <div class="col-md-12">
             <b>Logo</b>
             <div class="card bg-light">
-                <div class="card-body">{{ object.logo_url }}</div>
+                <div class="card-body">
+                    {% if object.logo_url %}
+                        {{ object.logo_url }}
+                    {% else %}
+                        <i>Non défini</i>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
