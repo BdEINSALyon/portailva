@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block content %}
-    <table class="table table-bordered table-responsive">
+    <div class="row">
+    <table id="prettyTable" class="table table-bordered table-responsive datatables" data-page-length="20">
         <thead>
         <tr>
             <th>Nom de l'association</th>
@@ -34,4 +35,5 @@
 
         </tbody>
     </table>
+    </div>
 {% endblock %}
