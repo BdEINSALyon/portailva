@@ -21,13 +21,13 @@ class DirectoryEntryForm(forms.ModelForm):
 class OpeningHourForm(forms.ModelForm):
     begins_at = forms.TimeField(
         label="Heure d'ouverture",
-        widget=DateTimePicker(options=settings.PICKER_TIME_OPTIONS),
+        # widget=DateTimePicker(options=settings.PICKER_TIME_OPTIONS),
         help_text="Format : HH:MM"
     )
 
     ends_at = forms.TimeField(
         label="Heure de fermeture",
-        widget=DateTimePicker(options=settings.PICKER_TIME_OPTIONS),
+        # widget=DateTimePicker(options=settings.PICKER_TIME_OPTIONS),
         help_text="Format : HH:MM"
     )
 

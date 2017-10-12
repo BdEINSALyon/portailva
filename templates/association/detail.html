@@ -1,41 +1,93 @@
 {% extends 'association/base_association.html' %}
 
 {% block page_sub_title %}
-  Vue générale
+    Vue générale
 {% endblock %}
 
 {% block quick_actions %}
-<a href="{% url 'association-update' association.id %}" class="btn btn-primary"><i class="fa fa-pencil"></i> Modifier les informations</a>
+    <a href="{% url 'association-update' association.id %}" class="btn btn-primary"><i class="fa fa-pencil"></i>
+        Modifier les informations</a>
 {% endblock %}
 
 {% block content_association %}
-  <b>Nom de l'association</b>
-  <div class="well well-sm">{{ object.name }}</div>
-
-  <div class="row">
-    <div class="col-md-4">
-      <b>Catégorie d'association</b>
-      <div class="well well-sm">{{ object.category.name }}</div>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <b>Nom de l'association</b>
+            <div class="card bg-light">
+                <div class="card-body">{{ object.name }}</div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-      <b>Acronyme</b>
-      <div class="well well-sm">
-        {% if object.acronym %}
-          {{ object.acronym }}
-        {% else %}
-          <i>Non défini</i>
-        {% endif %}
-      </div>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <b>Catégorie d'association</b>
+            <div class="card bg-light">
+                <div class="card-body">{{ object.category.name }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <b>Acronyme</b>
+            <div class="card bg-light">
+                <div class="card-body">
+                    {% if object.acronym %}
+                        {{ object.acronym }}
+                    {% else %}
+                        <i>Non défini</i>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <b>Nombre de membres actifs</b>
+            <div class="card bg-light">
+                <div class="card-body">{{ object.active_members_number }}</div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-      <b>Nombre de membres actifs</b>
-      <div class="well well-sm">{{ object.active_members_number }}</div>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <b>Description courte</b>
+            <div class="card bg-light">
+                <div class="card-body">{{ object.description }}</div>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <b>Description courte</b>
-  <div class="well well-sm">{{ object.description }}</div>
-
-  <p><small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small></p>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <b>IBAN</b>
+            <div class="card bg-light">
+                <div class="card-body">
+                    {% if object.iban %}
+                        {{ object.iban }}
+                    {% else %}
+                        <i>Non défini</i>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <b>BIC</b>
+            <div class="card bg-light">
+                <div class="card-body">
+                    {% if object.bic %}
+                        {{ object.bic }}
+                    {% else %}
+                        <i>Non défini</i>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <b>Logo</b>
+            <div class="card bg-light">
+                <div class="card-body">{{ object.logo_url }}</div>
+            </div>
+        </div>
+    </div>
+    <p>
+        <small><i>Dernière modification : {{ object.updated_at|date:'DATETIME_FORMAT' }}</i></small>
+    </p>
 
 {% endblock %}

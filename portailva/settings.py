@@ -162,7 +162,7 @@ STATICFILES_FINDERS = (
 )
 
 # Crispy forms
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Datetime picker
 PICKER_OPTIONS = {

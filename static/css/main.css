@@ -62,6 +62,10 @@ body {
     color: #e93c46;
 }
 
+body > .container {
+    margin-bottom: 4em;
+}
+
 /* Fixed footer */
 .footer {
     position: absolute;
@@ -76,21 +80,21 @@ body {
     color: #337ab7;
 }
 
-.container .text-muted {
+footer > .container > p {
     margin: 13px 0 0;
     font-size: 12px;
 }
 
-.container .text-muted .brand {
+footer > .container > .text-muted > .brand {
     color: #333;
 }
 
-.container .text-muted .version a {
+footer > .container > .text-muted > .version > a {
     color: #b4bcc2;
     text-decoration: underline;
 }
 
-.footer > .container {
+footer > .container {
     padding-right: 15px;
     padding-left: 15px;
 }

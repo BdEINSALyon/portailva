@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block quick_actions %}
-  <a href="{% url 'association-file-tree' association.id current_folder.id %}" class="btn btn-default"><i class="fa fa-times"></i> Annuler</a>
+  <a href="{% url 'association-file-tree' association.id current_folder.id %}" class="btn btn-secondary"><i class="fa fa-times"></i> Annuler</a>
   <button form="associationForm" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
 {% endblock %}
 

@@ -10,28 +10,30 @@
 {% endblock %}
 
 {% block content %}
-    <table id='prettyTable' class="table table-bordered table-stripped">
-        <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for newsletter in object_list %}
+    <div class="row">
+        <table id='prettyTable' class="table table-bordered table-stripped">
+            <thead>
             <tr>
-                <td>
-                    <a href="{% url 'newsletter-detail' newsletter.id %}">{{ newsletter.title }}</a>
-                </td>
-                <td>
-                    {{ newsletter.created_at }}
-                </td>
+                <th>Nom</th>
+                <th>Date</th>
             </tr>
-        {% empty %}
-            <tr>
-                <td colspan="5"><i>Aucune newsletter.</i></td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for newsletter in object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'newsletter-detail' newsletter.id %}">{{ newsletter.title }}</a>
+                    </td>
+                    <td>
+                        {{ newsletter.created_at }}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5"><i>Aucune newsletter.</i></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

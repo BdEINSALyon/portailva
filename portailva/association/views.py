@@ -59,29 +59,17 @@ class AssociationUpdateView(LoginRequiredMixin, UpdateView):
             self.form_class = AssociationAdminForm
         return super(AssociationUpdateView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        form = self.create_form(self.form_class, **{
-            'name': self.object.name,
-            'category': self.object.category,
-            'acronym': self.object.acronym,
-            'description': self.object.description,
-            'is_active': self.object.is_active,
-            'active_members_number': self.object.active_members_number,
-        })
+    def get_context_data(self, **kwargs):
+        context = super(AssociationUpdateView, self).get_context_data(**kwargs)
+        context['association'] = self.object
 
-        return render(request, self.template_name, {'association': self.object, 'form': form})
+        return context
 
     def post(self, request, *args, **kwargs):
         form = self.get_form(self.form_class)
         if form.is_valid():
             return self.form_valid(form)
         return render(request, self.template_name, {'association': self.object, 'form': form})
-
-    def create_form(self, form_class, **kwargs):
-        return form_class(initial=kwargs)
-
-    def get_form(self, form_class=None):
-        return form_class(self.request.POST)
 
     def form_valid(self, form):
         self.object = form.save()
@@ -319,3 +307,4 @@ class GlobalDirectoryView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Association.objects.all().order_by('name')
+

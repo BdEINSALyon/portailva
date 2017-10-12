@@ -8,7 +8,7 @@ from .models import Association, Mandate, People
 
 class AssociationForm(forms.ModelForm):
     class Meta:
-        fields = ['category', 'name', 'acronym', 'description', 'active_members_number']
+        fields = ['category', 'name', 'acronym', 'description', 'active_members_number', 'logo_url', 'iban', 'bic']
         model = Association
 
     def __init__(self, *args, **kwargs):
@@ -26,13 +26,13 @@ class AssociationAdminForm(AssociationForm):
 class MandateForm(forms.Form):
     begins_at = forms.DateField(
         label="Début de mandat",
-        widget=DateTimePicker(options=settings.PICKER_DATE_OPTIONS),
+        # widget=DateTimePicker(options=settings.PICKER_DATE_OPTIONS),
         help_text="Format : JJ/MM/AAAA"
     )
 
     ends_at = forms.DateField(
         label="Fin de mandat",
-        widget=DateTimePicker(options=settings.PICKER_DATE_OPTIONS),
+        # widget=DateTimePicker(options=settings.PICKER_DATE_OPTIONS),
         help_text="Format : JJ/MM/AAAA"
     )
 

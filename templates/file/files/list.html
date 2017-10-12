@@ -1,26 +1,28 @@
 {% extends 'base.html' %}
 
 {% block page_title %}
-  Liste des fichiers
+    Liste des fichiers
 {% endblock %}
 
 {% block content %}
-  <table id="prettyTable" class="table table-bordered table-stripped">
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Type</th>
-        <th data-orderable="false">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for file in object_list %}
-        <tr>
-          <td><a href="#">{{ file.name }}</a></td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <div class="row">
+        <table id="prettyTable" class="table table-bordered table-stripped">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Type</th>
+                <th data-orderable="false">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for file in object_list %}
+                <tr>
+                    <td><a href="{% url 'file-view' file.id %}">{{ file.name }}</a></td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

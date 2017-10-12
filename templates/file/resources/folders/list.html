@@ -8,7 +8,7 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-    <div class="panel panel-default">
+    <div class="panel panel-default mb-3">
         <!-- List group -->
         <div class="list-group">
             {% if folder %}
@@ -71,23 +71,23 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Créer un dossier
+        <div class="col-12">
+            <div class="card-deck">
+                <div class="card">
+                    <div class="card-header">
+                        Créer un dossier
+                    </div>
+                    <div class="card-body">
+                        {% crispy new_folder %}
+                    </div>
                 </div>
-                <div class="panel-body">
-                    {% crispy new_folder %}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Uploader un fichier
-                </div>
-                <div class="panel-body">
-                    {% crispy new_file %}
+                <div class="card">
+                    <div class="card-header">
+                        Uploader un fichier
+                    </div>
+                    <div class="card-body">
+                        {% crispy new_file %}
+                    </div>
                 </div>
             </div>
         </div>
