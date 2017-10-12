@@ -11,6 +11,8 @@ Annuaire des associations
                 <th>Nom de l'association</th>
                 <th>Nom du président</th>
                 <th>Email de contact</th>
+                <th>Début du mandat</th>
+                <th>Fin du mandat</th>
             </tr>
         </thead>
         <tbody>
@@ -19,6 +21,8 @@ Annuaire des associations
                     <td>{{ association.name }}</td>
                     <td>{{ association.mandates.last.peoples.first }}</td>
                     <td>{{ association.mandates.last.peoples.first.email }}</td>
+                    <td>{{ association.mandates.last.begins_at|date:'DATE_FORMAT' }}</td>
+                    <td>{{ association.mandates.last.ends_at|date:'DATE_FORMAT' }}</td>
                 </tr>
             {% endfor %}
 
