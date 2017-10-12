@@ -1,9 +1,11 @@
 # Association files
 from django.contrib import messages
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.views import View
 from django.views.generic import DetailView, CreateView, DeleteView
+from django.views.generic.detail import SingleObjectMixin
 
 from portailva.association.mixins import AssociationMixin
 from portailva.file.forms import AssociationFileUploadForm
@@ -129,3 +131,18 @@ class AssociationFileDeleteView(AssociationMixin, DeleteView):
         messages.add_message(self.request, messages.SUCCESS, "Le fichier a correctement été supprimé.")
 
         return super(AssociationFileDeleteView, self).post(request, *args, **kwargs)
+
+
+class AssociationFilePublishView(AssociationMixin, SingleObjectMixin, View):
+    model = AssociationFile
+    http_method_names = ['post']
+    object = None
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        file = AssociationFile.objects.get(id=self.object.id)
+        file.is_public = not file.is_public
+        file.save()
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

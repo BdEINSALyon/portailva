@@ -4,7 +4,7 @@ from portailva.file.views.admin_files import FileListView
 from portailva.file.views.admin_resources import UploadResourceView, CreateResourceFolderView, \
     ResourceFolderListView, ResourceFileDeleteView, ResourceFolderDeleteView
 from portailva.file.views.association_files import AssociationFileTreeView, \
-    AssociationFileUploadView, AssociationFileDeleteView
+    AssociationFileUploadView, AssociationFileDeleteView, AssociationFilePublishView
 from portailva.file.views.association_resources import AssocitationResourceView
 from portailva.file.views.files import FileView
 
@@ -21,6 +21,8 @@ urlpatterns = [
         AssociationFileUploadView.as_view(), name='association-file-upload'),
     url('^association/(?P<association_pk>\d+)/file/(?P<pk>\d+)/delete/$', AssociationFileDeleteView.as_view(),
         name='association-file-delete'),
+    url('^association/(?P<association_pk>\d+)/file/(?P<pk>\d+)/publish/$', AssociationFilePublishView.as_view(),
+        name='association-file-publish'),
 
     # Admin stuff
     url('^file/$', FileListView.as_view(), name='file-list'),

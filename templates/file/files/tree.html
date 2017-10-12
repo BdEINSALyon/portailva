@@ -53,8 +53,18 @@
                                               data-toggle="tooltip" title="Supprimer le fichier"><i
                             class="fa fa-times"></i></a></td>
                 {% endif %}
+                <td class="text-right">
+                    <form action="{% url 'association-file-publish' association.id file.id %}"
+                          method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-low-vision"></i>
+                            Rendre {% if file.is_public %}privé{% else %}public{% endif %}
+                        </button>
+                    </form>
+                </td>
             </tr>
-            {% empty %}
+
+        {% empty %}
             {% if current_folder.is_writable %}
                 <tr>
                     <td><i>Aucun fichier dans ce répertoire</i></td>
