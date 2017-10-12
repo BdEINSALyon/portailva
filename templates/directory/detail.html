@@ -1,5 +1,7 @@
 {% extends 'association/base_association.html' %}
 
+{% load l10n %}
+
 {% block page_sub_title %}
     Bot'INSA
 {% endblock %}
@@ -97,7 +99,9 @@
                 <div class="card bg-light">
                     <div class="card-body">
                         {% if object.place_id %}
-                            {{ object.place.name }}
+                            <a href="http://www.google.com/maps/place/{{ object.place.lat|unlocalize }},{{ object.place.long|unlocalize }}">
+                                {{ object.place.name }}
+                            </a>
                         {% else %}
                             <i>Non défini</i>
                         {% endif %}
