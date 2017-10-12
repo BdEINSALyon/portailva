@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block page_sub_title %}
+{% block page_title %}
     Exportation de données
 {% endblock %}
 
 {% block content %}
-    <p class="text-info">Cette page vous permet d'exporter les données liés aux associations vers des fichiers
+    <p class="text-info">Cette page vous permet d'exporter les données liées aux associations vers des fichiers
         Excel.</p>
     <div class="row text-center">
         <form class="col-md-12" method="post">
             {% csrf_token %}
             <h4>Sélectionner les associations :</h4>
-            <div class="btn-group" data-toggle="buttons">
+            <div class="btn-group-vertical" data-toggle="buttons">
                 <label class="btn btn-primary active">
                     <input type="radio" name="filter" value="ALL" id="option1" autocomplete="off" checked> Toutes
                 </label>
@@ -24,7 +24,7 @@
                 </label>
             </div>
             <h4 class="mt-2">Données à exporter :</h4>
-            <div class="btn-group" data-toggle="buttons">
+            <div class="btn-group-vertical" data-toggle="buttons">
                 <label class="btn btn-primary active">
                     <input type="checkbox" name="data" value="BASIC" autocomplete="off" checked> Informations basiques
                 </label>
