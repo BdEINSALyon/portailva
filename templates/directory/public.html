@@ -5,72 +5,75 @@
 {% block page_title %}
     Bot'INSA Beta
 {% endblock %}
-{% block page_sub_title %}
-    Liste des associations
-{% endblock %}
 
 {% block content %}
-    <h2>Associations du moment</h2>
-    <div id="highlightsAsso" class="carousel slide mb-4" data-ride="carousel" data-interval="5500">
-        <div class="carousel-inner">
-            {% for asso in highlights.assos %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <div class="row">
-                    {% if asso.logo_url %}
-                        <div class="col-3 col-md-2 text-center">
-                            <img src="{{ asso.logo_url }}" alt="Logo asso" class="img-fluid">
-                        </div>
-                        <div class="col-9 col-md-10">
-                    {% else %}
-                        <div class="col-12">
-                    {% endif %}
-                    <h4>
-                        {{ asso.name }}
-                    </h4>
-                    <p>
-                        {{ asso.description }}
-                    </p>
-                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                            data-target="#assoDetails{{ asso.id }}">
-                        Plus d'infos
-                    </button>
-                    </div>
-                    </div>
-                </div>
-            {% endfor %}
-            </div>
-        </div>
-
-        <h2>Évènements à venir</h2>
-        <div id="highlightsAsso" class="carousel slide mb-4" data-ride="carousel" data-interval="4500">
-            <div class="carousel-inner">
-                {% for event in highlights.events %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <div class="row">
-                        {% if event.logo_url %}
-                            <div class="col-3 col-md-2 text-center">
-                                <img src="{{ event.logo_url }}" alt="Logo event" class="img-fluid">
+    <div class="row mb-4">
+        <div class="col-md-6 col-12">
+            <h2>Associations du moment</h2>
+            <div id="highlightsAsso" class="carousel slide mb-4" data-ride="carousel" data-interval="5500">
+                <div class="carousel-inner">
+                    {% for asso in highlights.assos %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="row">
+                            {% if asso.logo_url %}
+                                <div class="col-3 col-md-3 text-center">
+                                    <img src="{{ asso.logo_url }}" alt="Logo asso" class="img-fluid">
+                                </div>
+                                <div class="col-9 col-md-9">
+                            {% else %}
+                                <div class="col-12">
+                            {% endif %}
+                            <h4>
+                                {{ asso.name }}
+                            </h4>
+                            <p>
+                                {{ asso.description }}
+                            </p>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#assoDetails{{ asso.id }}">
+                                Plus d'infos
+                            </button>
                             </div>
-                            <div class="col-9 col-md-10">
-                        {% else %}
-                            <div class="col-12">
-                        {% endif %}
-                        <h4>
-                            {{ event.name }}
-                        </h4>
-                        <p>
-                            {{ event.short_description }}
-                        </p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#assoDetails{{ event.association.id }}">
-                            Plus d'infos
-                        </button>
+                            </div>
                         </div>
-                        </div>
+                    {% endfor %}
                     </div>
-                {% endfor %}
                 </div>
             </div>
+            <div class="col-md-6 col-12">
+                <h2>Évènements à venir</h2>
+                <div id="highlightsAsso" class="carousel slide mb-4" data-ride="carousel" data-interval="4500">
+                    <div class="carousel-inner">
+                        {% for event in highlights.events %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="row">
+                                {% if event.logo_url %}
+                                    <div class="col-3 col-md-3 text-center">
+                                        <img src="{{ event.logo_url }}" alt="Logo event" class="img-fluid">
+                                    </div>
+                                    <div class="col-9 col-md-9">
+                                {% else %}
+                                    <div class="col-12">
+                                {% endif %}
+                                <h4>
+                                    {{ event.name }}
+                                </h4>
+                                <p>
+                                    {{ event.short_description }}
+                                </p>
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#assoDetails{{ event.association.id }}">
+                                    Plus d'infos
+                                </button>
+                                </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <h2>Toutes les associations</h2>
             <div class="card-columns">
