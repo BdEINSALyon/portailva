@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import redirect
@@ -6,6 +8,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, TemplateVie
 
 from portailva.association.mixins import AssociationMixin
 from portailva.association.models import Association
+from portailva.event.models import Event
 from .forms import DirectoryEntryForm, OpeningHourForm
 from .models import DirectoryEntry, OpeningHour
 from .mixins import AssociationDirectoryEntryMixin, OpeningHourMixin
@@ -192,3 +195,15 @@ class AssociationDirectoryPublicView(ListView):
     model = Association
     context_object_name = 'associations'
     queryset = Association.objects.filter(is_active=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['highlights'] = {}
+
+        assos = Association.objects.filter(logo_url__icontains='http').order_by('?')[:5]
+        context['highlights']['assos'] = assos
+
+        events = Event.objects.filter(is_online=True).filter(ends_at__gte=datetime.now())
+        context['highlights']['events'] = events
+
+        return context
