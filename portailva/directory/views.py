@@ -200,7 +200,7 @@ class AssociationDirectoryPublicView(ListView):
         context = super().get_context_data(**kwargs)
         context['highlights'] = {}
 
-        assos = Association.objects.filter(logo_url__icontains='http').order_by('?')[:5]
+        assos = Association.objects.filter(is_active=True).order_by('?')[:5]
         context['highlights']['assos'] = assos
 
         events = Event.objects.filter(is_online=True).filter(ends_at__gte=datetime.now()).order_by('?')[:5]
