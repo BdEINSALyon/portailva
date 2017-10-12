@@ -72,8 +72,8 @@
                 </li>
 
                 {% if user.is_active %}
-                    <li{% if request.resolver_match.url_name == 'associations-directory' %} class="active"{% endif %}>
-                    <a href="{% url 'associations-directory' %}">Annuaire</a>
+                    <li class="nav-item{% if request.resolver_match.url_name == 'associations-directory' %} active{% endif %}">
+                    <a class="nav-link" href="{% url 'associations-directory' %}">Annuaire</a>
                     </li>
                 {% endif %}
 
