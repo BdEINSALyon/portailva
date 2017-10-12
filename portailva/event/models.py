@@ -36,7 +36,7 @@ class Event(models.Model):
                                     on_delete=models.CASCADE)
     place = models.ForeignKey(Place, verbose_name="Lieu", related_name="events", blank=True, null=True,
                               on_delete=models.SET_NULL)
-    picture = models.ForeignKey(File, verbose_name="Image", blank=True, null=True, on_delete=models.SET_NULL)
+    logo_url = models.URLField("URL du logo", blank=True, help_text="Privilégier les liens en HTTPS")
 
     begins_at = models.DateTimeField("Date et heure de début")
     ends_at = models.DateTimeField("Date et heure de fin")
