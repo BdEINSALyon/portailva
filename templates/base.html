@@ -49,6 +49,12 @@
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 
+    <link rel="apple-touch-icon" href="{% static 'img/va_color.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/va_color.png' %}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{% static 'img/va_color.png' %}">
+    <meta name="theme-color" content="#ffffff">
+
 </head>
 <body>
 
@@ -73,7 +79,7 @@
 
                 {% if user.is_active %}
                     <li class="nav-item{% if request.resolver_match.url_name == 'associations-directory' %} active{% endif %}">
-                    <a class="nav-link" href="{% url 'associations-directory' %}">Annuaire</a>
+                        <a class="nav-link" href="{% url 'associations-directory' %}">Annuaire</a>
                     </li>
                 {% endif %}
 
@@ -87,7 +93,8 @@
                 {% elif my_associations.count > 1 %}
 
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true"
                            aria-expanded="false">Mes associations<span class="caret"></span></a>
                         <div class="dropdown-menu">
                             {% for association in my_associations %}
@@ -101,7 +108,8 @@
                 {# Admin stuff #}
                 {% if request.user.is_active and request.user.is_staff %}
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true"
                            aria-expanded="false">Supervision<span class="caret"></span></a>
                         <div class="dropdown-menu">
                             {% if perms.association.admin_requirement %}
@@ -118,7 +126,8 @@
 
                 {% if request.user.is_active and request.user.is_staff %}
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true"
                            aria-expanded="false">Admin<span class="caret"></span></a>
                         <div class="dropdown-menu">
                             {% if perms.association.admin_association %}
@@ -149,7 +158,8 @@
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true"
                            aria-expanded="false">{{ user.email }} <span class="caret"></span></a>
                         <div class="dropdown-menu">
                             {% if user.is_staff %}
@@ -157,9 +167,9 @@
                                 <div class="dropdown-divider"></div>
                             {% endif %}
                             <a class="dropdown-item"
-                                   href="{% url 'member-change-password' %}">Changer le mot de passe</a>
+                               href="{% url 'member-change-password' %}">Changer le mot de passe</a>
                             <a class="dropdown-item"
-                                   href="{% url 'member-logout' %}">Déconnexion</a>
+                               href="{% url 'member-logout' %}">Déconnexion</a>
                         </div>
                     </li>
                 {% else %}
