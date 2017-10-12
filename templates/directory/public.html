@@ -11,8 +11,7 @@
 
 {% block content %}
     <h2>Associations du moment</h2>
-    <div id="highlightsAsso" class="carousel slide mb-4"
-         data-ride="carousel" data-interval="3000">
+    <div id="highlightsAsso" class="carousel slide mb-4" data-ride="carousel" data-interval="5500">
         <div class="carousel-inner">
             {% for asso in highlights.assos %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
@@ -39,7 +38,7 @@
     </div>
 
     <h2>Évènements à venir</h2>
-    <div id="highlightsAsso" class="carousel slide mb-4" data-ride="carousel">
+    <div id="highlightsAsso" class="carousel slide mb-4" data-ride="carousel" data-interval="4500">
         <div class="carousel-inner">
             {% for event in highlights.events %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
