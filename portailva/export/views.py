@@ -1,5 +1,6 @@
 import string
 
+import unicodedata
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 
@@ -53,6 +54,35 @@ class ExportView(AbleToExportMixin, TemplateView):
         if 'BANK' in datas:
             columns.append(ExportColumn('IBAN', 'iban'))
             columns.append(ExportColumn('BIC', 'bic'))
+        if 'BNP' in datas:
+            columns = [ExportColumn('TIERS - NOM OU RAISON SOCIALE', 'name', options=['caps', 'accents']),
+                       ExportColumn('TIERS - TYPE', value='Autre'),
+                       ExportColumn('TIERS - REFERENCE INTERNE', 'id', prefix='CVA-'),
+                       ExportColumn('TIERS - PAYS DE RESIDENCE', value='FRANCE'),
+                       ExportColumn('TIERS - ADRESSE (NUMERO, VOIE)'),
+                       ExportColumn('TIERS - COMPLEMENT ADRESSE'),
+                       ExportColumn('TIERS - CODE POSTAL'),
+                       ExportColumn('TIERS - VILLE'),
+                       ExportColumn('TIERS - TELEPHONE'),
+                       ExportColumn('TIERS - MOBILE'),
+                       ExportColumn('TIERS - FAX'),
+                       ExportColumn('TIERS - EMAIL'),
+                       ExportColumn('TIERS - SIRET'),
+                       ExportColumn('COMPTE - CODE SWIFT OU BIC', 'bic'),
+                       ExportColumn('COMPTE - NUMERO IBAN', 'iban'),
+                       ExportColumn('COMPTE - NUMERO BBAN'),
+                       ExportColumn('COMPTE - NUMERO RIB'),
+                       ExportColumn('COMPTE - CODE LOCAL (ABA OU ROUTING NUMBER)'),
+                       ExportColumn('COMPTE - NOM DE LA BANQUE'),
+                       ExportColumn('COMPTE - ADRESSE DE LA BANQUE'),
+                       ExportColumn('COMPTE - COMPLEMENT ADRESSE DE LA BANQUE'),
+                       ExportColumn('COMPTE - VILLE DE LA BANQUE'),
+                       ExportColumn('COMPTE - PAYS DE LA BANQUE', value='FRANCE'),
+                       ExportColumn('MANDAT- SDD MIGRE'),
+                       ExportColumn('MANDAT- RUM'),
+                       ExportColumn('MANDAT- SCHEMA'),
+                       ExportColumn('MANDAT- TYPE'),
+                       ExportColumn('MANDAT- DATE DE SIGNATURE')]
 
         # Create first line of document
         for col_num in range(len(columns)):
@@ -80,14 +110,32 @@ class ExportView(AbleToExportMixin, TemplateView):
 
 class ExportColumn(object):
 
-    def __init__(self, name, prop='', column_size=17):
+    def __init__(self, name, prop='', column_size=17, prefix='', value='', options=None):
+        if options is None:
+            options = []
+
         self.column_size = column_size
         self.name = name
         self.prop = prop
+        self.prefix = prefix
+        self.options = options
+        self.value = value
 
     def value_for(self, association):
+        value = str(self.prefix)
         try:
-            return eval("association."+self.prop)
+            if self.prop:
+                val = str(eval("association."+self.prop))
+            else:
+                val = str(self.value)
+
+            if 'accents' in self.options:
+                val = ''.join((c for c in unicodedata.normalize('NFD', val) if unicodedata.category(c) != 'Mn'))
+            if 'caps' in self.options:
+                val = val.upper()
+
+            return value + val
+
         except AttributeError:
             return ''
 
