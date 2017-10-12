@@ -55,7 +55,7 @@
                 <div class="card bg-light">
                     <div class="card-body">
                         {% if object.phone %}
-                            {{ object.phone }}
+                            <a href="tel:{{ object.phone }}">{{ object.phone }}</a>
                         {% else %}
                             <i>Non défini</i>
                         {% endif %}
