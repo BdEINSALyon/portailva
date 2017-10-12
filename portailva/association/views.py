@@ -306,5 +306,5 @@ class GlobalDirectoryView(LoginRequiredMixin, ListView):
     template_name = 'association/global_directory.html'
 
     def get_queryset(self):
-        return Association.objects.all().order_by('name')
+        return Association.objects.filter(active=True).order_by('name')
 
