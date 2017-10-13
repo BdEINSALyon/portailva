@@ -105,7 +105,9 @@
         <div class="col-12">
             <b>Page web</b>
             <div class="card bg-light">
-                <div class="card-body">{{ object.website_url }}</div>
+                <div class="card-body">
+                    <a href="{{ object.website_url }}">{{ object.website_url }}</a>
+                </div>
             </div>
         </div>
     </div>
