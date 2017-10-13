@@ -20,30 +20,6 @@ class AssociationForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_id = 'associationForm'
 
-    def clean_iban(self):
-        iban = self.cleaned_data['iban']
-        if not iban:
-            return iban
-        fr_iban_re = re.compile(r'^FR[0-9A-Z]{25}$')
-        if not fr_iban_re.match(iban):
-            raise forms.ValidationError("L'IBAN saisi n'est pas valide. "
-                                        "Il doit commencer par FR et ne contenir que "
-                                        "des lettres majuscules ou des chiffres (pas d'espace, de tirets, ...). "
-                                        "27 caractères au total.")
-
-        verif_iban = list(iban[4:] + iban[:4])
-        verif_iban_num = ''
-        for c in verif_iban:
-            if 'A' <= c <= 'Z':
-                c = str(ord(c) - ord('A') + 10)
-            verif_iban_num += c
-        verif_iban_num = int(verif_iban_num)
-
-        if verif_iban_num % 97 != 1:
-            raise forms.ValidationError("L'IBAN saisi a la bonne forme mais n'est pas valide.")
-
-        return iban
-
 
 class AssociationAdminForm(AssociationForm):
     class Meta(AssociationForm.Meta):

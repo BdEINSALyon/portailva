@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 from portailva.file.models import AssociationFile
 from portailva.utils.fields import LogoURLField
+from portailva.utils.validators import validate_iban
 
 
 class Category(models.Model):
@@ -44,7 +45,7 @@ class Association(models.Model):
 
     logo_url = LogoURLField("URL du logo", blank=True)
 
-    iban = models.CharField("IBAN", max_length=50, blank=True)
+    iban = models.CharField("IBAN", max_length=50, blank=True, validators=[validate_iban])
     bic = models.CharField("BIC", max_length=15, blank=True)
 
     created_at = models.DateTimeField("Date d'ajout", auto_now_add=True)
