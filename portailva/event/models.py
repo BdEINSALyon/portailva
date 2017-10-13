@@ -5,6 +5,7 @@ from django.utils.datetime_safe import datetime
 
 from portailva.association.models import Association
 from portailva.file.models import File
+from portailva.utils.fields import LogoURLField
 from portailva.utils.models import Place
 
 
@@ -36,11 +37,7 @@ class Event(models.Model):
                                     on_delete=models.CASCADE)
     place = models.ForeignKey(Place, verbose_name="Lieu", related_name="events", blank=True, null=True,
                               on_delete=models.SET_NULL)
-    logo_url = models.URLField("URL du logo", blank=True, help_text="Privilégiez les liens en HTTPS. "
-                                                                    "Assurez-vous que le lien que vous fournissez "
-                                                                    "pointe directement sur l'image (pas de page "
-                                                                    "d'affichage comme Google Drive ou autres) et que "
-                                                                    "l'image soit accessible.")
+    logo_url = LogoURLField("URL du logo", blank=True)
 
     begins_at = models.DateTimeField("Date et heure de début")
     ends_at = models.DateTimeField("Date et heure de fin")

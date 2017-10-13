@@ -40,20 +40,6 @@ class EventForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_id = 'eventForm'
 
-    def clean_logo_url(self):
-        url = self.cleaned_data['logo_url']
-        if not url:
-            return url
-
-        res = requests.get(url)
-        if 'image' not in res.headers.get('Content-Type'):
-            raise forms.ValidationError("L'URL saisie ne semble pas pointer vers une image valide. "
-                                        "Assurez-vous que l'URL que vous fournissez ne pointe pas vers une visionneuse "
-                                        "type Google Drive mais bien vers le fichier en lui-même. "
-                                        "Assurez-vous également que l'accès à l'image ne requière pas "
-                                        "d'authentification (mode \"public\" sur PortailVA).")
-        return url
-
     def clean_ends_at(self):
         ends_at = self.cleaned_data['ends_at']
         begins_at = self.cleaned_data['begins_at']
