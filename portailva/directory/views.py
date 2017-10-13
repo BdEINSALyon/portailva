@@ -273,6 +273,5 @@ class AssociationDirectoryPublicView(ListView):
         context['highlights']['events'] = events
 
         context['categories'] = Category.objects.order_by('name')
-        context['places'] = Place.objects.order_by('name')
 
         return context
