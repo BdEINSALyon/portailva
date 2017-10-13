@@ -109,15 +109,36 @@
             </div>
         </div>
     </div>
-
     <div class="row mb-3">
-        <div class="col-12">
-            <b>Logo</b>
+        <div class="col-md-12">
+            <b>URL du logo</b>
             <div class="card bg-light">
-                <div class="card-body">{{ object.logo_url }}</div>
+                <div class="card-body">
+                    {% if object.logo_url %}
+                        <a href="{{ object.logo_url }}">
+                            {{ object.logo_url }}
+                        </a>
+                    {% else %}
+                        <i>Non défini</i>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
+    {% if object.logo_url %}
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <b>Aperçu du logo</b>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <a href="{{ object.logo_url }}">
+                            <img class="img-fluid" src="{{ object.logo_url }}" alt="Logo non accessible">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
     <div class="row">
         <div class="col-12">
