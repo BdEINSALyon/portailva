@@ -76,18 +76,54 @@
 
 
             <h2>Toutes les associations</h2>
-            <div class="mb-4">
-                <form action="" method="get">
-                    <div class="input-group">
-                        <input type="text"
-                               name="query"
-                               class="form-control"
-                               placeholder="Recherche...">
-                        <span class="input-group-btn">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <form action="" method="get">
+                        <div class="input-group">
+                            <input type="text"
+                                   name="query"
+                                   class="form-control"
+                                   placeholder="Recherche...">
+                            <span class="input-group-btn">
                             <button class="btn btn-secondary" type="submit"><i class="fa fa-search pr-0"></i></button>
                         </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="btn-group">
+                        <div class="btn-group" role="group">
+                            {% if categories %}
+                                <button id="categoriesDrop" type="button" class="btn btn-secondary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Catégories
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="categoriesDrop">
+                                    {% for cat in categories %}
+                                        <a href='?query="{{ cat.name }}"'
+                                           class="dropdown-item">{{ cat.name }}</a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="btn-group" role="group">
+                            {% if places %}
+                                <button id="placesDrop" type="button" class="btn btn-secondary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Locaux
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="placesDrop">
+                                    {% for place in places %}
+                                        <a href='?query="{{ place.name }}"'
+                                           class="dropdown-item">{{ place.name }}</a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
             <div class="card-columns">
                 {% for asso in associations %}

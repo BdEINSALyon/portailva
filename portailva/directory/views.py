@@ -9,8 +9,9 @@ from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, TemplateView, UpdateView, ListView
 
 from portailva.association.mixins import AssociationMixin
-from portailva.association.models import Association
+from portailva.association.models import Association, Category
 from portailva.event.models import Event
+from portailva.utils.models import Place
 from .forms import DirectoryEntryForm, OpeningHourForm
 from .models import DirectoryEntry, OpeningHour
 from .mixins import AssociationDirectoryEntryMixin, OpeningHourMixin
@@ -270,5 +271,8 @@ class AssociationDirectoryPublicView(ListView):
                   .filter(ends_at__gte=datetime.now())
                   .order_by('?')[:5])
         context['highlights']['events'] = events
+
+        context['categories'] = Category.objects.order_by('name')
+        context['places'] = Place.objects.order_by('name')
 
         return context
