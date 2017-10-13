@@ -118,15 +118,17 @@
                                 <span class="badge badge-pill badge-secondary">{{ asso.category.name }}</span>
                             </h4>
                             <p class="card-text">{{ asso.current_directory_entry.description|linebreaksbr|truncatewords:42 }}</p>
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#assoDetails{{ asso.id }}">
-                                Plus d'infos
-                            </button>
-                            {% if user.is_superuser %}
-                                <a href="{% url 'association-detail' asso.id %}" class="btn btn-light">
-                                    Admin
-                                </a>
-                            {% endif %}
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#assoDetails{{ asso.id }}">
+                                    Plus d'infos
+                                </button>
+                                {% if user.is_superuser %}
+                                    <a href="{% url 'association-detail' asso.id %}" class="btn btn-light">
+                                        Admin
+                                    </a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
@@ -332,12 +334,14 @@
 
                             </div>
                             <div class="modal-footer">
-                                {% if user.is_superuser %}
-                                    <a href="{% url 'association-detail' asso.id %}" class="btn btn-light">
-                                        Admin
-                                    </a>
-                                {% endif %}
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                <div class="btn-group">
+                                    {% if user.is_superuser %}
+                                        <a href="{% url 'association-detail' asso.id %}" class="btn btn-light">
+                                            Admin
+                                        </a>
+                                    {% endif %}
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                </div>
                             </div>
                         </div>
                     </div>
