@@ -95,6 +95,7 @@
                                 {% if asso.acronym %}
                                     <small class="text-muted">({{ asso.acronym }})</small>
                                 {% endif %}
+                                <span class="badge badge-pill badge-secondary">{{ asso.category.name }}</span>
                             </h4>
                             <p class="card-text">{{ asso.current_directory_entry.description|linebreaksbr|truncatewords:42 }}</p>
                             <button type="button" class="btn btn-primary" data-toggle="modal"
@@ -102,7 +103,7 @@
                                 Plus d'infos
                             </button>
                             {% if user.is_superuser %}
-                                <a href="{% url 'association-detail' asso.id %}" class="btn btn-secondary">
+                                <a href="{% url 'association-detail' asso.id %}" class="btn btn-light">
                                     Admin
                                 </a>
                             {% endif %}
@@ -124,6 +125,7 @@
                                     {% if asso.acronym %}
                                         <small class="text-muted">({{ asso.acronym }})</small>
                                     {% endif %}
+                                    <span class="badge badge-pill badge-secondary">{{ asso.category.name }}</span>
                                 </h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
