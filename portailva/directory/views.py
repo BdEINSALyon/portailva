@@ -194,7 +194,11 @@ class AssociationDirectoryPublicView(ListView):
     template_name = 'directory/public.html'
     model = Association
     context_object_name = 'associations'
-    queryset = Association.objects.filter(is_active=True)
+    queryset = (Association.objects
+                .filter(is_active=True)
+                .filter(directory_entries__isnull=False)
+                .filter(directory_entries__is_online=True)
+                .distinct())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
