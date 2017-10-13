@@ -27,7 +27,7 @@
                                 {{ asso.name }}
                             </h4>
                             <p>
-                                {{ asso.description }}
+                                {{ asso.current_directory_entry.description|truncatewords:20 }}
                             </p>
                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#assoDetails{{ asso.id }}">
@@ -96,7 +96,7 @@
                                     <small class="text-muted">({{ asso.acronym }})</small>
                                 {% endif %}
                             </h4>
-                            <p class="card-text">{{ asso.description|linebreaksbr }}</p>
+                            <p class="card-text">{{ asso.current_directory_entry.description|linebreaksbr|truncatewords:42 }}</p>
                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#assoDetails{{ asso.id }}">
                                 Plus d'infos
