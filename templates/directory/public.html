@@ -59,7 +59,7 @@
                                     {{ event.name }}
                                 </h4>
                                 <p>
-                                    {{ event.short_description }}
+                                    {{ event.short_description|truncatechars:150 }}
                                 </p>
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                         data-target="#assoDetails{{ event.association.id }}">
