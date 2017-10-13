@@ -78,38 +78,31 @@
             <h2>Toutes les associations</h2>
             <div class="row mb-4">
                 <div class="col-12">
-                    <form action="{% if cat %}?cat={{ cat }}{% endif %}" method="get">
-                        <div class="input-group">
+                    <form action="{% if cat %}?cat={{ cat }}{% endif %}" method="get" class="form-inline">
+                        <label class="sr-only" for="selectCat">Catégorie</label>
+                        <select name="cat" id="selectCat" class="custom-select mr-2">
+                            <option value="" {% if not cat %}selected{% endif %}>Catégorie...</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}"
+                                        {% if cat and cat|add:"0" == category.id %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="input-group mr-2">
                             <input type="text"
                                    name="query"
                                    class="form-control"
-                                   placeholder="Recherche..." value="{{ query }}">
-                            {% if cat %}
-                                <input type="text" name="cat" value="{{ cat }}" hidden="hidden">
-                            {% endif %}
+                                   placeholder="Recherche..." value="{% if query %}{{ query }}{% endif %}">
                             <span class="input-group-btn">
-                            <button class="btn btn-secondary" type="submit"><i class="fa fa-search pr-0"></i></button>
-                        </span>
+                                <button class="btn btn-primary" type="submit"><i
+                                        class="fa fa-search pr-0"></i></button>
+                            </span>
                         </div>
+                        <a href="?cat=&query=" class="btn btn-light">
+                            <i class="fa fa-ban pr-0"></i> Réinitialiser
+                        </a>
                     </form>
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col-12">
-                    <div class="btn-group">
-                        {% if categories %}
-                            <button id="categoriesDrop" type="button" class="btn btn-secondary dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Catégories
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="categoriesDrop">
-                                {% for cat in categories %}
-                                    <a href='?cat="{{ cat.name }}"{% if query %}&query={{ query }}{% endif %}'
-                                       class="dropdown-item">{{ cat.name }}</a>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
                 </div>
             </div>
             <div class="card-columns">

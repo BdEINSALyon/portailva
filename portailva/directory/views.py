@@ -257,7 +257,7 @@ class AssociationDirectoryPublicView(ListView):
 
         if self.cat:
             queryset = (queryset
-                        .filter(self.get_query(self.cat, ['category__name'])))
+                        .filter(category=self.cat))
 
         return queryset
 
