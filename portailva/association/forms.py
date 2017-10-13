@@ -1,5 +1,6 @@
 import re
 
+import requests
 from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.helper import FormHelper
 from django import forms
@@ -18,6 +19,21 @@ class AssociationForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_id = 'associationForm'
+
+    def clean_logo_url(self):
+        url = self.cleaned_data['logo_url']
+        if not url:
+            return url
+
+        res = requests.get(url)
+        if 'image' not in res.headers.get('Content-Type'):
+            raise forms.ValidationError("L'URL saisie ne semble pas pointer vers une image valide. "
+                                        "Assurez-vous que l'URL que vous fournissez ne pointe pas vers une visionneuse "
+                                        "type Google Drive mais bien vers le fichier en lui-même. "
+                                        "Assurez-vous également que l'accès à l'image ne requière pas "
+                                        "d'authentification (mode \"public\" sur PortailVA).")
+
+        return url
 
     def clean_iban(self):
         iban = self.cleaned_data['iban']

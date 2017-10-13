@@ -41,10 +41,11 @@ class Association(models.Model):
     category = models.ForeignKey(Category, verbose_name="Catégorie")
     users = models.ManyToManyField(User, verbose_name="Utilisateurs", related_name='associations', blank=True)
 
-    logo_url = models.URLField("URL du logo", blank=True, help_text="Privilégier les liens en HTTPS, "
-                                                                    "assurez-vous que le lien que vous fournissez "
+    logo_url = models.URLField("URL du logo", blank=True, help_text="Privilégiez les liens en HTTPS. "
+                                                                    "Assurez-vous que le lien que vous fournissez "
                                                                     "pointe directement sur l'image (pas de page "
-                                                                    "d'affichage comme Google Drive ou autres).")
+                                                                    "d'affichage comme Google Drive ou autres) et que "
+                                                                    "l'image soit accessible.")
 
     iban = models.CharField("IBAN", max_length=50, blank=True)
     bic = models.CharField("BIC", max_length=15, blank=True)
