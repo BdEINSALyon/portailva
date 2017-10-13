@@ -107,3 +107,7 @@ i.fa {
 .tab-content {
     padding-top: 20px;
 }
+
+#highlights {
+    min-height: 230px;
+}
