@@ -78,12 +78,15 @@
             <h2>Toutes les associations</h2>
             <div class="row mb-4">
                 <div class="col-12">
-                    <form action="" method="get">
+                    <form action="{% if cat %}?cat={{ cat }}{% endif %}" method="get">
                         <div class="input-group">
                             <input type="text"
                                    name="query"
                                    class="form-control"
-                                   placeholder="Recherche...">
+                                   placeholder="Recherche..." value="{{ query }}">
+                            {% if cat %}
+                                <input type="text" name="cat" value="{{ cat }}" hidden="hidden">
+                            {% endif %}
                             <span class="input-group-btn">
                             <button class="btn btn-secondary" type="submit"><i class="fa fa-search pr-0"></i></button>
                         </span>
@@ -101,7 +104,7 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="categoriesDrop">
                                 {% for cat in categories %}
-                                    <a href='?query="{{ cat.name }}"'
+                                    <a href='?cat="{{ cat.name }}"{% if query %}&query={{ query }}{% endif %}'
                                        class="dropdown-item">{{ cat.name }}</a>
                                 {% endfor %}
                             </div>

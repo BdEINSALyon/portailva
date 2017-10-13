@@ -198,6 +198,7 @@ class AssociationDirectoryPublicView(ListView):
     model = Association
     context_object_name = 'associations'
     query = None
+    cat = None
     queryset = (Association.objects
                 .filter(is_active=True)
                 .filter(directory_entries__isnull=False)
@@ -241,22 +242,24 @@ class AssociationDirectoryPublicView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         self.query = self.request.GET.get('query')
+        self.cat = self.request.GET.get('cat')
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
+        queryset = AssociationDirectoryPublicView.queryset
         if self.query:
-            return (Association.objects
-                    .filter(is_active=True)
-                    .filter(directory_entries__isnull=False)
-                    .filter(directory_entries__is_online=True)
-                    .filter(self.get_query(self.query, ['name', 'acronym',
-                                                        'category__name',
-                                                        'directory_entries__description',
-                                                        'directory_entries__place__name',
-                                                        ]))
-                    .distinct())
-        else:
-            return AssociationDirectoryPublicView.queryset
+            queryset = (queryset
+                        .filter(self.get_query(self.query, ['name', 'acronym',
+                                                            'category__name',
+                                                            'directory_entries__description',
+                                                            'directory_entries__place__name',
+                                                            ])))
+
+        if self.cat:
+            queryset = (queryset
+                        .filter(self.get_query(self.cat, ['category__name'])))
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -273,5 +276,7 @@ class AssociationDirectoryPublicView(ListView):
         context['highlights']['events'] = events
 
         context['categories'] = Category.objects.order_by('name')
+        context['query'] = self.query
+        context['cat'] = self.cat
 
         return context
