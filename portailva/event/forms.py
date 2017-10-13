@@ -11,7 +11,8 @@ class EventForm(forms.ModelForm):
     short_description = forms.CharField(
         label="Description courte",
         help_text=str(Event._meta.get_field('short_description').max_length) + " caractères max.",
-        widget=forms.Textarea()
+        widget=forms.Textarea(),
+        max_length=Event._meta.get_field('short_description').max_length
     )
 
     begins_at = forms.DateTimeField(
