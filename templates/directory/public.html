@@ -94,13 +94,12 @@
                                    name="query"
                                    class="form-control"
                                    placeholder="Recherche..." value="{% if query %}{{ query }}{% endif %}">
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="submit"><i
-                                        class="fa fa-search pr-0"></i></button>
-                            </span>
                         </div>
-                        <a href="?cat=&query=" class="btn btn-light">
-                            <i class="fa fa-ban pr-0"></i> Réinitialiser
+                        <button class="btn btn-primary mr-2" type="submit">
+                            <i class="fa fa-search"></i> Chercher
+                        </button>
+                        <a href="?cat=&query=" class="btn btn-light form-control">
+                            <i class="fa fa-ban"></i> Réinitialiser
                         </a>
                     </form>
                 </div>
