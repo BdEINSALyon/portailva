@@ -82,7 +82,11 @@
                         <a class="nav-link" href="{% url 'associations-directory' %}">Annuaire</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'event-calendar' %}" class="nav-link">Calendrier</a>
+                        <a tabindex="0" class="nav-link popover-dismiss" data-toggle="popover"
+                           data-placement="bottom" title="Abonnez-vous à cette adresse"
+                           data-content="{{ request.get_host }}{% url 'event-calendar' %}">
+                            Calendrier
+                        </a>
                     </li>
                 {% endif %}
 

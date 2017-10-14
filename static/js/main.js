@@ -28,11 +28,7 @@ $(function () {
 
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover()
     });
 
-    $('.searchbox-input').change(function () {
-        $('.card').show();
-        var filter = $(this).val(); // get the value of the input, which we filter on
-        $('.container').find(".card-title:not(:contains(" + filter + "))").parent().parent().css('display', 'none');
-    });
 });
