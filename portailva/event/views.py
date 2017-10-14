@@ -1,15 +1,17 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.core.exceptions import PermissionDenied
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.views import View
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
+import icalendar
 
 from portailva.association.mixins import AssociationMixin
 from portailva.event.forms import EventForm, EventPriceForm
@@ -188,3 +190,27 @@ class EventDetailView(DetailView):
         return super().get_queryset()
 
 
+class AllEventsCalendarView(View):
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        events = (Event.objects
+                  .filter(is_online=True)
+                  .filter(begins_at__gte=datetime.now() - timedelta(days=90)))
+
+        cal = icalendar.Calendar()
+        cal.add('version', '2.0')
+        cal.add('prodid', '-//PortailVA events calendar//mxm.dk//')
+
+        for event in events:
+            ev = icalendar.Event()
+            ev.add('summary', event.name)
+            ev.add('dtstart', event.begins_at)
+            ev.add('dtend', event.ends_at)
+            ev.add('location', event.place.name)
+            ev.add('uid', event.id)
+            cal.add_component(ev)
+
+        response = HttpResponse(content_type='text/calendar')
+        response.write(cal.to_ical().replace(b'\r\n', b'\n').strip())
+        return response
