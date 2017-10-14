@@ -83,8 +83,8 @@
                     </li>
                     <li class="nav-item">
                         <a tabindex="0" class="nav-link popover-dismiss" data-toggle="popover"
-                           data-placement="bottom" title="Abonnez-vous à cette adresse"
-                           data-content="{{ request.get_host }}{% url 'event-calendar' %}">
+                           data-placement="bottom" title="Abonnez-vous à cette adresse" id="calendar-popover"
+                           data-html="true" data-content="{% include 'calendar-popover.html' %}">
                             Calendrier
                         </a>
                     </li>
