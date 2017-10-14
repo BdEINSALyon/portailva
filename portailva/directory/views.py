@@ -278,5 +278,6 @@ class AssociationDirectoryPublicView(ListView):
         context['categories'] = Category.objects.order_by('name')
         context['query'] = self.query
         context['cat'] = self.cat
+        context['days'] = OpeningHour.DAYS_OF_WEEK
 
         return context

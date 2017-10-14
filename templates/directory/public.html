@@ -163,6 +163,13 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link" id="hours-tab-{{ asso.id }}" data-toggle="tab"
+                                           href="#hours-{{ asso.id }}" role="tab"
+                                           aria-controls="hours-{{ asso.id }}">
+                                            Horaires
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link" id="events-tab-{{ asso.id }}" data-toggle="tab"
                                            href="#events-{{ asso.id }}" role="tab"
                                            aria-controls="events-{{ asso.id }}">
@@ -170,7 +177,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                                <div class="tab-content" id="myTabContent">
+                                <div class="tab-content">
                                     <div class="tab-pane fade show active" id="info-{{ asso.id }}" role="tabpanel"
                                          aria-labelledby="info-tab-{{ asso.id }}">
 
@@ -274,6 +281,23 @@
                                                 </p>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="hours-{{ asso.id }}" role="tabpanel"
+                                         aria-labelledby="hours-tab{{ asso.id }}" data-children=".item-{{ asso.id }}">
+                                        <h5>Horaires de permanences</h5>
+                                        {% if asso.current_directory_entry.opening_hours.all %}
+                                            <ul class="list-group">
+                                                {% for opening_hour in asso.current_directory_entry.opening_hours.all %}
+                                                    <li class="list-group-item">
+                                                        {{ days|get_tuple:opening_hour.day }}
+                                                        de {{ opening_hour.begins_at|time:"H:i" }}
+                                                        à {{ opening_hour.ends_at|time:"H:i" }}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            <em>Aucun horaire défini</em>
+                                        {% endif %}
                                     </div>
                                     <div class="tab-pane fade" id="events-{{ asso.id }}" role="tabpanel"
                                          aria-labelledby="events-tab{{ asso.id }}" data-children=".item-{{ asso.id }}">
