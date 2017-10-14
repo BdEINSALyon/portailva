@@ -207,7 +207,8 @@ class AllEventsCalendarView(View):
             ev.add('summary', event.name)
             ev.add('dtstart', event.begins_at)
             ev.add('dtend', event.ends_at)
-            ev.add('location', event.place.name)
+            if event.place:
+                ev.add('location', event.place.name)
             ev.add('uid', event.id)
             cal.add_component(ev)
 
