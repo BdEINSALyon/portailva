@@ -81,6 +81,9 @@
                     <li class="nav-item{% if request.resolver_match.url_name == 'associations-directory' %} active{% endif %}">
                         <a class="nav-link" href="{% url 'associations-directory' %}">Annuaire</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{% url 'event-calendar' %}" class="nav-link">Calendrier</a>
+                    </li>
                 {% endif %}
 
                 {% if my_associations.count == 1 %}
