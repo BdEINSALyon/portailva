@@ -3,7 +3,8 @@
 {% block content %}
 <!-- Main component for a primary marketing message or call to action -->
 <div class="jumbotron">
-  <h1 class="display-3">Bienvenue !</h1>
+  <h1 class="display-3 d-none d-md-block">Bienvenue !</h1>
+  <h1 class="display-4 d-block d-md-none">Bienvenue !</h1>
   <p class="lead">
     {% if user.is_authenticated %}
       Sélectionnez votre association parmi la liste ci-dessus avant de poursuivre.
