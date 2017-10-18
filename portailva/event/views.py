@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+import pytz
 from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
@@ -201,12 +202,13 @@ class AllEventsCalendarView(View):
         cal = icalendar.Calendar()
         cal.add('version', '2.0')
         cal.add('prodid', '-//PortailVA events calendar//mxm.dk//')
+        tz = pytz.timezone('Europe/Paris')
 
         for event in events:
             ev = icalendar.Event()
             ev.add('summary', event.name)
-            ev.add('dtstart', event.begins_at)
-            ev.add('dtend', event.ends_at)
+            ev.add('dtstart', event.begins_at.replace(tzinfo=tz))
+            ev.add('dtend', event.ends_at.replace(tzinfo=tz))
             if event.place:
                 ev.add('location', event.place.name)
             ev.add('uid', event.id)
