@@ -6,6 +6,8 @@ from django.core.exceptions import ValidationError
 
 def validate_image_url(url):
     print('requesting image', url)
+    print('requests', requests)
+    print('requests.get', requests.get)
     res = requests.get(url)
     print('res', res)
     if 'image' not in res.headers.get('Content-Type'):
