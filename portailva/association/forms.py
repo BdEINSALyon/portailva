@@ -48,8 +48,11 @@ class MandateForm(forms.Form):
 
     def clean(self):
         super(MandateForm, self).clean()
-        begins_at = self.cleaned_data['begins_at']
-        ends_at = self.cleaned_data['ends_at']
+        begins_at = self.cleaned_data.get('begins_at')
+        ends_at = self.cleaned_data.get('ends_at')
+
+        if not begins_at or not ends_at:
+            raise forms.ValidationError("Erreur dans la date de début ou de fin.")
 
         # We ensure begins_at is strictly before ends_at
         if begins_at >= ends_at:
@@ -58,7 +61,9 @@ class MandateForm(forms.Form):
         # We ensure there is no other mandate during the same time as defined by the user
         association_mandates = Mandate.objects.all().filter(association_id=self.association.id)
         for mandate in association_mandates:
-            if begins_at <= mandate.begins_at < ends_at or begins_at < mandate.ends_at <= ends_at:
+            if (begins_at <= mandate.begins_at < ends_at
+                or begins_at < mandate.ends_at <= ends_at
+                or mandate.begins_at <= begins_at < ends_at <= mandate.ends_at):
                 raise forms.ValidationError("La période définie pour ce mandat empiète sur la période d'un autre "
                                             "mandat.")
 
