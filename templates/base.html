@@ -76,15 +76,15 @@
                 <li class="nav-item{% if request.resolver_match.url_name == 'association-directory-public' %} active{% endif %}">
                     <a class="nav-link" href="{% url 'association-directory-public' %}">Bot'INSA (Beta)</a>
                 </li>
+                <li class="nav-item">
+                    <a tabindex="0" class="nav-link popover-dismiss" data-toggle="popover"
+                       data-placement="bottom" title="Calendrier VA" id="calendar-popover"
+                       data-html="true" data-content="{% include 'event/calendar-popover.html' %}">
+                        Calendrier
+                    </a>
+                </li>
 
                 {% if user.is_active %}
-                    <li class="nav-item">
-                        <a tabindex="0" class="nav-link popover-dismiss" data-toggle="popover"
-                           data-placement="bottom" title="Calendrier VA" id="calendar-popover"
-                           data-html="true" data-content="{% include 'event/calendar-popover.html' %}">
-                            Calendrier
-                        </a>
-                    </li>
                     <li class="nav-item{% if request.resolver_match.url_name == 'associations-directory' %} active{% endif %}">
                         <a class="nav-link" href="{% url 'associations-directory' %}">Annuaire</a>
                     </li>
