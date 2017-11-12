@@ -22,11 +22,14 @@ class ImageURLField(forms.URLField):
     def clean(self, value):
         value = super().clean(value)
         print('test value', value)
-        res = requests.get(value)
-        if 'image' not in res.headers.get('Content-Type'):
-            raise ValidationError("L'URL saisie ne semble pas pointer vers une image valide. "
-                                  "Assurez-vous que l'URL que vous fournissez ne pointe pas vers une visionneuse "
-                                  "type Google Drive mais bien vers le fichier en lui-même. "
-                                  "Assurez-vous également que l'accès à l'image ne requière pas "
-                                  "d'authentification (mode \"public\" sur PortailVA).")
+        if value:
+            res = requests.get(value)
+            print('status_code', res.status_code)
+            print('headers', res.headers)
+            if 'image' not in res.headers.get('Content-Type'):
+                raise ValidationError("L'URL saisie ne semble pas pointer vers une image valide. "
+                                      "Assurez-vous que l'URL que vous fournissez ne pointe pas vers une visionneuse "
+                                      "type Google Drive mais bien vers le fichier en lui-même. "
+                                      "Assurez-vous également que l'accès à l'image ne requière pas "
+                                      "d'authentification (mode \"public\" sur PortailVA).")
         return value
