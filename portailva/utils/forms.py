@@ -1,4 +1,5 @@
 import requests
+import time
 from crispy_forms.helper import FormHelper
 from django import forms
 from django.core.exceptions import ValidationError
@@ -22,6 +23,9 @@ class ImageURLField(forms.URLField):
     def clean(self, value):
         value = super().clean(value)
         print('test value', value)
+        print('sleeping 2 sec')
+        time.sleep(2)
+        print('slept')
         if value:
             res = requests.get(value)
             print('status_code', res.status_code)
