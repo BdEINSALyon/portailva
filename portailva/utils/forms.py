@@ -22,14 +22,14 @@ class PlaceForm(forms.ModelForm):
 class ImageURLField(forms.URLField):
     def clean(self, value):
         value = super().clean(value)
-        print('test value', value)
-        print('sleeping 2 sec')
+        print('test value', value, flush=True)
+        print('sleeping 2 sec', flush=True)
         time.sleep(2)
-        print('slept')
+        print('slept', flush=True)
         if value:
             res = requests.get(value)
-            print('status_code', res.status_code)
-            print('headers', res.headers)
+            print('status_code', res.status_code, flush=True)
+            print('headers', res.headers, flush=True)
             if 'image' not in res.headers.get('Content-Type'):
                 raise ValidationError("L'URL saisie ne semble pas pointer vers une image valide. "
                                       "Assurez-vous que l'URL que vous fournissez ne pointe pas vers une visionneuse "
