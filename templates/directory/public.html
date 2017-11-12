@@ -75,7 +75,12 @@
             </div>
 
 
-            <h2>Toutes les associations</h2>
+            <h2>
+                Toutes les associations
+                {% if cat or query %}
+                    <small class="text-muted">({{ associations.count }} selon les critères choisis)</small>
+                {% endif %}
+            </h2>
             <div class="row mb-4">
                 <div class="col-12">
                     <form action="{% if cat %}?cat={{ cat }}{% endif %}" method="get" class="form-inline">
