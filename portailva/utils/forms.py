@@ -1,5 +1,8 @@
-import requests
+import http.client
 import time
+import urllib.error
+import urllib.request
+
 from crispy_forms.helper import FormHelper
 from django import forms
 from django.core.exceptions import ValidationError
@@ -27,13 +30,23 @@ class ImageURLField(forms.URLField):
         time.sleep(2)
         print('slept', flush=True)
         if value:
-            res = requests.head(value)
-            print('status_code', res.status_code, flush=True)
-            print('headers', res.headers, flush=True)
-            if 'image' not in res.headers.get('Content-Type'):
+            req = urllib.request.Request(value)
+            req.get_method = lambda: 'HEAD'
+            try:
+                res = urllib.request.urlopen(req) # type: http.client.HTTPResponse
+            except urllib.error.HTTPError as err:
                 raise ValidationError("L'URL saisie ne semble pas pointer vers une image valide. "
                                       "Assurez-vous que l'URL que vous fournissez ne pointe pas vers une visionneuse "
                                       "type Google Drive mais bien vers le fichier en lui-même. "
                                       "Assurez-vous également que l'accès à l'image ne requière pas "
                                       "d'authentification (mode \"public\" sur PortailVA).")
+            else:
+                print('status_code', res.getcode(), flush=True)
+                print('headers', res.getheaders(), flush=True)
+                if 'image' not in res.getheader('Content-Type'):
+                    raise ValidationError("L'URL saisie ne semble pas pointer vers une image valide. "
+                                          "Assurez-vous que l'URL que vous fournissez ne pointe pas vers une visionneuse "
+                                          "type Google Drive mais bien vers le fichier en lui-même. "
+                                          "Assurez-vous également que l'accès à l'image ne requière pas "
+                                          "d'authentification (mode \"public\" sur PortailVA).")
         return value
