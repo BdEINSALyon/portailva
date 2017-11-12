@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 from portailva.file.models import AssociationFile
 from portailva.utils.fields import LogoURLField
-from portailva.utils.validators import validate_iban
+from portailva.utils.validators import validate_iban, validate_image_url
 
 
 class Category(models.Model):
@@ -43,7 +43,12 @@ class Association(models.Model):
     category = models.ForeignKey(Category, verbose_name="Catégorie")
     users = models.ManyToManyField(User, verbose_name="Utilisateurs", related_name='associations', blank=True)
 
-    logo_url = LogoURLField("URL du logo", blank=True)
+    logo_url = models.URLField("URL du logo", blank=True, validators=[validate_image_url],
+                               help_text="Privilégiez les liens en HTTPS. "
+                                         "Assurez-vous que le lien que vous fournissez "
+                                         "pointe directement sur l'image (pas de page "
+                                         "d'affichage comme Google Drive ou autres) et que "
+                                         "l'image soit accessible.")
 
     iban = models.CharField("IBAN", max_length=50, blank=True, validators=[validate_iban])
     bic = models.CharField("BIC", max_length=15, blank=True)
