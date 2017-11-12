@@ -1,12 +1,20 @@
 from django.db.models import URLField
+from . import forms
 
 from portailva.utils.validators import validate_image_url
 
 
 class ImageURLField(URLField):
     def __init__(self, *args, **kwargs):
-        kwargs['validators'] = [validate_image_url]
+        # kwargs['validators'] = [validate_image_url]
         super().__init__(*args, **kwargs)
+
+    def formfield(self, **kwargs):
+        defaults = {
+            'form_class': forms.ImageURLField,
+        }
+        defaults.update(kwargs)
+        return super(URLField, self).formfield(**defaults)
 
 
 class LogoURLField(ImageURLField):
