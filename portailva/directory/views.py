@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 
+import requests
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import Http404
@@ -243,6 +244,9 @@ class AssociationDirectoryPublicView(ListView):
     def dispatch(self, request, *args, **kwargs):
         self.query = self.request.GET.get('query')
         self.cat = self.request.GET.get('cat')
+        print('before request', flush=True)
+        requests.get('https://portail.asso-insa-lyon.fr/file/12')
+        print('after request', flush=True)
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
