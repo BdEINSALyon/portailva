@@ -6,7 +6,7 @@ from portailva.utils.validators import validate_image_url
 
 class ImageURLField(URLField):
     def __init__(self, *args, **kwargs):
-        # kwargs['validators'] = [validate_image_url]
+        kwargs['validators'] = [validate_image_url]
         super().__init__(*args, **kwargs)
 
     def formfield(self, **kwargs):
