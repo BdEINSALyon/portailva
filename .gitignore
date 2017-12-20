@@ -109,3 +109,4 @@ node_modules
 uploads
 
 mediafiles
+*.sql
