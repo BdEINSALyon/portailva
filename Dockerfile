@@ -2,8 +2,10 @@ FROM python:3.6
 
 EXPOSE 8000
 
-RUN apt-get update
-RUN apt-get install -y libpq-dev python-dev gcc g++ libxslt-dev libtiff5-dev libjpeg-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk
+RUN apt-get update && \
+    apt-get install -y libpq-dev python-dev gcc g++ libxslt-dev libtiff5-dev \
+                       libjpeg-dev zlib1g-dev libfreetype6-dev liblcms2-dev \
+                       libwebp-dev tcl8.6-dev tk8.6-dev python-tk
 ENV LIBRARY_PATH=/lib:/usr/lib
 
 WORKDIR /app
