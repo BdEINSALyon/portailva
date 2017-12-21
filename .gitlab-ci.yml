@@ -23,3 +23,11 @@ build:
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   except:
     - master
+
+deploy:
+  stage: deploy
+  image: cdrx/rancher-gitlab-deploy
+  script:
+    - upgrade --stack portailva --service portailva
+  only:
+    - master
