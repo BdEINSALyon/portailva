@@ -1,6 +1,6 @@
 FROM python:3.6
 
-EXPOE 8000
+EXPOSE 8000
 
 RUN apt-get update && \
     apt-get install -y libpq-dev python-dev gcc g++ libxslt-dev libtiff5-dev \
